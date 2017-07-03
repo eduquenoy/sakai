@@ -1,0 +1,78 @@
+/* Typography*/
+
+//Google family Fonts URL
+$font-family-url: "//fonts.googleapis.com/css?family=Noto+Sans" ;
+$header-font-family-url: "//fonts.googleapis.com/css?family=Days+One:300" ;
+
+//Typography variables
+$font-family: "Noto Sans", "Helvetica Neue", Arial, sans-serif;
+$default-font-size: 15px !default;
+//Font weight: 300, 400 or 700 as you wish, 300 is light, 700 is bold.
+$default-font-weight: 400 ;										
+$header-font-family: "Days+One", Arial, sans-serif ;
+//Header font weight: 300, 400 or 700 as you wish, 300 is light, 700 is bold
+//$header-font-weight: 300 !default;
+
+/* Color palette */
+$background-color: #FFFFFF ;
+$background-color-secondary: #242323 ;
+
+//$tool-background-color: #ffffff !default;
+//$toolMenuColor: #F8F8F8 !default;
+$tool-background-color:		 $background-color ;
+$toolMenuBGColor:			 $background-color-secondary ;
+$toolMenuColor: 			 #FFFFFF ;
+$toolTabBGColor: 			 #F5F5F5 ;
+$toolBorderColor:			 #D5D5D5 ;
+
+$primary-color:    			 #193251 ;
+$secondary-color:  			 #F00 ;
+$alt-colour: 				 #d36f00 ;
+
+$text-color: #FF0000 ;
+$breadcrumbs-color:			 #FFFFFF ;
+$breadcrumbs-tool-color:		 #EEEEEE ;
+$breadcrumbs-hover-color:		 #DDDDDD;
+/* Linknav button colors */
+//$button-text-color:	 #777 !default;
+//$button-border-color: #C0C0C0 !default;
+//$button-background-color: #F0F0F0 !default;
+//$button-background-secondary-color: #FFF !default;
+/* General button colors */
+//$button-color-text-color: #FFF !default;
+//$button-color-border-color: #4a8db3 !default;
+//$button-color-background-color: #60b3e3 !default;
+//$button-color-background-secondary-color: #5299c2 !default;
+/* ///////////// */
+
+//$okcolor: #dff0d8 !default;
+//$errorcolor: #f2dede !default;
+//$warncolor: #fcf8e3 !default;
+
+//$swapped-view-primary: #CE9466 !default;
+//$swapped-view-text-color: #302436 !default;
+/* This is the gradient in the header of the page */
+$header-gradient-a: #444444 ;
+$header-gradient-b: #555555 ;
+$header-gradient-c: #AAAAAA ;
+$header-gradient-d: #444444 ;
+
+/* Main Menu */
+//$header-size : 3.1em !default;
+
+/* Tool Menu */
+//$tool-menu-width: 14.5em !default;
+
+/* Golden Ratio width for 16px font http://www.pearsonified.com/typography/ */
+//$measure: 960px !default;
+
+/* Logo location */
+$logo: 'images/logoulcosakai.png' ;
+$logo-height: 133px ;
+$logo-width: 266px ;
+/* Tool icons */
+$skin-with-icons: true ;
+//$icon-size: 20px !default;
+
+//@import url( #{$font-family-url}    );
+//@import url( #{$header-font-family-url} );
