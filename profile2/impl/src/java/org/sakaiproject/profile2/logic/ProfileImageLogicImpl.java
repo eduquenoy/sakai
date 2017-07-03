@@ -601,11 +601,10 @@ public class ProfileImageLogicImpl implements ProfileImageLogic {
 	public String getGravatarUrl(final String userUuid) {
 		
 		String email = sakaiProxy.getUserEmail(userUuid);
-		email = email.toLowerCase(); //Ajout E.Duquenoy 
-		//log.info("Email Gravatar : "+email);
 		if(StringUtils.isBlank(email)){
 			return null;
 		}
+		email = email.toLowerCase(); //Added by E.Duquenoy (eric.duquenoy@gmail.com) june 2017
 				
 		return ProfileConstants.GRAVATAR_BASE_URL + ProfileUtils.calculateMD5(email) + "?s=200";
 	}
