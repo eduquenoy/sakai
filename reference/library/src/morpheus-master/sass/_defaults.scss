@@ -33,7 +33,7 @@ $background-color: 			 #FFFFFF !default;
 $background-color-secondary: #294050 !default;//ULCO
 //$background-color-secondary: #444444 !default;
 
-$primary-color:    			 #294050 ;//ULCO
+$primary-color:    			 #294050 !default;//ULCO
 //$primary-color-shadow:			 #FF0000 ;//ULCO //adjust-hue( $primary-color, 10 ) ;	// To give primary a darker shadow
 //$primary-color:    			 #ff0000 !default;
 $primary-color-shadow:			 adjust-hue( $primary-color, 20 ) !default;	// To give primary a darker shadow
@@ -124,7 +124,7 @@ $header-gradient-b: #C2C2C2;//ULCO
 $header-gradient-c: #525252;//ULCO
 $header-gradient-d: $background-color-secondary ; //ULCO
 /* topNav Main Menu */
-$header-size : 40px !default;
+$header-size : 50px !default;
 $topNav-text-color:                         #fff !default; /* used for links and text in the topNav */
 $topNav-text-alt-color:                     #ccc !default;
 
@@ -181,6 +181,6 @@ $tool-menu-icon-on-left: false !default;
 $footer-background: transparent !default;
 $footer-color: $background-color-secondary !default;
 
-//@import "customization"; //it is created on-the-fly by maven.
+@import "customization"; //it is created on-the-fly by maven.
 
 @import url(#{$font-family-url});
