@@ -1,3 +1,4 @@
+<--! Modifications uniquement pour l'ULCO (E.Duquenoy juillet 2017) -->
 #if (${userIsLoggedIn})
     <div id="maxToolsText" style="display: none">${rloader.sit_alltools}</div>
     <div id="maxToolsInt" style="display: none">${maxToolsInt}</div>
@@ -74,9 +75,9 @@
                             #if ($tabsSites.tabsMoreTermsLeftPane.get($termKey).size() > 0)
                                 <div class="fav-sites-term">
                                     #if ( !$termKey || $termKey == "" )
-                                        <h3 class="favorites-term-header">${rloader.sit_notermkey}</h3>
+                                        <h4 class="favorites-term-header">Cours</h4>
                                     #else
-                                        <h3 class="favorites-term-header">$termKey</h3>
+                                        <h4 class="favorites-term-header">Cours</h4>
                                     #end
 
                                     <ul class="otherSitesCategorList favoriteSiteList">
@@ -94,8 +95,11 @@
                             #if ($tabsSites.tabsMoreTermsRightPane.get($termKey).size() > 0)
                                 <div class="fav-sites-term">
                                     #if ( $termKey && $termKey != "" )
-                                        <h3 class="favorites-term-header">$termKey</h3>
-
+						#if (${termKey} == #"PROJETS") ##Added by E.Duquenoy (july 2017)
+                                        		<h4 class="favorites-term-header">Espaces (cours, projets, etc)</h4>
+						#else
+							<h4 class="favorites-term-header">Autres</h4>
+						#end
                                         <ul class="otherSitesCategorList favoriteSiteList">
                                             <!-- anchor "my workspace" to the top of the list -->
                                             #foreach( $site in $tabsSites.tabsMoreTermsRightPane.get($termKey))
