@@ -122,7 +122,7 @@ input[type="checkbox"], input[type="radio"]{
 	vertical-align: sub;
 	@include appearance(none);
 	&:checked{
-		border: 1px solid #60b3e3;
+		border: 1px solid $check;
 	}
 	//SAK-30977
 	&[disabled],&[disabled="disabled"],&[disabled="true"]{
@@ -148,7 +148,7 @@ input[type="checkbox"]{
 input[type="radio"]{
 	@include border-radius(24px);
 	&:checked{
-		background: radial-gradient(#60b3e3, #FFF 5px);
+		background: radial-gradient($check, #FFF 5px);
 	}
 }
 

@@ -1,4 +1,4 @@
-<--! Modifications uniquement pour l'ULCO (E.Duquenoy juillet 2017) -->
+## <--! Modifications uniquement pour l'ULCO (E.Duquenoy juillet 2017) -->
 #if (${userIsLoggedIn})
     <div id="maxToolsText" style="display: none">${rloader.sit_alltools}</div>
     <div id="maxToolsInt" style="display: none">${maxToolsInt}</div>
