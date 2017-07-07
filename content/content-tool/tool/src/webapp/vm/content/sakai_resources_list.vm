@@ -224,6 +224,9 @@
                   <option value="2"#if("$!dropboxHighlight" == "2") selected="selected"#end>$clang.getString("sh.2day")</option>
                   <option value="3"#if("$!dropboxHighlight" == "3") selected="selected"#end>$clang.getString("sh.3day")</option>
                   <option value="7"#if("$!dropboxHighlight" == "7") selected="selected"#end>$clang.getString("sh.1week")</option>
+                  <option value="15"#if("$!dropboxHighlight" == "15") selected="selected"#end>$clang.getString("sh.2week")</option>
+                  <option value="31"#if("$!dropboxHighlight" == "31") selected="selected"#end>$clang.getString("sh.1month")</option>
+                  <option value="60"#if("$!dropboxHighlight" == "60") selected="selected"#end>$clang.getString("sh.2month")</option>
               </select>
             #end
             #if (!$dropboxMode)
