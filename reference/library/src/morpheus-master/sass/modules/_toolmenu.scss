@@ -262,6 +262,7 @@ nav#subSites{
 				font-family: $header-font-family;
 				font-weight: 300;
 				font-size: 0.85em;
+				border-radius: 0 0 10px 0; //Added by E.Duquenoy (ULCO)
 			    min-height: 3em;
 				@if $tool-menu-icon-on-left {
 					text-align: left;

@@ -31,6 +31,7 @@
 				padding: 6px 10px;
 				text-decoration: none;
 				text-transform: uppercase;
+				border-radius: 5px 5px 0 0;//Added by E.Duquenoy (ULCO)
 				@media #{$phone}{
 					@include sakai_button( $button-background-color, $button-border-color, $button-text-color, $button-background-secondary-color );
 				}
@@ -54,6 +55,7 @@
 				position: relative;
 				text-transform: uppercase;
 				top: 1px;
+				border-radius: 5px 5px 0 0;//Added by E.Duquenoy (ULCO)
 				@media #{$phone}{
 					@include sakai_button_color( $button-color-background-color, $button-color-border-color, $button-color-text-color, $button-color-background-secondary-color );
 				}
