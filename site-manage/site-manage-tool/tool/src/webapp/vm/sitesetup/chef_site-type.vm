@@ -30,21 +30,20 @@
     <p class="instruction">
         $tlang.getString("sitetype.chothetyp.withouttemplate")
     </p>
-#* La partie ci-dessous est désactivée pour l'ULCO (E.Duquenoy, juin 2017) *#
-<!--    <form name="typeform" id="typeform" action="#toolForm("$action")&special=upload" method="post">
-        <p class="checkbox indnt1">
+    <form name="typeform" id="typeform" action="#toolForm("$action")&special=upload" method="post">
+ #*       <p class="checkbox indnt1">
             ## only show the radio button when there is any template site defined
             <input type="radio" name="createMode" id="buildOwn" value="buildOwn" checked="checked"/>    
             <label for="buildOwn">$tlang.getString("sitetype.buildown")</label>
         </p>
         <p class="indnt4 textPanelFooter" style="margin-bottom:5px;">$tlang.getString("sitetype.chothetyp.withtemplate.build.own.info")</p>
-   
+   *#
         ## NOTE: end if create from template enabled
         #* following block should show if "build own" has been selected,
          a site type has been picked, and then the user (from the next screen) hits "back"  - the "Build own" radio
          should be checked, as well as the selected site type
          *#
-        <div id="siteTypeList" class="indnt3">
+  #*      <div id="siteTypeList" class="indnt3">
             #foreach ($type in $siteTypes)
 				#set($courseTypeWithPerm    = (($courseSiteTypeStrings.contains($type) || $type == "course")    && $canAddCourse ))
 				#set($portfolioTypeWithPerm = (($portfolioSiteTypeStrings.contains($type) || $type == "portfolio") && $canAddPortfolio )) 
@@ -92,8 +91,8 @@
                 #end ## end of #if (courseTypeWithPerm || portfolioTypeWithPerm || projectTypeWithPerm))
             #end  ##end of #foreach ($type in $siteTypes)
         </div>
--->      
-	#if ($templateSites.size() > 0)
+*#
+        #if ($templateSites.size() > 0)
             ## if templates enabled
             <p class="checkbox indnt1">
                 <input type="radio" name="itemType" id="copy" value="copy"/>
@@ -196,8 +195,8 @@
                                         <h4 class="specialLink">
                                             <a href="$siteType">
                                                 <span class="open"  style="display: none">&#9662;</span><span class="closed"> &#9656;</span>
-                                            #*            <em>$siteType.replace("_", " ")</em>  Ajout pour l'ULCO (E.Duquenoy, juin 2017)*#
-                                          			<em>Espaces</em> 
+                                                 #*<em>$siteType.replace("_", " ")</em>  Ajout pour l'ULCO (E.Duquenoy, juin 2017)*#
+					<em>Espaces</em> 
                                                  <span class="siteTypeRowBlurb"></span>
                                              </a>
                                          </h4>
@@ -303,5 +302,6 @@
         <input type="hidden" name="sakai_csrf_token" value="$sakai_csrf_token" />
     </form>             
 </div>  
+
 
 
