@@ -7,8 +7,8 @@
 
     moment.locale(portal.locale);
 
-    portal.socialBullhorn = $('#Mrphs-social-bullhorn');
-    portal.academicBullhorn = $('#Mrphs-academic-bullhorn');
+    portal.socialBullhorn = $PBJQ('#Mrphs-social-bullhorn');
+    portal.academicBullhorn = $PBJQ('#Mrphs-academic-bullhorn');
 
     var formatDate = function (millis) {
 
@@ -22,26 +22,26 @@
 
     portal.clearBullhornAlert = function (type, id, noAlerts) {
 
-            $.get('/direct/portal/clearBullhornAlert', { id: id })
+            $PBJQ.get('/direct/portal/clearBullhornAlert', { id: id })
                 .done(function () {
 
-                    var alertDiv = $('#portal-bullhorn-alert-' + id);
-                    var empty = $('.portal-bullhorn-' + type + '-alert').length === 1;
+                    var alertDiv = $PBJQ('#portal-bullhorn-alert-' + id);
+                    var empty = $PBJQ('.portal-bullhorn-' + type + '-alert').length === 1;
                     alertDiv.remove();
                     if (empty) {
-                        $('.portal-bullhorn-' + type +'-alerts').html(portal.wrapNoAlertsString(noAlerts));
+                        $PBJQ('.portal-bullhorn-' + type +'-alerts').html(portal.wrapNoAlertsString(noAlerts));
                     }
-                    var count = $('.portal-bullhorn-' + type + '-alert').length;
+                    var count = $PBJQ('.portal-bullhorn-' + type + '-alert').length;
                     portal.setCounter(type, count);
                 });
         };
 
     portal.clearAllAlerts = function (type, noAlerts) {
 
-        $.ajax({url: '/direct/portal/clearAll' + type + 'Alerts', cache: false})
+        $PBJQ.ajax({url: '/direct/portal/clearAll' + type + 'Alerts', cache: false})
             .done(function () {
 
-                $('.portal-bullhorn-' + type.toLowerCase() + '-alerts').html(portal.wrapNoAlertsString(noAlerts));
+                $PBJQ('.portal-bullhorn-' + type.toLowerCase() + '-alerts').html(portal.wrapNoAlertsString(noAlerts));
                 portal.setCounter(type.toLowerCase(), 0);
             });
     };
@@ -58,7 +58,7 @@
         this.clearBullhornAlert(portal.SOCIAL, alertId, noAlertsMessage);
     };
 
-    $(document).ready(function () {
+    $PBJQ(document).ready(function () {
 
         portal.socialBullhorn.qtip({
             suppress: false,
@@ -69,7 +69,7 @@
             content: {
                 text: function (event, api) {
 
-                    return $.ajax({
+                    return $PBJQ.ajax({
                             url: '/direct/portal/socialAlerts.json',
                             cache: false,
                         }).then(function (data) {
@@ -80,7 +80,14 @@
                                 var markup = '<div class="portal-bullhorn-social-alerts">';
                                 data.alerts.forEach(function (alert) {
 
-                                    markup += '<a href="' + alert.url + '"><div id="portal-bullhorn-alert-' + alert.id + '" class="portal-bullhorn-social-alert">'
+                                    if (alert.event === 'profile.friend.request') {
+                                        markup += '<a href="javascript:;" class="portal-bullhorn-connectionmanager-pending">';
+                                    } else if (alert.event === 'profile.friend.confirm') {
+                                        markup += '<a href="javascript:;" class="portal-bullhorn-connectionmanager-current">';
+                                    } else {
+                                        markup += '<a href="' + alert.url + '">';
+                                    }
+                                    markup += '<div id="portal-bullhorn-alert-' + alert.id + '" class="portal-bullhorn-social-alert">'
                                                 + '<div class="portal-bullhorn-photo" style="background-image:url(/direct/profile/' + alert.from + '/image/thumb)"></div>'
                                                 + '<div class="portal-bullhorn-content"><div class="portal-bullhorn-message"><span class="portal-bullhorn-display-name">' + alert.fromDisplayName + '</span>';
 
@@ -124,6 +131,22 @@
                             api.set('content.text', status + ': ' + error);
                         });
                 }
+            },
+            events: {
+                visible: function (event, api) {
+
+                    $PBJQ('.portal-bullhorn-connectionmanager-pending').click(function (e) {
+
+                        portal.connectionManager.show({state: 'pending'});
+                        api.hide();
+                    });
+
+                    $PBJQ('.portal-bullhorn-connectionmanager-current').click(function (e) {
+
+                        portal.connectionManager.show();
+                        api.hide();
+                    });
+                }
             }
         });
 
@@ -136,7 +159,7 @@
             content: {
                 text: function (event, api) {
 
-                    return $.ajax({
+                    return $PBJQ.ajax({
                             url: '/direct/portal/academicAlerts.json',
                             dataType: 'json',
                             cache: false,
@@ -155,6 +178,8 @@
                                     if (alert.event === 'asn.new.assignment'
                                                                 || alert.event === 'asn.grade.submission') {
                                         faClass = 'fa-file-text';
+                                    } else if (alert.event === 'lessonbuilder.comment.create') {
+                                        faClass = 'fa-leanpub';
                                     }
 
                                     markup += '<a href="' + alert.url + '" style="text-decoration: none;"><div id="portal-bullhorn-alert-' + alert.id + '" class="portal-bullhorn-academic-alert">'
@@ -174,6 +199,8 @@
                                             = data.i18n.assignmentSubmissionGraded.replace('{0}', title).replace('{1}', siteTitle);
                                     } else if (alert.event === 'commons.comment.created') {
                                         markup += data.i18n.academicCommentCreated.replace('{0}', siteTitle);
+                                    } else if (alert.event === 'lessonbuilder.comment.create') {
+                                        markup += data.i18n.academicLessonBuilderCommentCreate.replace('{0}', siteTitle);
                                     } else {
                                         markup += data.i18n.unrecognisedAlert;
                                     }
@@ -199,7 +226,7 @@
 
     portal.setCounter = function (type, count) {
 
-        var horn = $('#Mrphs-' + type + '-bullhorn');
+        var horn = $PBJQ('#Mrphs-' + type + '-bullhorn');
         var colour = (type === 'social') ? 'blue' : 'red';
         horn.find('.bullhorn-counter').remove();
         horn.append('<span class="bullhorn-counter bullhorn-counter-' + colour + '">' + count + '</span>');
@@ -207,7 +234,7 @@
 
     var updateCounts = function () {
 
-            $.ajax({
+            $PBJQ.ajax({
                 url: '/direct/portal/bullhornCounts.json',
                 cache: false,
                 }).done(function (data) {
@@ -236,9 +263,8 @@
                 });
         };
 
-    if (portal.loggedIn) {
+    if (portal.loggedIn && portal.bullhorns && portal.bullhorns.enabled) {
         updateCounts();
-        //portal.bullhornCountIntervalId = setInterval(updateCounts, portal.bullhorns.pollInterval);
-        portal.bullhornCountIntervalId = setInterval(updateCounts, 10000);
+        portal.bullhornCountIntervalId = setInterval(updateCounts, portal.bullhorns.pollInterval);
     }
 }) ($PBJQ);

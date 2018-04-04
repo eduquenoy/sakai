@@ -183,6 +183,7 @@ public class StatsManagerTest extends AbstractTransactionalJUnit4SpringContextTe
 		((StatsManagerImpl)M_sm).setContentTypeImageService(M_ctis);
 		((StatsManagerImpl)M_sm).setResourceLoader(msgs);
 		((StatsManagerImpl)M_sm).setCountFilesUsingCHS(false);
+		((StatsManagerImpl)M_sm).setCountPagesUsingLBS(false);
 		((StatsUpdateManagerImpl)M_sum).setSiteService(M_ss);
 		((StatsUpdateManagerImpl)M_sum).setStatsManager(M_sm);
 		// This is needed to make the tests deterministic, otherwise on occasion the collect thread will run
@@ -1071,8 +1072,8 @@ public class StatsManagerTest extends AbstractTransactionalJUnit4SpringContextTe
 				null, null, null, false, Arrays.asList(StatsManager.T_UNIQUEVISITS));
 		Assert.assertEquals(1, statsCount);
 		
-		//System.out.println("Stats: "+stats);
-		//System.out.println("Size: "+stats.size());
+		//log.debug("Stats: "+stats);
+		//log.debug("Size: "+stats.size());
 	}
 	
 	@Test

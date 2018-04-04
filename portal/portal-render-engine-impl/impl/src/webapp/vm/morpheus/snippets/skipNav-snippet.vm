@@ -16,7 +16,7 @@
             </a>
         </li>
         <li class="Mrphs-skipNav__menuitem Mrphs-skipNav__menuitem--worksite">
-            <a href="#sitetabs" id="more-sites-menu" class="Mrphs-skipNav__link js-toggle-sites-nav" title="${rloader.sit_jumpworksite}" accesskey="w">
+            <a href="#txtSearch" id="more-sites-menu" class="Mrphs-skipNav__link js-toggle-sites-nav" title="${rloader.sit_jumpworksite}" accesskey="w">
                 <i class="fa fa-th all-sites-icon" aria-hidden="true"></i> ${rloader.sit_worksites}
                 <span class="accesibility_key">[w]</span>
             </a>
@@ -27,6 +27,14 @@
                 ${rloader.sit_menutools}
                 <span class="accesibility_key">[l]</span>
             </a>
+			#foreach( $page in $sitePages.pageNavTools )
+				#if (${page.current})
+					<a href="${page.pageResetUrl}" title="$rloader.sit_reset" class="xs-visible Mrphs-skipNav--toolName">
+						<span class="Mrphs-breadcrumb--icon ${page.menuClass} $!{page.menuClassOverride}"></span>
+						<span>${page.pageTitle}</span>
+					</a>
+				#end
+			#end
         </li>
     </ul>
 </nav>

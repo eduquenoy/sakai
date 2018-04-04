@@ -19,8 +19,6 @@
  *
  **********************************************************************************/
 
-
-
 package org.sakaiproject.tool.assessment.ui.listener.author;
 
 import java.util.List;
@@ -29,23 +27,23 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.sakaiproject.tool.assessment.facade.AgentFacade;
 import org.sakaiproject.tool.assessment.facade.PublishedAssessmentFacadeQueries;
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
+import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <p>Description: SortPublishedAssessmentListener</p>
  */
-
+@Slf4j
 public class SortPublishedAssessmentListener
     implements ActionListener
 {
-  private static Logger log = LoggerFactory.getLogger(SortPublishedAssessmentListener.class);
 
   public SortPublishedAssessmentListener()
   {
@@ -57,6 +55,7 @@ public class SortPublishedAssessmentListener
     PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
     AuthorBean author = (AuthorBean) ContextUtil.lookupBean(
                        "author");
+    AuthorizationBean authorization = (AuthorizationBean) ContextUtil.lookupBean("authorization");
 
     processSortInfo(author);
     
@@ -66,7 +65,7 @@ public class SortPublishedAssessmentListener
 
     List publishedAssessmentList = publishedAssessmentService.getBasicInfoOfAllPublishedAssessments2(
  		   this.getPublishedOrderBy(author), author.isPublishedAscending(), AgentFacade.getCurrentSiteId());
-    authorActionListener.prepareAllPublishedAssessmentsList(author, gradingService, publishedAssessmentList);
+    authorActionListener.prepareAllPublishedAssessmentsList(author, authorization, gradingService, publishedAssessmentList);
     author.setJustPublishedAnAssessment(true);
   }
 

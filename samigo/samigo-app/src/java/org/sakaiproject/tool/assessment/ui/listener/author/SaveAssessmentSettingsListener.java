@@ -19,8 +19,6 @@
  *
  **********************************************************************************/
 
-
-
 package org.sakaiproject.tool.assessment.ui.listener.author;
 
 import java.util.ArrayList;
@@ -34,8 +32,8 @@ import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+
 import org.sakaiproject.tool.assessment.api.SamigoApiFactory;
 import org.sakaiproject.tool.assessment.data.dao.assessment.AssessmentAccessControl;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentAccessControlIfc;
@@ -45,6 +43,7 @@ import org.sakaiproject.tool.assessment.services.assessment.AssessmentService;
 import org.sakaiproject.tool.assessment.shared.api.assessment.SecureDeliveryServiceAPI;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentSettingsBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
+import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.TextFormat;
 import org.sakaiproject.util.FormattedText;
@@ -55,11 +54,10 @@ import org.sakaiproject.util.FormattedText;
  * @author Ed Smiley
  * @version $Id$
  */
-
+@Slf4j
 public class SaveAssessmentSettingsListener
     implements ActionListener
 {
-  private static Logger log = LoggerFactory.getLogger(SaveAssessmentSettingsListener.class);
   //private static final GradebookServiceHelper gbsHelper = IntegrationContextFactory.getInstance().getGradebookServiceHelper();
   //private static final boolean integrated = IntegrationContextFactory.getInstance().isIntegrated();
 
@@ -77,7 +75,7 @@ public class SaveAssessmentSettingsListener
     String assessmentId=String.valueOf(assessmentSettings.getAssessmentId()); 
     AssessmentService assessmentService = new AssessmentService();
     SaveAssessmentSettings s = new SaveAssessmentSettings();
-    String assessmentName = TextFormat.convertPlaintextToFormattedTextNoHighUnicode(log, assessmentSettings.getTitle());
+    String assessmentName = TextFormat.convertPlaintextToFormattedTextNoHighUnicode(assessmentSettings.getTitle());
  
     // check if name is empty
     if(assessmentName!=null &&(assessmentName.trim()).equals("")){
@@ -250,6 +248,7 @@ public class SaveAssessmentSettingsListener
  
     // Set the outcome once Save button is clicked
     AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
+    AuthorizationBean authorization = (AuthorizationBean) ContextUtil.lookupBean("authorization");
     assessmentSettings.setOutcomeSave(author.getFromPage());
 
     s.save(assessmentSettings, false);
@@ -263,7 +262,15 @@ public class SaveAssessmentSettingsListener
 		assessmentFacade.setTitle(FormattedText.convertFormattedTextToPlaintext(assessmentFacade.getTitle()));
 	}
     // get the managed bean, author and set the list
+    List allAssessments = new ArrayList<>();
+    if (authorization.getEditAnyAssessment() || authorization.getEditOwnAssessment()) {
+        allAssessments.addAll(assessmentList);
+    }
+    if (authorization.getGradeAnyAssessment() || authorization.getGradeOwnAssessment()) {
+        allAssessments.addAll(author.getPublishedAssessments());
+    }
     author.setAssessments(assessmentList);
+    author.setAllAssessments(allAssessments);
 
     // goto Question Authoring page
     EditAssessmentListener editA= new EditAssessmentListener();

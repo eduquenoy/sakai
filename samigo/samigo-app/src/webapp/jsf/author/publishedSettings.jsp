@@ -45,12 +45,12 @@
       <title><h:outputText value="#{assessmentSettingsMessages.sakai_assessment_manager} #{assessmentSettingsMessages.dash} #{assessmentSettingsMessages.settings}" /></title>
       <samigo:script path="/jsf/widget/hideDivision/hideDivision.js"/>
       <samigo:script path="/jsf/widget/colorpicker/colorpicker.js"/>
-      <script type="text/javascript" src="/library/js/lang-datepicker/lang-datepicker.js"></script>
+      <samigo:script path="/../library/js/lang-datepicker/lang-datepicker.js"/>
       <samigo:script path="/js/authoring.js"/>        
 
       <script type="text/javascript">
       if (needJQuery) {
-         document.write('\x3Clink href="/library/webjars/jquery-ui/1.11.3/jquery-ui.min.css?version=" rel="stylesheet">');
+         document.write('\x3Clink href="/library/webjars/jquery-ui/1.12.1/jquery-ui.min.css?version=" rel="stylesheet">');
       }
       </script>
 
@@ -58,14 +58,15 @@
         $(document).ready(function() {
           // set up the accordion for settings
           var accordionPanel = 1;
-          if (window.sessionStorage && window.sessionStorage.getItem('samigo_publishedsettings')) {
-              accordionPanel = parseInt(window.sessionStorage.getItem('samigo_publishedsettings'));
+          var itemName = "samigo_publishedsettings_" + <h:outputText value="#{publishedSettings.assessmentId}"/>;
+          if (window.sessionStorage && window.sessionStorage.getItem(itemName)) {
+              accordionPanel = parseInt(window.sessionStorage.getItem(itemName));
           }
           $("#jqueryui-accordion").accordion({
               heightStyle: "content",
               activate: function(event, ui) {
                   if (window.sessionStorage) {
-                      window.sessionStorage.setItem('samigo_publishedsettings', $("#jqueryui-accordion").accordion("option", "active"));
+                      window.sessionStorage.setItem(itemName, $("#jqueryui-accordion").accordion("option", "active"));
                   }
               },
               active: accordionPanel,
@@ -77,6 +78,37 @@
           $("#jqueryui-accordion-security").accordion({ heightStyle: "content",collapsible: true,active: false });
           // adjust the height of the iframe to accomodate the expansion from the accordion
           $("body").height($("body").outerHeight() + 900);
+
+          checkNav = function() {
+              QuesFormatRadios = ["assessmentSettingsAction\\:assessmentFormat\\:0", "assessmentSettingsAction\\:assessmentFormat\\:1", "assessmentSettingsAction\\:assessmentFormat\\:2"];
+
+              enabled = true;
+              if ($("#assessmentSettingsAction\\:itemNavigation\\:0").is(":checked")) {
+                enabled = false;
+              }
+
+              if (enabled) {
+                  $('#assessmentSettingsAction\\:markForReview1').removeAttr("disabled");
+                  $('#assessmentSettingsAction\\:markForReview1').parent().toggleClass("placeholder");
+                  QuesFormatRadios.forEach( function(v, i, a) {
+                      $('label[for="' + v + '"]').toggleClass("placeholder");
+                      $("#" + v).removeAttr("disabled");
+                  });
+              } else {
+                  $('#assessmentSettingsAction\\:markForReview1').attr("disabled", true);
+                  $('#assessmentSettingsAction\\:markForReview1').attr("checked", false);
+                  $('#assessmentSettingsAction\\:markForReview1').parent().toggleClass("placeholder");
+                  QuesFormatRadios.forEach( function(v, i, a) {
+                      $('#assessmentSettingsAction\\:assessmentFormat\\:0').click();
+                      $('label[for="' + v + '"]').toggleClass("placeholder");
+                      $("#" + v).attr("disabled", true);
+                  });
+              }
+          };
+
+          $('#assessmentSettingsAction\\:itemNavigation\\:0').change(checkNav);
+          $('#assessmentSettingsAction\\:itemNavigation\\:1').change(checkNav);
+          checkNav();
 
           // SAM-2323 jquery-UI datepicker
           localDatePicker({

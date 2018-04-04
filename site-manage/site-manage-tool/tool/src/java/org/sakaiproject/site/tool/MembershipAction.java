@@ -41,7 +41,10 @@ import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.javax.PagingPosition;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SiteService;
+import org.sakaiproject.site.api.SiteService.SelectionType;
+import org.sakaiproject.site.api.SiteService.SortType;
 import org.sakaiproject.site.tool.EnrolmentsHandler.Enrolment;
+import org.sakaiproject.site.tool.EnrolmentsHandler.EnrolmentsWrapper;
 import org.sakaiproject.site.util.SiteTextEditUtil;
 import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
@@ -110,13 +113,22 @@ public class MembershipAction extends PagedResourceActionII
 				{
 					ENROLMENTS_HANDLER.getSectionEnrolments( currentUserID );
 				}
-				size = ENROLMENTS_HANDLER.getEnrolmentsCacheMap().get( currentUserID ).getEnrolments().size();
+
+				EnrolmentsWrapper wrapper = ENROLMENTS_HANDLER.getEnrolmentsCacheMap().get( currentUserID );
+				if( wrapper != null )
+				{
+					List<Enrolment> enrolments = wrapper.getEnrolments();
+					size = enrolments != null ? enrolments.size() : 0;
+				}
+				else
+				{
+					size = 0;
+				}
 			}
 		}
 		else if( JOINABLE_MODE.equals( mode ) )
 		{
-			List openSites = SITE_SERV.getSites(org.sakaiproject.site.api.SiteService.SelectionType.JOINABLE,
-					null, search, null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, null);
+			List openSites = SITE_SERV.getSites(SelectionType.JOINABLE, null, search, null, SortType.TITLE_ASC, null);
 
 			// SAK-24423 - joinable site settings - filter sites
 			JoinableSiteSettings.filterSitesListForMembership( openSites );
@@ -124,9 +136,7 @@ public class MembershipAction extends PagedResourceActionII
 		}
 		else
 		{
-			List unjoinableSites = SITE_SERV.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS, null, null,
-					null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, null);
-			size=unjoinableSites.size();
+			size = SITE_SERV.countSites(SelectionType.ACCESS, null, search, null);
 		}
 
 		return size;
@@ -171,8 +181,7 @@ public class MembershipAction extends PagedResourceActionII
 		{
 			if (sortAsc)
 			{
-				List<Site> sites = SITE_SERV.getSites(org.sakaiproject.site.api.SiteService.SelectionType.JOINABLE, 
-						null, search, null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, page);
+				List<Site> sites = SITE_SERV.getSites(SelectionType.JOINABLE, null, search, null, SortType.TITLE_ASC, page);
 
 				// SAK-24423 - filter sites taking into account 'exclude from public list' setting and global toggle
 				JoinableSiteSettings.filterSitesListForMembership( sites );
@@ -180,8 +189,7 @@ public class MembershipAction extends PagedResourceActionII
 			}
 			else
 			{
-				List<Site> sites = SITE_SERV.getSites(org.sakaiproject.site.api.SiteService.SelectionType.JOINABLE, 
-						null, search, null, org.sakaiproject.site.api.SiteService.SortType.TITLE_DESC, page);
+				List<Site> sites = SITE_SERV.getSites(SelectionType.JOINABLE, null, search, null, SortType.TITLE_DESC, page);
 
 				// SAK-24423 - filter sites taking into account 'exclude from public list' setting and global toggle
 				JoinableSiteSettings.filterSitesListForMembership( sites );
@@ -192,13 +200,11 @@ public class MembershipAction extends PagedResourceActionII
 		{
 			if (sortAsc)
 			{
-				rv = SITE_SERV.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS, null, search,
-						null, org.sakaiproject.site.api.SiteService.SortType.TITLE_ASC, page);
+				rv = SITE_SERV.getSites(SelectionType.ACCESS, null, search, null, SortType.TITLE_ASC, page);
 			}
 			else
 			{
-				rv = SITE_SERV.getSites(org.sakaiproject.site.api.SiteService.SelectionType.ACCESS, null, search,
-						null, org.sakaiproject.site.api.SiteService.SortType.TITLE_DESC, page);
+				rv = SITE_SERV.getSites(SelectionType.ACCESS, null, search, null, SortType.TITLE_DESC, page);
 			}
 		}
 

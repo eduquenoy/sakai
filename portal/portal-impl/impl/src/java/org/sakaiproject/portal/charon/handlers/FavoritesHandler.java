@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2003-2017 The Apereo Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://opensource.org/licenses/ecl2
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.sakaiproject.portal.charon.handlers;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +58,7 @@ public class FavoritesHandler extends BasePortalHandler
 	private static final String FAVORITES_PROPERTY = "order";
 	private static final String AUTO_FAVORITE_ENABLED_PROPERTY = "autoFavoriteEnabled";
 	private static final String SEEN_SITES_PROPERTY = "autoFavoritesSeenSites";
+	private static final String FIRST_TIME_PROPERTY = "firstTime";
 	private ServerConfigurationService serverConfigurationService;
 
 	public FavoritesHandler()
@@ -144,14 +160,36 @@ public class FavoritesHandler extends BasePortalHandler
 			oldSiteList = Collections.<String>emptyList();
 		}
 
+		boolean firstTimeFavs = true;
+		try {
+			firstTimeFavs = existingProps.getBooleanProperty(FIRST_TIME_PROPERTY);
+		} catch (EntityPropertyNotDefinedException e) {
+			// Take the default
+		} catch (EntityPropertyTypeException e) {
+			// Take the default
+		}
+
+		// Update our list of seen sites
+		PreferencesEdit edit = PreferencesService.edit(userId);
+		ResourcePropertiesEdit props = edit.getPropertiesEdit(org.sakaiproject.user.api.PreferencesService.SITENAV_PREFS_KEY);
+
 		List<Site> userSites = SiteService.getUserSites(false);
 		List<String> newFavorites = new ArrayList<String>();
 
+		props.removeProperty(SEEN_SITES_PROPERTY);
 		for (Site userSite : userSites) {
-			if (!oldSiteList.contains(userSite.getId()) && !existingFavorites.contains(userSite.getId())) {
+			if (!oldSiteList.contains(userSite.getId()) && !existingFavorites.contains(userSite.getId()) && !firstTimeFavs) {
 				newFavorites.add(userSite.getId());
 			}
+			props.addPropertyToList(SEEN_SITES_PROPERTY, userSite.getId());
 		}
+
+		if (firstTimeFavs) {
+			firstTimeFavs = false;
+			props.removeProperty(FIRST_TIME_PROPERTY);
+			props.addProperty(FIRST_TIME_PROPERTY, String.valueOf(firstTimeFavs));
+		}
+		PreferencesService.commit(edit);
 
 		if (newFavorites.isEmpty()) {
 			// No change!  Don't bother writing back to the DB
@@ -160,23 +198,17 @@ public class FavoritesHandler extends BasePortalHandler
 
 		newFavorites.addAll(existingFavorites);
 
-		// Add our new sites to the list of user favorites and update our list of seen sites
-		PreferencesEdit edit = PreferencesService.edit(userId);
-		ResourcePropertiesEdit props = edit.getPropertiesEdit(org.sakaiproject.user.api.PreferencesService.SITENAV_PREFS_KEY);
+		// Add our new sites to the list of user favorites
+		PreferencesEdit editFav = PreferencesService.edit(userId);
+		ResourcePropertiesEdit propsEditFav = editFav.getPropertiesEdit(org.sakaiproject.user.api.PreferencesService.SITENAV_PREFS_KEY);
 
 		// Add our new properties and any existing favorite sites after them
-		props.removeProperty(FAVORITES_PROPERTY);
+		propsEditFav.removeProperty(FAVORITES_PROPERTY);
 		for (String siteId : newFavorites) {
-			props.addPropertyToList(FAVORITES_PROPERTY, siteId);
+			propsEditFav.addPropertyToList(FAVORITES_PROPERTY, siteId);
 		}
 
-		// Store our new seen sites
-		props.removeProperty(SEEN_SITES_PROPERTY);
-		for (Site site : userSites) {
-			props.addPropertyToList(SEEN_SITES_PROPERTY, site.getId());
-		}
-
-		PreferencesService.commit(edit);
+		PreferencesService.commit(editFav);
 
 		return newFavorites;
  	}

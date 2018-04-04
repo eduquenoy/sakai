@@ -2,7 +2,7 @@
  * For More Sites in Morpheus
  */
 
-var selectSiteModalLinks;
+var selectSiteModalLinks, selectSiteLastModalInTab;
 
 var dhtml_view_sites = function(){
 
@@ -19,8 +19,9 @@ var dhtml_view_sites = function(){
     modal.show();
 
     // Find all focusable items
-    if (typeof selectSiteModalLinks == 'undefined') {
+    if (typeof selectSiteModalLinks == 'undefined' || typeof selectSiteLastModalInTab == 'undefined') {
       selectSiteModalLinks = modal.find('button, a');
+      selectSiteLastModalInTab = modal.find('.tab-box a:last');
     }
 
     // Lock the focus into the modal links
@@ -41,7 +42,7 @@ var dhtml_view_sites = function(){
               cancel = true;
             }
           } else {
-            if (e.target === selectSiteModalLinks[selectSiteModalLinks.length - 1]) {
+            if (e.target === selectSiteModalLinks[selectSiteModalLinks.length - 1] || e.target === selectSiteLastModalInTab[selectSiteLastModalInTab.length - 1]) {
               selectSiteModalLinks[0].focus();
               cancel = true;
             }
@@ -65,7 +66,7 @@ var dhtml_view_sites = function(){
         // Raise the button to keep it visible over the modal overlay
         allSitesButton.css('z-index', 1005);
 
-        var topPosition = allSitesButton.offset().top - $(window).scrollTop() + topPadding;
+        var topPosition = allSitesButton.offset().top - $PBJQ(window).scrollTop() + topPadding;
         var rightPosition = $PBJQ('body').outerWidth() - (allSitesButton.offset().left + allSitesButton.outerWidth());
         if( $PBJQ('html').attr('dir') !== "rtl" ){
           modal.css('top', topPosition).css('right', rightPosition);
@@ -116,7 +117,7 @@ var dhtml_view_sites = function(){
   }
   
   
-  if($(window).width() < 800) {
+  if($PBJQ(window).width() < 800) {
 	  paneHeight = paneHeight*0.85;
   }
   $PBJQ('.tab-pane').css('height', paneHeight);
@@ -424,24 +425,24 @@ $PBJQ(document).ready(function($){
 
   var setAllOrNoneStarStates = function () {
     $PBJQ('.favorites-select-all-none', favoritesPane).each(function (idx, selectAllNone) {
-      var termContainer = $(selectAllNone).closest('.fav-sites-term');
+      var termContainer = $PBJQ(selectAllNone).closest('.fav-sites-term');
 
       var siteCount = termContainer.find('.fav-sites-entry:not(.my-workspace)').length;
       var favoritedSiteCount = termContainer.find('.fav-sites-entry .site-favorite').length;
 
       if (siteCount == 0) {
         // No favoritable sites under this section
-        $(selectAllNone).hide();
+        $PBJQ(selectAllNone).hide();
       } else {
         if (favoritedSiteCount == siteCount) {
-          $(selectAllNone).data('favorite-state', 'favorite');
-          $(selectAllNone).html(button_states.favorite.markup);
+          $PBJQ(selectAllNone).data('favorite-state', 'favorite');
+          $PBJQ(selectAllNone).html(button_states.favorite.markup);
         } else {
-          $(selectAllNone).data('favorite-state', 'nonfavorite');
-          $(selectAllNone).html(button_states.nonfavorite.markup);
+          $PBJQ(selectAllNone).data('favorite-state', 'nonfavorite');
+          $PBJQ(selectAllNone).html(button_states.nonfavorite.markup);
         }
 
-        $(selectAllNone).show();
+        $PBJQ(selectAllNone).show();
       }
     });
   };
@@ -466,12 +467,12 @@ $PBJQ(document).ready(function($){
       }
     });
 
-    $('.favorites-help-text').hide();
+    $PBJQ('.favorites-help-text').hide();
 
     if (autoFavoritesEnabled) {
-      $('.favorites-help-text.autofavorite-enabled').show();
+      $PBJQ('.favorites-help-text.autofavorite-enabled').show();
     } else {
-      $('.favorites-help-text.autofavorite-disabled').show();
+      $PBJQ('.favorites-help-text.autofavorite-disabled').show();
     }
 
     setAllOrNoneStarStates();
@@ -613,7 +614,7 @@ $PBJQ(document).ready(function($){
   };
 
   var returnElementToOriginalPositionIfPossible = function (siteId) {
-    if (initialFavoritesList && initialFavoritesList.includes(siteId)) {
+    if (initialFavoritesList && initialFavoritesList.indexOf(siteId) > -1) {
       var idx = initialFavoritesList.indexOf(siteId);
 
       // We'll attempt to place our item to the right its original left
@@ -683,8 +684,8 @@ $PBJQ(document).ready(function($){
   });
 
   $PBJQ(favoritesPane).on('click', '.favorites-select-all-none', function () {
-    var state = $(this).data('favorite-state');
-    var buttons = $(this).closest('.fav-sites-term').find('.fav-sites-entry:not(.my-workspace) .site-favorite-btn');
+    var state = $PBJQ(this).data('favorite-state');
+    var buttons = $PBJQ(this).closest('.fav-sites-term').find('.fav-sites-entry:not(.my-workspace) .site-favorite-btn');
 
     var newState;
 
@@ -695,7 +696,7 @@ $PBJQ(document).ready(function($){
     }
 
     buttons.each(function (idx, button) {
-      setButton($(button), newState);
+      setButton($PBJQ(button), newState);
     });
 
     renderFavoriteCount();
@@ -753,8 +754,8 @@ $PBJQ(document).ready(function($){
       var list = $PBJQ('#organizeFavoritesList');
       list.empty();
 
-      $('#noFavoritesToShow').hide();
-      $('#favoritesToShow').hide();
+      $PBJQ('#noFavoritesToShow').hide();
+      $PBJQ('#favoritesToShow').hide();
 
       // Collapse any visible tool menus
       $PBJQ('#otherSiteTools').remove();
@@ -793,34 +794,34 @@ $PBJQ(document).ready(function($){
 
       if (list.find('li').length == 0) {
         // No favorites are present
-        $('#noFavoritesToShow').show();
+        $PBJQ('#noFavoritesToShow').show();
       } else {
-        $('#favoritesToShow').show();
+        $PBJQ('#favoritesToShow').show();
       }
 
       var highlightMaxItems = function () {
-        var items = $('.organize-favorite-item');
+        var items = $PBJQ('.organize-favorite-item');
 
         items.removeClass('site-favorite-is-past-max');
         $PBJQ('.favorites-max-marker').remove();
 
         $PBJQ.each(items, function (idx, li) {
           if (idx >= maxFavoriteEntries) {
-            $(li).addClass('site-favorite-is-past-max');
+            $PBJQ(li).addClass('site-favorite-is-past-max');
           }
 
           if (idx == maxFavoriteEntries) {
-            $(li).before($PBJQ('<li class="favorites-max-marker"><i class="fa fa-warning warning-icon"></i> ' + $('#maxFavoritesLimitReachedText').text() + '</li>'));
+            $PBJQ(li).before($PBJQ('<li class="favorites-max-marker"><i class="fa fa-warning warning-icon"></i> ' + $PBJQ('#maxFavoritesLimitReachedText').text() + '</li>'));
           }
         });
       };
 
       highlightMaxItems();
 
-      list.sortable({
+      list.keyboardSortable({
         items: "li:not(.favorites-max-marker)",
         handle: ".fav-drag-handle",
-        stop: function () {
+        update: function () {
           // Rehighlight the first N items
           highlightMaxItems();
 
@@ -836,8 +837,8 @@ $PBJQ(document).ready(function($){
 
       list.disableSelection();
 
-      $('#autoFavoritesEnabled').attr('aria-checked', autoFavoritesEnabled);
-      $('#organizeFavorites .onoffswitch').show();
+      $PBJQ('#autoFavoritesEnabled').attr('aria-checked', autoFavoritesEnabled);
+      $PBJQ('#organizeFavorites .onoffswitch').show();
     }
   });
 
@@ -903,22 +904,22 @@ $PBJQ(document).ready(function($){
   });
 
   $PBJQ("#autoFavoritesEnabled").click(function() {
-	$(this).attr('aria-checked', function(index, clicked) {
+	$PBJQ(this).attr('aria-checked', function(index, clicked) {
 		var pressed = (clicked === 'true');
 		return String(!pressed);
 	});
-	$(this).trigger('change');
+	$PBJQ(this).trigger('change');
   });
 
   $PBJQ('#autoFavoritesEnabled').on('change', function () {
-    autoFavoritesEnabled = $(this).attr('aria-checked') === 'true';
+    autoFavoritesEnabled = $PBJQ(this).attr('aria-checked') === 'true';
 
-    $('.favorites-help-text').hide();
+    $PBJQ('.favorites-help-text').hide();
 
     if (autoFavoritesEnabled) {
-      $('.favorites-help-text.autofavorite-enabled').show();
+      $PBJQ('.favorites-help-text.autofavorite-enabled').show();
     } else {
-      $('.favorites-help-text.autofavorite-disabled').show();
+      $PBJQ('.favorites-help-text.autofavorite-disabled').show();
     }
 
     syncWithServer();

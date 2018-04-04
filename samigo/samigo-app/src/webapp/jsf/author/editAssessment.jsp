@@ -44,11 +44,11 @@ $(window).load( function() {
 });
 </script>
 
-<script type="text/javascript" src="/library/webjars/jquery/1.11.3/jquery.min.js"></script>
-<script language='javascript' src='/samigo-app/js/selection.author.preview.js'></script>
-<script src="/library/js/spinner.js" type="text/javascript"></script>
+<samigo:script path="/../library/webjars/jquery/1.12.4/jquery.min.js"/>
+<samigo:script path="/js/selection.author.preview.js"/>
+<samigo:script path="/../library/js/spinner.js"/>
 
-<link href="/samigo-app/css/imageQuestion.author.css" type="text/css" rel="stylesheet" media="all" />
+<samigo:stylesheet path="/css/imageQuestion.author.css"/>
 
 <script type="text/JavaScript">	
 	jQuery(window).load(function(){
@@ -97,7 +97,7 @@ $(window).load( function() {
   <h:inputHidden id="ItemIdent" value="#{author.currentItem}"/>
 
   <!-- HEADINGS -->
-  <%@ include file="/jsf/author/allHeadings.jsp" %>
+  <%@ include file="/jsf/author/editAssessmentHeadings.jsp" %>
 
   <div class="navView">
     <h1>
@@ -165,7 +165,7 @@ $(window).load( function() {
           action="#{author.getOutcome}">
         
         <h:outputText  value="#{commonMessages.settings_action}" />
-        <f:param name="publishedAssessmentId" value="#{assessmentBean.assessmentId}"/>
+        <f:param name="publishedId" value="#{assessmentBean.assessmentId}"/>
         <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.EditPublishedSettingsListener" />
 	    <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.author.SetFromPageAsEditAssessmentListener" />
     </h:commandLink>

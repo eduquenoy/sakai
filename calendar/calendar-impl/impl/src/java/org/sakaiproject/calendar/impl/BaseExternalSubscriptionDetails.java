@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2003-2017 The Apereo Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://opensource.org/licenses/ecl2
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.sakaiproject.calendar.impl;
 
 import lombok.Data;
@@ -25,6 +40,10 @@ public class BaseExternalSubscriptionDetails implements ExternalSubscriptionDeta
 	private boolean isInstitutional;
 
 	private Status status;
+	
+	private String userId;
+	
+	private String tzid;
 
 	public BaseExternalSubscriptionDetails() {
 	}
@@ -40,6 +59,8 @@ public class BaseExternalSubscriptionDetails implements ExternalSubscriptionDeta
 		this.calendar = other.calendar;
 		this.isInstitutional = other.isInstitutional;
 		this.status = other.status;
+		this.userId = other.userId;
+		this.tzid = other.tzid;
 	}
 
 	/**
@@ -55,11 +76,19 @@ public class BaseExternalSubscriptionDetails implements ExternalSubscriptionDeta
 		setContext(context);
 		setInstitutional(isInstitutional);
 	}
-
+	
 	public BaseExternalSubscriptionDetails(String subscriptionName,
-										   String subscriptionUrl, String context, ExternalCalendarSubscription calendar,
-										   boolean isInstitutional, boolean ok, String error, Instant instant) {
+			   String subscriptionUrl, String context, ExternalCalendarSubscription calendar,
+			   boolean isInstitutional, String userId, String tzid) {
 	    this(subscriptionName, subscriptionUrl, context, calendar, isInstitutional);
+		this.userId = userId;
+		this.tzid = tzid;
+	}
+	
+	public BaseExternalSubscriptionDetails(String subscriptionName,
+			   String subscriptionUrl, String context, ExternalCalendarSubscription calendar,
+			   boolean isInstitutional, String userId, String tzid, boolean ok, String error, Instant instant) {
+		this(subscriptionName, subscriptionUrl, context, calendar, isInstitutional, userId, tzid);
 		status = new Status(ok, error, instant);
 	}
 
@@ -121,6 +150,22 @@ public class BaseExternalSubscriptionDetails implements ExternalSubscriptionDeta
 
 	public Instant getRefreshed() {
 		return status != null? status.getRefreshed(): null;
+	}
+	
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getTzid() {
+		return tzid;
+	}
+	
+	public void setTzid(String tzid) {
+		this.tzid = tzid;
 	}
 
 	@Override

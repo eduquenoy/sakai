@@ -18,6 +18,7 @@
  * limitations under the License.
  *
  **********************************************************************************/
+
 package org.sakaiproject.tool.assessment.ui.queue.delivery;
 
 import java.util.concurrent.ScheduledFuture;
@@ -26,8 +27,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.sakaiproject.component.cover.ServerConfigurationService;
+import org.sakaiproject.event.api.UsageSession;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.event.cover.NotificationService;
+import org.sakaiproject.event.cover.UsageSessionService;
 import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.tool.api.Session;
 import org.sakaiproject.tool.assessment.data.dao.assessment.EventLogData;
@@ -42,18 +49,15 @@ import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentS
 import org.sakaiproject.tool.assessment.services.GradingService;
 import org.sakaiproject.tool.assessment.ui.model.delivery.TimedAssessmentGradingModel;
 import org.sakaiproject.tool.cover.SessionManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.sakaiproject.user.cover.UserDirectoryService;
 
 /**
  * <p>Title: TimedAssessmentRunnable</p>
  * <p>Description: A task that monitors and submits a timed assessment</p>
  */
-
+@Slf4j
 public class TimedAssessmentRunnable implements Runnable {
 
-  private static final Logger log = LoggerFactory.getLogger(TimedAssessmentRunnable.class);
   private static final ResourceBundle eventLogMessages = ResourceBundle.getBundle("org.sakaiproject.tool.assessment.bundle.EventLogMessages");
   private long timedAGId;
   TimedAssessmentQueue queue;
@@ -68,6 +72,8 @@ public class TimedAssessmentRunnable implements Runnable {
   public void run(){
     try {
       TimedAssessmentGradingModel timedAG = this.queue.get(this.timedAGId);
+      String serverName = ServerConfigurationService.getServerName();
+
       boolean submitted = timedAG.getSubmittedForGrade();
       long bufferedExpirationTime = timedAG.getBufferedExpirationDate().getTime(); // in millesec
       long currentTime = (new Date()).getTime(); // in millisec
@@ -92,11 +98,20 @@ public class TimedAssessmentRunnable implements Runnable {
             log.info("SAMIGO_TIMED_ASSESSMENT:SUBMIT:FORGRADE ID:" + this.timedAGId + 
                " userId:" + ag.getAgentId());
 
+
+            // Create a new session here so this is associated in the database with the correct userid
+            UsageSession usageSession = UsageSessionService.startSession(ag.getAgentId(), serverName, "TimedAssessmentRunnable");
+
             // Change user id for the Gradebook update (if required) and so the event is associated with the correct userid
-            Session s = SessionManager.getCurrentSession();
-            if (s != null) {
-              s.setUserId(ag.getAgentId());
+            Session session = SessionManager.getCurrentSession();
+            if (session == null) {
+            	session = SessionManager.startSession();
             }
+
+            session.setUserId(ag.getAgentId());
+            session.setUserEid(UserDirectoryService.getUserEid(ag.getAgentId()));
+            
+
             ag.setForGrade(Boolean.TRUE);
             ag.setTimeElapsed(timedAG.getTimeLimit());
             ag.setStatus(AssessmentGradingData.SUBMITTED); // this will change status 0 -> 1
@@ -129,12 +144,6 @@ public class TimedAssessmentRunnable implements Runnable {
             PublishedAssessmentService publishedAssessmentService = new PublishedAssessmentService();
             String siteId = publishedAssessmentService.getPublishedAssessmentOwner(ag.getPublishedAssessmentId());
 
-            EventTrackingService.post(EventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_SUBMITTED_THREAD,
-               "siteId=" + AgentFacade.getCurrentSiteId() + ", submissionId=" + ag.getAssessmentGradingId(),
-               siteId,
-               true,
-               NotificationService.NOTI_REQUIRED));
-
             Map<String, Object> notiValues = new HashMap<>();
             notiValues.put("assessmentGradingID", ag.getAssessmentGradingId());
             notiValues.put("userID", ag.getAgentId());
@@ -156,12 +165,15 @@ public class TimedAssessmentRunnable implements Runnable {
                true,
                SamigoConstants.NOTI_EVENT_ASSESSMENT_TIMED_SUBMITTED));
 
-            notifyGradebookByScoringType(ag, timedAG.getPublishedAssessment());
+            GradingService g = new GradingService();
+            g.notifyGradebookByScoringType(ag, publishedAssessment);
 
             log.info("SAMIGO_TIMED_ASSESSMENT:SUBMIT:FORGRADE assessmentId:" + eventLogData.getAssessmentId() + 
                " userEid:" + eventLogData.getUserEid() + 
                " siteId:" + siteId + 
                " submissionId:" + ag.getAssessmentGradingId());
+            //Invalidate the session
+            UsageSessionService.logout();
           }
         }
       } else { //submitted, remove from queue if transaction buffer is also reached
@@ -186,23 +198,6 @@ public class TimedAssessmentRunnable implements Runnable {
     }
   }
 
-
-  private void notifyGradebookByScoringType(AssessmentGradingData ag, PublishedAssessmentFacade publishedAssessment){
-    if (publishedAssessment == null || publishedAssessment.getEvaluationModel() == null) {
-      // should not come to here
-      log.debug("publishedAssessment is null or publishedAssessment.getEvaluationModel() is null");
-      return;
-    }
-    if (publishedAssessment.getEvaluationModel().getToGradeBook().equals(EvaluationModelIfc.TO_DEFAULT_GRADEBOOK.toString())) {
-      AssessmentGradingData assessmentGrading = ag; // data is the last submission
-      GradingService g = new GradingService();
-      // need to decide what to tell gradebook
-      if (publishedAssessment.getEvaluationModel().getScoringType().equals(EvaluationModelIfc.HIGHEST_SCORE)) {
-        assessmentGrading = g.getHighestSubmittedAssessmentGrading(publishedAssessment.getPublishedAssessmentId().toString(), ag.getAgentId());
-      }
-      g.notifyGradebook(assessmentGrading, publishedAssessment);
-    }
-  }
 }
 
 

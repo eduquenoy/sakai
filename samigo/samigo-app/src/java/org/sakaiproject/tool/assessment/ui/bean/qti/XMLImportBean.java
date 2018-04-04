@@ -19,7 +19,6 @@
  *
  **********************************************************************************/
 
-
 package org.sakaiproject.tool.assessment.ui.bean.qti;
 
 import java.io.File;
@@ -38,8 +37,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.service.gradebook.shared.GradebookExternalAssessmentService;
 import org.sakaiproject.spring.SpringBeanLocator;
@@ -59,23 +57,22 @@ import org.sakaiproject.tool.assessment.services.qti.QTIService;
 import org.sakaiproject.tool.assessment.ui.bean.author.AssessmentBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.AuthorBean;
 import org.sakaiproject.tool.assessment.ui.bean.author.ItemAuthorBean;
+import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.bean.questionpool.QuestionPoolBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
 import org.w3c.dom.Document;
 
- 
 /**
  * <p>Bean for QTI Import Data</p>
  */
-
+@Slf4j
 public class XMLImportBean implements Serializable
 {
 	
 	  /** Use serialVersionUID for interoperability. */
 	  private final static long serialVersionUID = 418920360211039758L;
-	  private static Logger log = LoggerFactory.getLogger(XMLImportBean.class);
 	  
   private int qtiVersion;
   private String uploadFileName;
@@ -84,6 +81,7 @@ public class XMLImportBean implements Serializable
   private AuthorBean authorBean;
   private AssessmentBean assessmentBean;
   private ItemAuthorBean itemAuthorBean;
+  private AuthorizationBean authorizationBean;
   private QuestionPoolBean questionPoolBean;
   private boolean isCP;
   private String importType2;
@@ -362,7 +360,15 @@ public class XMLImportBean implements Serializable
 			log.warn("Unable to format date: " + ex.getMessage());
 		}
 	}
+    List allAssessments = new ArrayList<>();
+    if (authorizationBean.getEditAnyAssessment() || authorizationBean.getEditOwnAssessment()) {
+        allAssessments.addAll(list);
+    }
+    if (authorizationBean.getGradeAnyAssessment() || authorizationBean.getGradeOwnAssessment()) {
+        allAssessments.addAll(authorBean.getPublishedAssessments());
+    }
     authorBean.setAssessments(list);
+    authorBean.setAllAssessments(allAssessments);
   }
   
   private String getImportedFilename(String filename) {
@@ -447,6 +453,16 @@ public class XMLImportBean implements Serializable
     this.itemAuthorBean = itemAuthorBean;
   }
 
+  public AuthorizationBean getAuthorizationBean()
+  {
+    return authorizationBean;
+  }
+
+  public void setAuthorizationBean(AuthorizationBean authorizationBean)
+  {
+    this.authorizationBean = authorizationBean;
+  }
+
   /**
    * Value change on upload
    * @param e the event
@@ -485,14 +501,14 @@ public class XMLImportBean implements Serializable
 
     // remove uploaded file
     try{
-      //System.out.println("****filename="+fileName);
+      log.debug("****filename="+fileName);
       File upload = new File(fileName);
       boolean success = upload.delete();
       if (!success)
 	log.error ("Failed to delete file " + fileName);
     }
     catch(Exception e){
-	e.printStackTrace();
+	log.error(e.getMessage(), e);
     }
   }
   
