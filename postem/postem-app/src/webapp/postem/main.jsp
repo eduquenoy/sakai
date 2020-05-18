@@ -15,16 +15,20 @@
 </jsp:useBean>
 <f:view>
 	<sakai:view title="#{msgs.title_list}">
+		<script>includeLatestJQuery("postemMain");</script>
+		<script>
+			$(document).ready(function() {
+				var menuLink = $('#postemMainMenuLink');
+				var menuLinkSpan = menuLink.closest('span');
+				menuLinkSpan.addClass('current');
+				menuLinkSpan.html(menuLink.text());
+			});
+		</script>
 		<h:form>
-            <sakai:tool_bar rendered="#{PostemTool.editable}">
-			  	<sakai:tool_bar_item
-			    	action="#{PostemTool.processCreateNew}"
-					value="#{msgs.bar_new}" 
-					rendered="#{PostemTool.editable}"/>
-   	        </sakai:tool_bar>
+			<%@ include file="/postem/postemMenu.jsp" %>
 			<sakai:view_content>
-	
-				<sakai:flat_list value="#{PostemTool.gradebooks}" var="gradebook" binding="#{PostemTool.gradebookTable}" styleClass="table table-bordered table-striped">
+				<h:outputText styleClass="sak-banner-info" value="#{msgs.no_gradebooks}" rendered="#{!PostemTool.gradebooksExist}" />
+				<sakai:flat_list rendered="#{PostemTool.gradebooksExist}" value="#{PostemTool.gradebooks}" var="gradebook" binding="#{PostemTool.gradebookTable}" styleClass="table table-bordered table-striped">
 					<h:column>
 						<f:facet name="header">
 							<h:commandLink action="#{PostemTool.toggleTitleSort}" title="#{msgs.sort_title}">
@@ -63,7 +67,6 @@
 								<h:graphicImage value="postem/images/sortdescending.gif"  rendered="#{PostemTool.modDateSort && !PostemTool.ascending}" alt="#{msgs.sort_mod_date_desc}"/>
 							</h:commandLink>
 						</f:facet>
-						<%-- <sakai:outputDate value="#{gradebook.lastUpdated}" showDate="true" showTime="true"/> --%>
 						<h:outputText value="#{gradebook.updatedDateTime}"/>
 					</h:column>
 					<h:column rendered="#{PostemTool.editable}">
@@ -74,15 +77,9 @@
 								<h:graphicImage value="postem/images/sortdescending.gif"  rendered="#{PostemTool.releasedSort && !PostemTool.ascending}" alt="#{msgs.sort_released_desc}"/>
 							</h:commandLink>
 						</f:facet>
-
+						<h:outputText rendered="#{gradebook.release}" value="#{msgs.yes}"/>
+						<h:outputText rendered="#{!gradebook.release}" value="#{msgs.no}"/>
 					</h:column>
-					<%-- <h:column rendered="#{PostemTool.editable}">
-						<f:facet name="header">
-							<h:outputText value="#{msgs.stats}"/>
-						</f:facet>
-						<h:outputText rendered="#{gradebook.releaseStats}" value="#{msgs.yes}"/>
-						<h:outputText rendered="#{!gradebook.releaseStats}" value="#{msgs.no}"/>
-					</h:column> --%>
 					<h:column>
 						<h:commandLink action="#{PostemTool.processGradebookView}" rendered="#{!PostemTool.editable}">
 							<h:outputText value="#{msgs.gradebook_view}" />
@@ -117,8 +114,6 @@
 						</h:commandLink>
 					</h:column>
 				</sakai:flat_list>
-				
-				  <h:outputText styleClass="instruction" value="#{msgs.no_gradebooks}" rendered="#{!PostemTool.gradebooksExist}" />				
 			</sakai:view_content>
 
 		</h:form>

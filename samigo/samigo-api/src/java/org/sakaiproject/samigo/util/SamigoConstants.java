@@ -58,6 +58,7 @@ public final class SamigoConstants {
     public static final     String      EVENT_ASSESSMENT_STUDENT_SCORE_UPDATE               = "sam.student.score.update";
     public static final     String      EVENT_ASSESSMENT_AUTO_GRADED                        = "sam.assessment.graded.auto";
     public static final     String      EVENT_ASSESSMENT_QUESTION_SCORE_UPDATE              = "sam.question.score.update";
+    public static final     String      EVENT_SUBMISSION_DELETE                             = "sam.submission.delete";
 
     //Assessment manipulation
     public static final     String      EVENT_ASSESSMENT_SAVEITEM                           = "sam.assessment.saveitem";
@@ -137,7 +138,11 @@ public final class SamigoConstants {
     public static final     String      SAK_PROP_AUTO_SUBMIT_ERROR_NOTIFICATION_TO_ADDRESS  = "samigo.email.autoSubmit.errorNotification.toAddress";
     public static final     String      SAK_PROP_SUPPORT_EMAIL_ADDRESS                      = "mail.support";
 
-    public static final     String      ALPHABET                                            = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    /*
+     * Message Bundles
+     */
+    public static final     String      EVAL_BUNDLE                                         = "org.sakaiproject.tool.assessment.bundle.EvaluationMessages";
+    public static final     String      AUTHOR_BUNDLE                                       = "org.sakaiproject.tool.assessment.bundle.AuthorMessages";
 
     private SamigoConstants() {
     	throw new AssertionError();

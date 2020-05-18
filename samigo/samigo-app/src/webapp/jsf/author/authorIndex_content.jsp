@@ -32,16 +32,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head><%= request.getAttribute("html.head") %>
     <title><h:outputText value="#{authorFrontDoorMessages.auth_front_door}" /></title>
-    <link rel="stylesheet" type="text/css" href="/library/webjars/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css">
 </head>
 <body onload="<%= request.getAttribute("html.body.onload") %>">
     <div class="portletBody container-fluid">
 
-    <script src="/library/webjars/datatables/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="/library/webjars/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
-    <samigo:script path="/js/info.js"/>
-    <samigo:script path="/js/naturalSort.js"/>
-    <script type="text/JavaScript">
+    <script>includeWebjarLibrary('datatables');</script>
+    <script>includeWebjarLibrary('bootstrap-multiselect');</script>
+    <script src="/samigo-app/js/info.js"></script>
+    <script src="/samigo-app/js/naturalSort.js"></script>
+    <script>
         $(document).ready(function() {
             jQuery.extend(jQuery.fn.dataTableExt.oSort, {
                 "span-asc": function (a, b) {
@@ -49,6 +48,16 @@
                 },
                 "span-desc": function (a, b) {
                     return naturalSort($(a).find(".spanValue").text().toLowerCase(), $(b).find(".spanValue").text().toLowerCase(), false) * -1;
+                },
+                "numeric-asc": function (a, b) {
+                    var numA = parseInt($(a).text()) || 0;
+                    var numB = parseInt($(b).text()) || 0;
+                    return ((numB < numA) ? 1 : ((numB > numA) ? -1 : 0));
+                },
+                "numeric-desc": function (a, b) {
+                    var numA = parseInt($(a).text()) || 0;
+                    var numB = parseInt($(b).text()) || 0;
+                    return ((numA < numB) ? 1 : ((numA > numB) ? -1 : 0));
                 }
             });
 
@@ -59,7 +68,7 @@
                     "paging": true,
                     "lengthMenu": [[5, 10, 20, 50, 100, 200, -1], [5, 10, 20, 50, 100, 200, <h:outputText value="'#{authorFrontDoorMessages.assessment_view_all}'" />]],
                     "pageLength": 20,
-                    "aaSorting": [[9, "desc"]],
+                    "aaSorting": [[2, "desc"]],
                     "columns": [
                         {"bSortable": true, "bSearchable": true, "type": "span"},
                         {"bSortable": false, "bSearchable": false},
@@ -67,10 +76,10 @@
                         {"bSortable": true, "bSearchable": false},
                         {"bSortable": true, "bSearchable": false},
                         {"bSortable": true, "bSearchable": false},
-                        {"bSortable": true, "bSearchable": true},
-                        {"bSortable": true, "bSearchable": true},
+                        {"bSortable": true, "bSearchable": true, "type": "numeric"},
+                        {"bSortable": true, "bSearchable": true, "type": "numeric"},
                         {"bSortable": true, "bSearchable": false},
-                        {"bSortable": true, "bSearchable": true},
+                        {"bSortable": true, "bSearchable": true, "type": "numeric"},
                         {"bSortable": false, "bSearchable": false},
                     ],
                     "language": {
@@ -195,6 +204,16 @@
                 updateRemoveButton();
             });
 
+            // Highlight the due date if it is coming up soon
+            $("#authorIndexForm\\:coreAssessments .dueDate").each( function( index, element ) {
+                var dateNow = moment(new Date(), 'YYYYMMDDHHmmss');
+                var dueDate = moment($( this ).find(".hidden").text() || 0, 'YYYYMMDDHHmmss');
+                var dateDiff = dueDate.diff(dateNow, 'days');
+                if (dateDiff > 0 && dateDiff < 14) {
+                  $( this ).addClass("highlight");
+                }
+            });
+
             function updateRemoveButton() {
                 var length = $(".select-checkbox:checked").length;
                 if (length > 0) {
@@ -225,7 +244,7 @@
         <%@ include file="/jsf/author/assessmentHeadings.jsp" %>
 
         <p>
-            <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+            <h:messages styleClass="sak-banner-error" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
         </p>
 
         <div class="samigo-container">
@@ -265,9 +284,7 @@
 
             <!-- CORE ASSESSMENTS-->
             <h:panelGroup rendered="#{author.allAssessments.size() == 0}">
-                <p class="instruction">
-                    <h:outputText value="#{authorFrontDoorMessages.datatables_zeroRecords}" />
-                </p>
+                <h:outputText value="#{authorFrontDoorMessages.datatables_zeroRecords}" styleClass="sak-banner-info" />
             </h:panelGroup>
             <t:dataTable cellpadding="0" cellspacing="0" rowClasses="list-row-even,list-row-odd" styleClass="table table-hover table-striped table-bordered table-assessments" id="coreAssessments" value="#{author.allAssessments}" var="assessment" rendered="#{author.allAssessments.size() > 0}" summary="#{authorFrontDoorMessages.sum_coreAssessment}">
                 <%/* Title */%>
@@ -332,7 +349,7 @@
                     </h:panelGroup>
 
                     <h:panelGroup rendered="#{assessment['class'].simpleName == 'PublishedAssessmentFacade'}" styleClass="btn-group pull-right">
-                        <h:panelGroup rendered="#{(author.isGradeable && assessment.submittedCount > 0) && (author.isEditable && (!author.editPubAssessmentRestricted || !assessment.hasAssessmentGradingData))}">
+                        <h:panelGroup rendered="#{(author.isGradeable && assessment.hasAssessmentGradingData) && (author.isEditable && (!author.editPubAssessmentRestricted || !assessment.hasAssessmentGradingData))}">
                             <f:verbatim><button class="btn btn-xs dropdown-toggle" aria-expanded="false" data-toggle="dropdown" title="</f:verbatim>
                                 <h:outputText value="#{authorMessages.actions_for} " />
                                 <h:outputText value="#{authorFrontDoorMessages.assessment_draft} - " rendered="#{assessment['class'].simpleName == 'AssessmentFacade'}" />
@@ -370,7 +387,7 @@
                             </t:dataList>
                         </h:panelGroup>
 
-                        <h:panelGroup rendered="#{(author.isGradeable && assessment.submittedCount > 0) && (author.isEditable && !(!author.editPubAssessmentRestricted || !assessment.hasAssessmentGradingData))}">
+                        <h:panelGroup rendered="#{(author.isGradeable && assessment.hasAssessmentGradingData) && (author.isEditable && !(!author.editPubAssessmentRestricted || !assessment.hasAssessmentGradingData))}">
                             <f:verbatim><button class="btn btn-xs dropdown-toggle" aria-expanded="false" data-toggle="dropdown" title="</f:verbatim>
                                 <h:outputText value="#{authorMessages.actions_for} " />
                                 <h:outputText value="#{authorFrontDoorMessages.assessment_draft} - " rendered="#{assessment['class'].simpleName == 'AssessmentFacade'}" />
@@ -401,7 +418,7 @@
                             </t:dataList>
                         </h:panelGroup>
 
-                        <h:panelGroup rendered="#{!(author.isGradeable && assessment.submittedCount > 0) && (author.isEditable && (!author.editPubAssessmentRestricted || !assessment.hasAssessmentGradingData))}">
+                        <h:panelGroup rendered="#{!(author.isGradeable && assessment.hasAssessmentGradingData) && (author.isEditable && (!author.editPubAssessmentRestricted || !assessment.hasAssessmentGradingData))}">
                             <f:verbatim><button class="btn btn-xs dropdown-toggle" aria-expanded="false" data-toggle="dropdown" title="</f:verbatim>
                                 <h:outputText value="#{authorMessages.actions_for} " />
                                 <h:outputText value="#{authorFrontDoorMessages.assessment_draft} - " rendered="#{assessment['class'].simpleName == 'AssessmentFacade'}" />
@@ -505,7 +522,7 @@
                     <f:facet name="header">
                         <h:panelGroup>
                             <f:verbatim><a href="#" onclick="return false;"></f:verbatim>
-                                <h:outputText value="For"/>
+                                <h:outputText value="#{authorFrontDoorMessages.assessment_release }"/>
                             <f:verbatim></a></f:verbatim>
                         </h:panelGroup>
                     </f:facet>
@@ -514,7 +531,7 @@
                     <h:outputText value="#{authorFrontDoorMessages.entire_site}" styleClass="releaseto_entire" rendered="#{assessment.releaseTo ne 'Anonymous Users' && assessment.releaseTo ne 'Selected Groups'}" />
 
                     <t:div rendered="#{assessment.releaseTo eq 'Selected Groups'}">
-                        <t:div id="groupsHeader" onclick="#{assessment.groupCount gt 0 ? 'toggleGroups( this );' : ''}" styleClass="#{assessment.groupCount ge 1 ? 'collapsed' : 'messageError'}">
+                        <t:div id="groupsHeader" onclick="#{assessment.groupCount gt 0 ? 'toggleGroups( this );' : ''}" styleClass="#{assessment.groupCount ge 1 ? 'collapsed' : 'sak-banner-error'}">
                             <h:outputText value="#{assessment.groupCount} " rendered ="#{assessment.releaseTo eq 'Selected Groups' and assessment.groupCount gt 0}" />
                             <h:outputText value="#{authorFrontDoorMessages.selected_groups} " rendered="#{assessment.releaseTo eq 'Selected Groups' and assessment.groupCount gt 1}"/>
                             <h:outputText value="#{authorFrontDoorMessages.selected_group} " rendered="#{assessment.releaseTo eq 'Selected Groups' and assessment.groupCount eq 1}"/>
@@ -534,13 +551,17 @@
                     <f:facet name="header">
                         <h:panelGroup>
                             <f:verbatim><a href="#" onclick="return false;"></f:verbatim>
-                                <h:outputText value="Open"/>
+                                <h:outputText value="#{authorFrontDoorMessages.assessment_date}"/>
                             <f:verbatim></a></f:verbatim>
                         </h:panelGroup>
                     </f:facet>
 
                     <h:outputText value="#{assessment.startDate}" >
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"/>
+                        <f:convertDateTime dateStyle="medium" timeStyle="short" timeZone="#{author.userTimeZone}" />
+                    </h:outputText>
+
+                    <h:outputText value="#{assessment.startDate}" styleClass="hidden spanValue">
+                        <f:convertDateTime pattern="yyyyMMddHHmmss" />
                     </h:outputText>
                 </t:column>
 
@@ -549,13 +570,17 @@
                     <f:facet name="header">
                         <h:panelGroup>
                             <f:verbatim><a href="#" onclick="return false;"></f:verbatim>
-                                <h:outputText value="Due"/>
+                                <h:outputText value="#{authorFrontDoorMessages.assessment_due}"/>
                             <f:verbatim></a></f:verbatim>
                         </h:panelGroup>
                     </f:facet>
 
-                    <h:outputText value="#{assessment.dueDate}" styleClass="highlight">
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                    <h:outputText value="#{assessment.dueDate}">
+                        <f:convertDateTime dateStyle="medium" timeStyle="short" timeZone="#{author.userTimeZone}" />
+                    </h:outputText>
+
+                    <h:outputText value="#{assessment.dueDate}" styleClass="hidden spanValue">
+                        <f:convertDateTime pattern="yyyyMMddHHmmss" />
                     </h:outputText>
                 </t:column>
 
@@ -583,7 +608,11 @@
                     </f:facet>
 
                     <h:outputText value="#{assessment.lastModifiedDate}">
-                        <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                        <f:convertDateTime dateStyle="medium" timeStyle="short" timeZone="#{author.userTimeZone}" />
+                    </h:outputText>
+
+                    <h:outputText value="#{assessment.lastModifiedDate}" styleClass="hidden spanValue">
+                        <f:convertDateTime pattern="yyyyMMddHHmmss" />
                     </h:outputText>
                 </t:column>
 

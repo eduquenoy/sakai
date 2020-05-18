@@ -24,59 +24,62 @@ package org.sakaiproject.portal.charon.handlers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.cover.SecurityService;
-import org.sakaiproject.thread_local.cover.ThreadLocalManager;
-import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.entity.api.ResourceProperties;
 import org.sakaiproject.event.api.Event;
 import org.sakaiproject.event.cover.EventTrackingService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.portal.api.Portal;
-import org.sakaiproject.portal.api.PortalService;
 import org.sakaiproject.portal.api.PortalHandlerException;
 import org.sakaiproject.portal.api.PortalRenderContext;
+import org.sakaiproject.portal.api.PortalService;
 import org.sakaiproject.portal.api.SiteView;
 import org.sakaiproject.portal.api.StoredState;
 import org.sakaiproject.portal.charon.site.AllSitesViewImpl;
 import org.sakaiproject.portal.charon.site.PortalSiteHelperImpl;
-import org.sakaiproject.tool.api.Tool;
-import org.sakaiproject.tool.api.ToolSession;
-import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.portal.util.ByteArrayServletResponse;
+import org.sakaiproject.portal.util.ToolUtils;
+import org.sakaiproject.portal.util.URLUtils;
+import org.sakaiproject.presence.api.PresenceService;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.api.SitePage;
 import org.sakaiproject.site.api.ToolConfiguration;
 import org.sakaiproject.site.cover.SiteService;
-import org.sakaiproject.tool.cover.SessionManager;
+import org.sakaiproject.thread_local.cover.ThreadLocalManager;
+import org.sakaiproject.tool.api.ActiveTool;
 import org.sakaiproject.tool.api.Session;
+import org.sakaiproject.tool.api.Tool;
 import org.sakaiproject.tool.api.ToolException;
+import org.sakaiproject.tool.api.ToolManager;
+import org.sakaiproject.tool.api.ToolSession;
+import org.sakaiproject.tool.cover.ActiveToolManager;
+import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.user.api.Preferences;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.user.cover.PreferencesService;
 import org.sakaiproject.user.cover.UserDirectoryService;
-import org.sakaiproject.tool.api.ActiveTool;
-import org.sakaiproject.tool.cover.ActiveToolManager;
-import org.sakaiproject.util.Web;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.portal.util.URLUtils;
-import org.sakaiproject.portal.util.ToolUtils;
-import org.sakaiproject.portal.util.ByteArrayServletResponse;
 import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.Web;
+import org.sakaiproject.util.RequestFilter;
+
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -108,12 +111,12 @@ public class SiteHandler extends WorksiteHandler
 	// SAK-29180 - Normalize the properties, keeping the legacy pda sakai.properties names through Sakai-11 at least
 	private static final String BYPASS_URL_PROP = "portal.bypass";
 	private static final String LEGACY_BYPASS_URL_PROP = "portal.pda.bypass";
-	private static final String DEFAULT_BYPASS_URL = "\\.jpg$|\\.gif$|\\.js$|\\.png$|\\.jpeg$|\\.prf$|\\.css$|\\.zip$|\\.pdf\\.mov$|\\.json$|\\.jsonp$\\.xml$|\\.ajax$|\\.xls$|\\.xlsx$|\\.doc$|\\.docx$|uvbview$|linktracker$|hideshowcolumns$";
+	private static final String DEFAULT_BYPASS_URL = "\\.jpg$|\\.gif$|\\.js$|\\.png$|\\.jpeg$|\\.prf$|\\.css$|\\.zip$|\\.pdf\\.mov$|\\.json$|\\.jsonp$\\.xml$|\\.ajax$|\\.xls$|\\.xlsx$|\\.doc$|\\.docx$|uvbview$|linktracker$|hideshowcolumns$|scormplayerpage$|scormcompletionpage$";
 
 	// Make sure to lower-case the matching regex (i.e. don't use IResourceListener below)
 	private static final String BYPASS_QUERY_PROP = "portal.bypass.query";
 	private static final String LEGACY_BYPASS_QUERY_PROP = "portal.pda.bypass.query";
-	private static final String DEFAULT_BYPASS_QUERY = "wicket:interface=.*iresourcelistener:|wicket:ajax=true";
+	private static final String DEFAULT_BYPASS_QUERY = "wicket:interface=.*iresourcelistener:|wicket:ajax=true|ajax=true";
 
 	private static final String BYPASS_TYPE_PROP = "portal.bypass.type";
 	private static final String LEGACY_BYPASS_TYPE_PROP = "portal.pda.bypass.type";
@@ -124,7 +127,13 @@ public class SiteHandler extends WorksiteHandler
 
 	// SAK-27774 - We are going inline default but a few tools need a crutch 
 	// This is Sakai 11 only so please do not back-port or merge this default value
-	private static final String IFRAME_SUPPRESS_DEFAULT = ":all:sakai.gradebook.gwt.rpc:com.rsmart.certification:sakai.melete:sakai.rsf.evaluation";
+	private static final String IFRAME_SUPPRESS_DEFAULT = ":all:sakai.gradebook.gwt.rpc:com.rsmart.certification:sakai.rsf.evaluation:kaltura.media:kaltura.my.media";
+
+	private static final String SAK_PROP_SHOW_FAV_STARS = "portal.favoriteSitesBar.showFavoriteStars";
+	private static final boolean SAK_PROP_SHOW_FAV_STARS_DFLT = true;
+
+	private static final String SAK_PROP_SHOW_FAV_STARS_ON_ALL = "portal.favoriteSitesBar.showFavStarsOnAllSites";
+	private static final boolean SAK_PROP_SHOW_FAV_STARS_ON_ALL_DFLT = true;
 
 	private static final long AUTO_FAVORITES_REFRESH_INTERVAL_MS = 30000;
 
@@ -539,11 +548,16 @@ public class SiteHandler extends WorksiteHandler
 			rcontext.put("isUserSite", true);
 		}else{
 			rcontext.put("siteTitle", portal.getSiteHelper().getUserSpecificSiteTitle(site, false, true, providers));
-			rcontext.put("siteTitleTruncated", portal.getSiteHelper().getUserSpecificSiteTitle(site, true, false, providers));
+			rcontext.put("siteTitleTruncated", Validator.escapeHtml(portal.getSiteHelper().getUserSpecificSiteTitle(site, true, false, providers)));
 			rcontext.put("isUserSite", false);
 		}
 		
+		rcontext.put("showFavStarsInSitesBar",ServerConfigurationService.getBoolean(SAK_PROP_SHOW_FAV_STARS, SAK_PROP_SHOW_FAV_STARS_DFLT));
+		rcontext.put("showFavStarsOnAllFavSites",ServerConfigurationService.getBoolean(SAK_PROP_SHOW_FAV_STARS_ON_ALL, SAK_PROP_SHOW_FAV_STARS_ON_ALL_DFLT));
+		
 		addLocale(rcontext, site, session.getUserId());
+
+		addTimeInfo(rcontext);
 		
 		includeSiteNav(rcontext, req, session, siteId);
 
@@ -556,18 +570,25 @@ public class SiteHandler extends WorksiteHandler
 				+ req.getServletPath(), getUrlFragment(),
 				/* resetTools */false);
 
-		portal.includeBottom(rcontext);
+		portal.includeBottom(rcontext, site);
 
 		//Log the visit into SAKAI_EVENT - begin
 		try{
 			boolean presenceEvents = ServerConfigurationService.getBoolean("presence.events.log", true);
 			if (presenceEvents)
-				org.sakaiproject.presence.cover.PresenceService.setPresence(siteId + "-presence");
+				org.sakaiproject.presence.cover.PresenceService.setPresence(siteId + PresenceService.PRESENCE_SUFFIX);
 		}catch(Exception e){}
 		//End - log the visit into SAKAI_EVENT		
 
-		rcontext.put("currentUrlPath", Web.serverUrl(req) + req.getContextPath()
+		rcontext.put("currentUrlPath", RequestFilter.serverUrl(req) + req.getContextPath()
 				+ URLUtils.getSafePathInfo(req));
+
+		rcontext.put("usePortalSearch", ServerConfigurationService.getBoolean("portal.search.enabled", true)
+		    && ServerConfigurationService.getBoolean("search.enable", false));
+		rcontext.put("portalSearchPageSize", ServerConfigurationService.getString("portal.search.pageSize", "10"));
+
+		//Show a confirm dialog when publishing an unpublished site.
+		rcontext.put("publishSiteDialogEnabled", ServerConfigurationService.getBoolean("portal.publish.site.confirm.enabled", false));
 
 		//Find any quick links ready for display in the top navigation bar,
 		//they can be set per site or for the whole portal.
@@ -883,6 +904,7 @@ public class SiteHandler extends WorksiteHandler
 
 			int tabDisplayLabel = 1;
 			boolean toolsCollapsed = false;
+			boolean toolMaximised = false;
 
 			if (loggedIn) 
 			{
@@ -901,10 +923,15 @@ public class SiteHandler extends WorksiteHandler
 				try {
 					toolsCollapsed = props.getBooleanProperty("toolsCollapsed");
 				} catch (Exception any) {}
+
+				try {
+					toolMaximised = props.getBooleanProperty("toolMaximised");
+				} catch (Exception any) {}
 			}
 
 			rcontext.put("tabDisplayLabel", tabDisplayLabel);
 			rcontext.put("toolsCollapsed", Boolean.valueOf(toolsCollapsed));
+			rcontext.put("toolMaximised", Boolean.valueOf(toolMaximised));
 			
 			SiteView siteView = portal.getSiteHelper().getSitesView(
 					SiteView.View.DHTML_MORE_VIEW, req, session, siteId);
@@ -920,7 +947,7 @@ public class SiteHandler extends WorksiteHandler
 			rcontext.put("tabsAddLogout", Boolean.valueOf(addLogout));
 			if (addLogout)
 			{
-				String logoutUrl = Web.serverUrl(req)
+				String logoutUrl = RequestFilter.serverUrl(req)
 						+ ServerConfigurationService.getString("portalPath")
 						+ "/logout_gallery";
 				rcontext.put("tabsLogoutUrl", logoutUrl);
@@ -933,7 +960,7 @@ public class SiteHandler extends WorksiteHandler
 			rcontext.put("tabsAddLogout", Boolean.valueOf(addLogout));
 			if (addLogout)
 			{
-				String logoutUrl = Web.serverUrl(req)
+				String logoutUrl = RequestFilter.serverUrl(req)
 						+ ServerConfigurationService.getString("portalPath")
 						+ "/logout_gallery";
 				rcontext.put("tabsLogoutUrl", logoutUrl);

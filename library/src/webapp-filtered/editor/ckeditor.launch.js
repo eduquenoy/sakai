@@ -122,7 +122,9 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
                 classes: true
             }
         },
-        disallowedContent: 'table[cellspacing,cellpadding,border]',
+        disallowedContent: 'table[cellspacing,cellpadding,border,summary]',
+
+        contentsCss: [(webJars+'bootstrap/3.3.7/css/bootstrap.min.css')],
 
         language: language + (country ? '-' + country.toLowerCase() : ''),
         // This is used for uploading by the autorecorder plugin.
@@ -157,8 +159,8 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             ['Source','-','Templates'],
             // Uncomment the next line and comment the following to enable the default spell checker.
             // Note that it uses spellchecker.net, displays ads and sends content to remote servers without additional setup.
-            //['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
-            ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SakaiPreview'],
+            //['Cut','Copy','Paste','PasteText','-','Print', 'SpellChecker', 'Scayt'],
+            ['Cut','Copy','Paste','PasteText','-','Print', 'SakaiPreview'],
             ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
             ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
             '/',
@@ -169,12 +171,12 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
             ['Link','Unlink','Anchor'],
             (sakai.editor.enableResourceSearch
                 ? ( sakai.editor.contentItemUrl
-                    ? ['ContentItem', 'AudioRecorder','ResourceSearch', 'Image','Movie','Table','HorizontalRule','Smiley','SpecialChar']
-                    : ['AudioRecorder','ResourceSearch', 'Image','Movie','Table','HorizontalRule','Smiley','SpecialChar']
+                    ? ['ContentItem', 'AudioRecorder','ResourceSearch', 'Image','Html5video','Table','HorizontalRule','Smiley','SpecialChar']
+                    : ['AudioRecorder','ResourceSearch', 'Image','Html5video','Table','HorizontalRule','Smiley','SpecialChar']
                   )
 		: ( sakai.editor.contentItemUrl
-                    ? ['ContentItem', 'AudioRecorder', 'Image','Movie','Table','HorizontalRule','Smiley','SpecialChar']
-                    : ['AudioRecorder', 'Image','Movie','Table','HorizontalRule','Smiley','SpecialChar']
+                    ? ['ContentItem', 'AudioRecorder', 'Image','Html5video','Table','HorizontalRule','Smiley','SpecialChar']
+                    : ['AudioRecorder', 'Image','Html5video','Table','HorizontalRule','Smiley','SpecialChar']
                   )
             ),
             '/',
@@ -218,6 +220,10 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
 	ckconfig.baseFloatZIndex = config.baseFloatZIndex;
     }
 
+    if (config && config.toolbarSet && ckconfig['toolbar_' + config.toolbarSet]) {
+        ckconfig.toolbar = config.toolbarSet;
+    }
+
     //To add extra plugins outside the plugins directory, add them here! (And in the variable)
     (function() {
         // SAK-30370 present a nice and simple editor without plugins to the user on a tiny screen.
@@ -244,15 +250,15 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         CKEDITOR.plugins.addExternal('lineutils',basePath+'lineutils/', 'plugin.js');
         CKEDITOR.plugins.addExternal('widget',basePath+'widget/', 'plugin.js');
         CKEDITOR.plugins.addExternal('iframedialog',basePath+'iframedialog/', 'plugin.js');
-        CKEDITOR.plugins.addExternal('movieplayer',basePath+'movieplayer/', 'plugin.js');
+        CKEDITOR.plugins.addExternal('html5video',webJars+'github-com-bahriddin-ckeditor-html5-video/${ckeditor.html5video.version}/html5video/', 'plugin.js');
         CKEDITOR.plugins.addExternal('audiorecorder',basePath+'audiorecorder/', 'plugin.js');
         CKEDITOR.plugins.addExternal('contentitem',basePath+'contentitem/', 'plugin.js');
         CKEDITOR.plugins.addExternal('sakaipreview',basePath+'sakaipreview/', 'plugin.js');
-        
-        CKEDITOR.plugins.addExternal('image2',webJars+'image2/${ckeditor.image2.version}/', 'plugin.js');
+        CKEDITOR.plugins.addExternal('bt_table',basePath+'bt_table/', 'plugin.js');
+        CKEDITOR.plugins.addExternal('image2',webJars+'ckeditor-image2/${ckeditor.image2.version}/', 'plugin.js');
 
         //Autosave has a dependency on notification
-        CKEDITOR.plugins.addExternal('autosave',webJars+'autosave/${ckeditor.autosave.version}/', 'plugin.js');
+        CKEDITOR.plugins.addExternal('autosave',webJars+'ckeditor-autosave/${ckeditor.autosave.version}/', 'plugin.js');
         CKEDITOR.plugins.addExternal('wordcount',webJars+'wordcount/${ckeditor.wordcount.version}/', 'plugin.js');
         CKEDITOR.plugins.addExternal('notification',basePath+'notification/', 'plugin.js');
         // Accessibility checker has a dependency on balloonpanel
@@ -277,7 +283,7 @@ sakai.editor.editors.ckeditor.launch = function(targetId, config, w, h) {
         ckconfig.extraPlugins+="${ckeditor-extra-plugins}${ckeditor-a11y-extra-plugins}";
 
         // Load FontAwesome CSS in case a user wants to manually add FA markup
-        ckconfig.contentsCss = [webJars+'fontawesome/4.7.0/css/font-awesome.min.css'];
+        ckconfig.contentsCss.push(webJars+'fontawesome/4.7.0/css/font-awesome.min.css');
         //If the siteskin is defined, add the print.css
         if (sakai.editor.sitePrintSkin) {
             ckconfig.contentsCss.push(sakai.editor.sitePrintSkin);

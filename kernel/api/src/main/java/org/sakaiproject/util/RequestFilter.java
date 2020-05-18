@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.*;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -163,14 +165,14 @@ public class RequestFilter implements Filter
 	/** The "." character */
 	protected static final String DOT = ".";
 
-	/** The name of the system property that will be used when setting the value of the session cookie. */
-	protected static final String SAKAI_SERVERID = "sakai.serverId";
+	/** The name of the system property that will be used when setting the Sakai server id. */
+	public static final String SAKAI_SERVERID = "sakai.serverId";
 
 	/** The name of the system property that will be used when setting the name of the session cookie. */
-	protected static final String SAKAI_COOKIE_NAME = "sakai.cookieName";
+	public static final String SAKAI_COOKIE_PROP = "sakai.cookieName";
 
 	/** The name of the system property that will be used when setting the domain of the session cookie. */
-	protected static final String SAKAI_COOKIE_DOMAIN = "sakai.cookieDomain";
+	public static final String SAKAI_COOKIE_DOMAIN = "sakai.cookieDomain";
 
 	/** The name of the Sakai property to disable setting the HttpOnly attribute on the cookie (if false). */
 	protected static final String SAKAI_COOKIE_HTTP_ONLY = "sakai.cookieHttpOnly";
@@ -184,6 +186,11 @@ public class RequestFilter implements Filter
 	
 	/** The name of the Sakai property to allow passing a session id in the ATTR_SESSION request parameter */
 	protected static final String SAKAI_SESSION_PARAM_ALLOW = "session.parameter.allow";
+
+	/** The name of the Sakai property of a URL regular expression that always allows ATTR_SESSION request parameter */
+	protected static final String SAKAI_SESSION_PARAM_ALLOW_BYPASS = "session.parameter.allow.bypass";
+	protected static final String SAKAI_SESSION_PARAM_ALLOW_BYPASS_DEFAULT =
+		"sakai\\.basiclti\\.admin\\.helper\\.helper";
 	
 	/** The tools allowed as lti provider **/
 	protected static final String SAKAI_BLTI_PROVIDER_TOOLS = "basiclti.provider.allowedtools";
@@ -234,10 +241,11 @@ public class RequestFilter implements Filter
 
 	/** Allow setting the cookie in a request parameter */
 	protected boolean m_sessionParamAllow = false;
-                                                                                                             
-    /** The name of the cookie we use to keep sakai session. */                                            
-    protected String cookieName = "JSESSIONID";                                                            
-                                                                                                              
+	protected Pattern m_sessionParamRegex = null;
+
+	/** The name of the cookie we use to keep sakai session. */
+	public String cookieName = "JSESSIONID";
+
     protected String cookieDomain = null; 
 
     private ThreadLocalManager threadLocalManager;
@@ -493,7 +501,7 @@ public class RequestFilter implements Filter
 							{
 								c.setSecure(true);
 							}
-							addCookie(resp, c);
+							addCookie(req, resp, c);
 						}
 					}
 
@@ -578,7 +586,7 @@ public class RequestFilter implements Filter
 		{
 			c.setSecure(true);
 		}
-		addCookie(res, c);
+		addCookie(req, res, c);
 
 		// We want the non-decoded ones so we don't have to re-encode.
 		StringBuilder url = new StringBuilder(req.getRequestURI());
@@ -802,9 +810,9 @@ public class RequestFilter implements Filter
 		TERRACOTTA_CLUSTER = "true".equals(clusterTerracotta);
 
 		// retrieve the configured cookie name, if any
-		if (System.getProperty(SAKAI_COOKIE_NAME) != null)
+		if (System.getProperty(SAKAI_COOKIE_PROP) != null)
 		{
-			cookieName = System.getProperty(SAKAI_COOKIE_NAME);
+			cookieName = System.getProperty(SAKAI_COOKIE_PROP);
 		}
 
 		// retrieve the configured cookie domain, if any
@@ -813,7 +821,20 @@ public class RequestFilter implements Filter
 			cookieDomain = System.getProperty(SAKAI_COOKIE_DOMAIN);
 		}
 
+		// session id provided in a request parameter?
 		m_sessionParamAllow = serverConfigurationService.getBoolean(SAKAI_SESSION_PARAM_ALLOW, false);
+		String allowBypassSession = serverConfigurationService.getString(SAKAI_SESSION_PARAM_ALLOW_BYPASS,
+			SAKAI_SESSION_PARAM_ALLOW_BYPASS_DEFAULT);
+		if ( ! "none".equals(allowBypassSession) ) {
+			try {
+				m_sessionParamRegex = Pattern.compile(allowBypassSession);
+			}
+			catch( Exception e )
+			{
+				log.warn("Unable to compile " + SAKAI_SESSION_PARAM_ALLOW + "=" + allowBypassSession);
+				m_sessionParamRegex = null;
+			}
+		}
 
 		// retrieve option to enable or disable cookie HttpOnly
 		m_cookieHttpOnly = serverConfigurationService.getBoolean(SAKAI_COOKIE_HTTP_ONLY, true);
@@ -1062,7 +1083,14 @@ public class RequestFilter implements Filter
 		boolean auto = req.getParameter(PARAM_AUTO) != null;
 
 		// session id provided in a request parameter?
-		boolean reqsession = m_sessionParamAllow && req.getParameter(ATTR_SESSION) != null;
+		boolean matched = false;
+		if ( m_sessionParamRegex != null ) {
+			String uri = req.getRequestURI();
+			Matcher m = m_sessionParamRegex.matcher(uri.toLowerCase());
+			matched = m.find();
+		}
+
+		boolean reqsession = (matched || m_sessionParamAllow) && req.getParameter(ATTR_SESSION) != null;
 
 		String suffix = getCookieSuffix();
 
@@ -1097,7 +1125,7 @@ public class RequestFilter implements Filter
 		// if no principal, check request parameter and cookie
 		if (sessionId == null || s == null)
 		{
-			if (m_sessionParamAllow) {
+			if (matched || m_sessionParamAllow) {
 				sessionId = req.getParameter(ATTR_SESSION);
 			}
 
@@ -1201,7 +1229,7 @@ public class RequestFilter implements Filter
 			{
 				c.setDomain(cookieDomain);
 			}
-			addCookie(res, c);
+			addCookie(req, res, c);
 		}
 
 		// if we have a session and had no cookie,
@@ -1225,7 +1253,7 @@ public class RequestFilter implements Filter
 				{
 					c.setSecure(true);
 				}
-				addCookie(res, c);
+				addCookie(req, res, c);
 			}
 		}
 
@@ -1396,7 +1424,7 @@ public class RequestFilter implements Filter
 		return suffix;
 	}
 	
-	protected void addCookie(HttpServletResponse res, Cookie cookie) {
+	protected void addCookie(HttpServletRequest req, HttpServletResponse res, Cookie cookie) {
 
 		if (!m_cookieHttpOnly) {
 			// Use the standard servlet mechanism for setting the cookie
@@ -1408,7 +1436,7 @@ public class RequestFilter implements Filter
 
 			ServerCookie.appendCookieValue(sb, cookie.getVersion(), cookie.getName(), cookie.getValue(),
 					cookie.getPath(), cookie.getDomain(), cookie.getComment(),
-					cookie.getMaxAge(), cookie.getSecure(), m_cookieHttpOnly, m_cookieSameSite);
+					cookie.getMaxAge(), cookie.getSecure(), m_cookieHttpOnly, m_cookieSameSite, req.getHeader("user-agent"));
 
 			res.addHeader("Set-Cookie", sb.toString());
 		}

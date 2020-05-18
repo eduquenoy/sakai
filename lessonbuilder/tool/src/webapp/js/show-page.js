@@ -39,7 +39,7 @@ function msg(s) {
 
 function setupdialog(oe) {
 	oe.dialog("option", "width", modalDialogWidth());
-	$('.ui-dialog').zIndex(150000);
+	$('.ui-dialog').css('zIndex',150000);
 }
 
 function checksize(oe) {
@@ -69,32 +69,18 @@ function checkgroups(elt, groups) {
     }
 }
 
-// maxpoints is an Integer. Actually in GB it's float, but
-// our code in SimplePageBean parses the string as Integer, so make
-// sure it's OK. At least according to ecmascript, parseInt will do
-// weird things if the value is >= 2^31. It is impossible to catch
-// this with numerical functions, so I have to do string comparison
-// 2^31 is 2147483648. length is 10
 function safeParseInt(s) {
-    if (!/^[0-9]+$/.test(s))
-	return NaN;
-    if (s.length > 10) {
-	return Infinity;
-    }
-    if (s.length === 10) {
-	if (s >= "2147483648") {
-	    return Infinity;
-	}
-    }
+    if (s.length > 10) return Infinity;
+    if (!/^[0-9.]+$/.test(s)) return NaN;
+    if (parseInt(s) <= 0) return NaN;
     return parseInt(s);
 }
+
 // get the right error message. called when ifFinite(i) returns false
 // that happens if it is not a number or is too big
 function intError(i) {
-    if (isNaN(i))
-	return msg("simplepage.integer-expected");
-    else
-	return msg('simplepage.integer-too-big');
+    if (isNaN(i)) return msg("simplepage.integer-expected");
+    return msg('simplepage.integer-too-big');
 }
 
 var blankRubricTemplate, blankRubricRow;
@@ -2021,7 +2007,7 @@ $(document).ready(function() {
 			oldloc = $(this);
 			closeDropdowns();
 			$('#mm-name-section').addClass('fileTitles');
-			$("#mm-name-section").hide();
+			$("#mm-name-section").show();
 			$("#mm-name").val('');
 			$("#mm-prerequisite").prop('checked',false);
 			if ($(this).hasClass("add-at-end"))
@@ -2060,6 +2046,7 @@ $(document).ready(function() {
 			oldloc = $(".dropdown a");
 			closeDropdowns();
 			mm_test_reset();
+			$('#mm-name-section').addClass('fileTitles');
 			$("#mm-name-section").show();
 			$("#mm-name").val('');
 			$("#mm-prerequisite").prop('checked',false);
@@ -3104,6 +3091,9 @@ $(function() {
 	    $(this).parent().parent().remove();
 	}
 	function mmFileInputChanged() {
+	    var previousTitle = $("#mm-name").val();
+	    $("#mm-name").val('');
+	    $("#mm-name-section").hide();
 	    // user has probably selected a file. 
 	    var lastInput = $(".mm-file-input").last();
 	    if (lastInput[0].files.length !== 0) {
@@ -3125,7 +3115,11 @@ $(function() {
 		for (i = lastInput[0].files.length-1; i >= 0; i--) {
 			var newStuff = '<p><span class="mm-file-input-name">' + lastInput[0].files[i].name + '</span><span title="' + msg('simplepage.remove_from_uploads') + '"><span class="mm-file-input-delete fa fa-times"></span></span>';
 			if (doingNames) {
-					newStuff = newStuff + '<label for="link-title">Link title</label><input id="link-title" class="mm-file-input-names" type="text" size="30" maxlength="255"/></p>';
+				var valueContent = '';
+				if(i === 0 && previousTitle){
+					valueContent = 'value="' + previousTitle + '"';
+				}
+				newStuff = newStuff + '<label for="link-title">Link title</label><input id="link-title" class="mm-file-input-names" type="text" size="30" maxlength="255" ' + valueContent + '/></p>';
 			} else {
 				newStuff = newStuff + '</p>';
 			}
@@ -3142,8 +3136,6 @@ $(function() {
 	};
 
 	$(".mm-file-input").on("change", mmFileInputChanged);
-
-
 
 });
 
@@ -3524,6 +3516,21 @@ function printView(url) {
 	return url;
     return url.substring(0, i) + url.substring(j);
 }
+
+function printViewWithParameter(url) {
+    var i = url.indexOf("/site/");
+    if (i < 0)
+	return url;
+    var j = url.indexOf("/tool/");
+    if (j < 0)
+	return url;
+    var z = url.indexOf("ShowPage");
+    if (z < 0)
+    return url.substring(0, i) + url.substring(j) + '?printall=true';
+    else
+    return url.substring(0, i) + url.substring(j) + '&printall=true';
+}
+
 // make columns in a section the same height. Is there a better place to trigger this?
 // use load because we want to do this after images, etc. are loaded so heights are set
 

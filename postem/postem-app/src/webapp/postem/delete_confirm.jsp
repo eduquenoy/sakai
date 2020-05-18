@@ -10,31 +10,41 @@
     response.addHeader("Pragma", "no-cache");
 %>
 
-<jsp:useBean id="msgs" class="org.sakaiproject.util.ResourceLoader" scope="session"> 
-<jsp:setProperty name="msgs" property="baseName" value="org.sakaiproject.tool.postem.bundle.Messages"/> 
+<jsp:useBean id="msgs" class="org.sakaiproject.util.ResourceLoader" scope="session">
+<jsp:setProperty name="msgs" property="baseName" value="org.sakaiproject.tool.postem.bundle.Messages"/>
 </jsp:useBean>
 <f:view>
 	<sakai:view title="#{msgs.title_list}">
-			<h:form>
-			  <h:outputText styleClass="alertMessage" value="#{msgs.delete_confirm}" />
-			  
-			  <br />
-			  
-			  <table styleClass="itemSummary">
-			    <tr>
-			      <th scope="row"><h:outputText value="#{msgs.title_label}" /></th>
-			      <td><h:outputText value="#{PostemTool.currentGradebook.title}"/></td>
-			    </tr>
-			  </table>
+		<script src="/library/js/spinner.js"></script>
+		<script>includeLatestJQuery("postemDeleteConfirm");</script>
+		<script>
+			$(document).ready(function() {
+				var menuLink = $('#postemMainMenuLink');
+				var menuLinkSpan = menuLink.closest('span');
+				menuLinkSpan.addClass('current');
+				menuLinkSpan.html(menuLink.text());
+			});
+		</script>
+		<h:form>
+			<%@ include file="/postem/postemMenu.jsp" %>
+			<h:outputText styleClass="sak-banner-warn" value="#{msgs.delete_confirm}" />
+			<br />
+			<table styleClass="itemSummary">
+				<tr>
+					<th scope="row"><h:outputText value="#{msgs.title_label}" /></th>
+					<td><h:outputText value="#{PostemTool.currentGradebook.title}"/></td>
+				</tr>
+			</table>
 
-				<sakai:button_bar>
-          <sakai:button_bar_item action="#{PostemTool.processDelete}"
-					                       value="#{msgs.bar_delete}" />
-					<sakai:button_bar_item action="#{PostemTool.processCancelView}"
-										             value="#{msgs.cancel}" />
-         </sakai:button_bar>
-
-			</h:form>
+			<sakai:button_bar>
+				<sakai:button_bar_item action="#{PostemTool.processDelete}"
+									   onclick="SPNR.disableControlsAndSpin(this, null);"
+									   value="#{msgs.bar_delete}"
+									   styleClass="active" />
+				<sakai:button_bar_item action="#{PostemTool.processCancelView}"
+									   onclick="SPNR.disableControlsAndSpin(this, null);"
+									   value="#{msgs.cancel}" />
+			</sakai:button_bar>
+		</h:form>
 	</sakai:view>
 </f:view>
-				

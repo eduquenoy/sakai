@@ -1,24 +1,20 @@
 <f:view>
     <sakai:view title="#{msgs['custom.chatroom']}">
         <h:outputText value="#{Portal.latestJQuery}" escape="false"/>
-        <sakai:script contextBase="/sakai-chat-tool" path="/js/chatscript.js"/>
-        <script type="text/javascript">
+        <script src="/sakai-chat-tool/js/chatscript.js"></script>
+        <script>
             if ( window.frameElement) window.frameElement.className='wcwmenu';
+            $(document).ready( function () {
+                // Assign the current class to the tab in the template
+                var menuLink = $('#topForm\\:chatMainLink');
+                menuLink.addClass('current');
+                // Remove the link of the current option
+                menuLink.html(menuLink.find('a').text());
+            });
         </script>
         <h:form id="topForm">
             <h:inputHidden id="chatidhidden" value="#{ChatTool.currentChatChannelId}" />
-            <sakai:tool_bar rendered="#{ChatTool.canManageTool || ChatTool.siteChannelCount > 1 || ChatTool.maintainer}">
-                <h:commandLink action="#{ChatTool.processActionListRooms}" rendered="#{ChatTool.canManageTool}">
-                    <h:outputText value="#{msgs.manage_tool}" />
-                </h:commandLink>
-                <h:commandLink action="#{ChatTool.processActionListRooms}" rendered="#{ChatTool.siteChannelCount > 1}">
-                    <h:outputText value="#{msgs.change_room}" />
-                </h:commandLink>
-                <h:commandLink rendered="#{ChatTool.maintainer}"
-                action="#{ChatTool.processActionPermissions}">
-                    <h:outputText value="#{msgs.permis}" />
-                </h:commandLink>
-            </sakai:tool_bar>
+            <%@ include file="chatMenu.jsp" %>
             <div class="panel panel-chat panel-default">
                 <div class="panel-heading">
                     <sakai:instruction_message value="#{ChatTool.datesMessage}" rendered="#{ChatTool.datesMessage ne null}" />
@@ -26,7 +22,7 @@
                     <h:panelGroup styleClass="chat-block">
                         <h:panelGroup styleClass="viewoptions-grp">
                             <h:outputLabel for="viewOptions" value="#{msgs.view}" />
-                            <h:selectOneMenu id="viewOptions" value="#{ChatTool.viewOptions}" onchange="this.form.submit();">
+                            <h:selectOneMenu id="viewOptions" value="#{ChatTool.viewOptions}">
                                 <f:selectItem itemValue="1" itemLabel="#{msgs.timeOnly}" />
                                 <f:selectItem itemValue="3" itemLabel="#{msgs.timeAndDate}" />
                                 <f:selectItem itemValue="2" itemLabel="#{msgs.dateOnly}" />
@@ -36,9 +32,13 @@
                         </h:panelGroup>
                         <h:panelGroup styleClass="msgoptions-grp">
                             <h:outputLabel for="messageOptions" value="#{msgs['combox.viewfrom']}" />
-                            <h:selectOneMenu id="messageOptions" value="#{ChatTool.messageOptions}" onchange="this.form.submit();">
+                            <h:selectOneMenu id="messageOptions" value="#{ChatTool.messageOptions}">
                                 <f:selectItems value="#{ChatTool.messageOptionsList}" />
                             </h:selectOneMenu>
+                        </h:panelGroup>
+                        <h:panelGroup styleClass="submit-grp">
+                            <h:outputText value=" " />
+                            <h:commandButton type="submit" id="submit" value="#{msgs['control.submit']}" styleClass="active" />
                         </h:panelGroup>
                     </h:panelGroup>
                 </div>
@@ -72,7 +72,7 @@
                                 var chat2_messagesUnreadedTemplate = "<h:outputText value="#{ChatTool.unreadedMessagesText}" />"; // replace *SHOWN* and *TOTAL*
                                 var unreadedMessages = 0;
                             </script>
-                            <sakai:messages  rendered="#{!empty facesContext.maximumSeverity}" />
+                            <h:messages  rendered="#{!empty facesContext.maximumSeverity}" />
                             <div id="Monitor" class="chatListMonitor">
                                 <%@ include file="roomMonitor.jspf" %>
                             </div>
@@ -93,10 +93,20 @@
                 <div class="panel-footer">
                     <f:subview id="controlPanel" rendered="#{ChatTool.canPost}">
                         <div>
-                            <div id="errorSubmit" class="alertMessage" style="display:none">
+                            <div id="errorSubmit" class="sak-banner-error" style="display:none">
                                 <h:outputText value="#{msgs['therewaspro']}" />
                             </div>
-                            <c:out value="<textarea id='topForm:controlPanel:message' value='" escapeXml="false" /><h:outputText value="#{ChatTool.newMessageText}" /><c:out value="' placeholder='" escapeXml="false" /><h:outputText value="#{msgs['control.lab']}" /><c:out value="' rows='3' cols='125'></textarea>" escapeXml="false" /> 
+                            <div id="missingChannel" class="sak-banner-error" style="display:none">
+                                <h:outputText value="#{msgs['missingchannel1']}" />
+                                <h:outputLink value="#{ChatTool.toolUrl}">
+                                    <h:outputText value="#{msgs['here']}" />
+                                </h:outputLink>
+                                <h:outputText value="#{msgs['missingchannel2']}" />
+                            </div>
+                            <label for="topForm:controlPanel:message">
+                                <h:outputText value="#{msgs['control.lab']}" />
+                            </label>
+                            <c:out value="<textarea id='topForm:controlPanel:message' value='" escapeXml="false" /><h:outputText value="#{ChatTool.newMessageText}" /><c:out value="' rows='3' cols='125'></textarea>" escapeXml="false" /> 
                             <div class="act">
                                 <h:commandButton type="button" id="submit" value="#{msgs['control.post']}" styleClass="active" />
                                 <h:commandButton type="button" id="reset" value="#{msgs['control.clear']}" />
@@ -107,11 +117,10 @@
             </div>
         </h:form>
 
-        <t:div styleClass="messageInformation chat-post-warning" rendered="#{!ChatTool.canPost && ChatTool.datesRestricted}">
+        <t:div styleClass="sak-banner-info chat-post-warning" rendered="#{!ChatTool.canPost && ChatTool.datesRestricted}">
             <h:outputText value="#{msgs.custom_date_restricted}" />
             <h:outputText value="#{ChatTool.datesMessage}" />
         </t:div>
-        <p style="clear:both;display:block;"></p>
 
         <div class="modal fade" tabindex="-1" role="dialog" id="removemodal">
             <div class="modal-dialog" role="document">

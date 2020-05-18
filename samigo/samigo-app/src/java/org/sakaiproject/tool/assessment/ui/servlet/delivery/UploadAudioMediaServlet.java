@@ -21,6 +21,9 @@
 
 package org.sakaiproject.tool.assessment.ui.servlet.delivery;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -43,6 +46,9 @@ import javax.servlet.ServletInputStream;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.component.api.ServerConfigurationService;
+import org.sakaiproject.tool.api.SessionManager;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.MediaData;
@@ -50,6 +56,8 @@ import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemData;
 import org.sakaiproject.tool.assessment.data.dao.assessment.PublishedItemText;
 import org.sakaiproject.tool.assessment.services.assessment.PublishedAssessmentService;
 import org.sakaiproject.tool.assessment.services.GradingService;
+import org.sakaiproject.util.DateFormatterUtil;
+import org.sakaiproject.util.ResourceLoader;
 
 /**
  * <p>Title: Samigo</p>
@@ -68,6 +76,8 @@ public class UploadAudioMediaServlet extends HttpServlet
 	 */
 	private static final long serialVersionUID = 8389831837152012411L;
 
+	ResourceLoader rb = new ResourceLoader("org.sakaiproject.tool.assessment.bundle.DeliveryMessages");
+
   public UploadAudioMediaServlet()
   {
   }
@@ -83,8 +93,29 @@ public class UploadAudioMediaServlet extends HttpServlet
   {
     boolean mediaIsValid = true;
     ServletContext context = super.getServletContext();
-    String repositoryPath = (String)context.getAttribute("FILEUPLOAD_REPOSITORY_PATH");
-    String saveToDb = (String)context.getAttribute("FILEUPLOAD_SAVE_MEDIA_TO_DB");
+    ServerConfigurationService serverConfigurationService = ComponentManager.get(ServerConfigurationService.class);
+    SessionManager sessionManager = ComponentManager.get(SessionManager.class);
+    String mediaParameter = req.getParameter("media");
+    String agentId  = req.getParameter("agent");
+
+    // A media parameter has this format jsf/upload_tmp/assessmentXX/questionYY/USEREID/audio_ZZ_WW, the 4th part is the userEid.
+    String mediaUser = null;
+    String[] mediaParts = mediaParameter.split("/");
+    if (mediaParts.length == 6) {
+        mediaUser = mediaParts[4];
+    } else {
+        res.sendError(HttpServletResponse.SC_FORBIDDEN, "You do not have permissions on the requested folder.");
+    }
+
+    // Check that there is a session, check the session user and agent matches, check the session userEid and media folder matches.
+    if (sessionManager.getCurrentSessionUserId() == null || 
+        !sessionManager.getCurrentSessionUserId().equals(agentId) ||
+        !sessionManager.getCurrentSession().getUserEid().equals(mediaUser) ) {
+        res.sendError(HttpServletResponse.SC_FORBIDDEN, "The assessment agent and the session user does not match.");
+    }
+
+    String repositoryPath = serverConfigurationService.getString("samigo.answerUploadRepositoryPath", "${sakai.home}/samigo/answerUploadRepositoryPath/");
+    String saveToDb = serverConfigurationService.getString("samigo.saveMediaToDb", "true");
 
     log.debug("req content length ="+req.getContentLength());
     log.debug("req content type ="+req.getContentType());
@@ -93,15 +124,19 @@ public class UploadAudioMediaServlet extends HttpServlet
     String suffix = req.getParameter("suffix");
     if (suffix == null || ("").equals(suffix))
       suffix = "au";
-    String mediaLocation = req.getParameter("media")+"."+suffix;
+    String mediaLocation = mediaParameter + "." + suffix;
     log.debug("****media location="+mediaLocation);
-    String response = "empty";
+    JsonObject json = null;
 
     // test for nonemptiness first
     if (mediaLocation != null && !(mediaLocation.trim()).equals(""))
     {
       File repositoryPathDir = new File(repositoryPath);
-      mediaLocation = repositoryPathDir.getCanonicalPath() + "/" + mediaLocation;
+      // Fix Windows paths
+      if("\\".equals(File.separator)){
+          mediaLocation = mediaLocation.replace("/","\\");
+      }
+      mediaLocation = repositoryPathDir.getCanonicalPath() + File.separator + mediaLocation;
       File mediaFile = new File(mediaLocation);
       
       if (mediaFile.getCanonicalPath().equals (mediaLocation)){
@@ -111,7 +146,7 @@ public class UploadAudioMediaServlet extends HttpServlet
 
           mediaIsValid=writeToFile(req, mediaLocation);  
       }else{
-    	  log.debug ("****Error in file paths " + mediaFile.getCanonicalPath() + " is not equal to " + mediaLocation);
+    	  log.error ("****Error in file paths " + mediaFile.getCanonicalPath() + " is not equal to " + mediaLocation);
     	  mediaIsValid=false;
       }
 
@@ -124,19 +159,20 @@ public class UploadAudioMediaServlet extends HttpServlet
       // note that this delivery bean is empty. this is not the same one created for the
       // user during take assessment.
       try{
-        response = submitMediaAsAnswer(req, mediaLocation, saveToDb);
+        json = submitMediaAsAnswer(req, mediaLocation, saveToDb);
         log.info("Audio has been saved and submitted as answer to the question. Any old recordings have been removed from the system.");
       }
       catch (Exception ex){
         log.info(ex.getMessage());
       }
     }
-  	res.setContentType("text/plain");
-	res.setContentLength(response.length());
-	PrintWriter out = res.getWriter();
-	out.println(response);
-	out.close();
-	out.flush();
+    String response = new Gson().toJson(json);
+    res.setContentType("application/json");
+    res.setCharacterEncoding("UTF-8");
+    try (PrintWriter out = res.getWriter()) {
+      out.println(response);
+      out.close();
+    }
   }
 
   private boolean writeToFile(HttpServletRequest req, String mediaLocation){
@@ -297,7 +333,7 @@ public class UploadAudioMediaServlet extends HttpServlet
     return outputStream;
   }
 
-  private String submitMediaAsAnswer(HttpServletRequest req,
+  private JsonObject submitMediaAsAnswer(HttpServletRequest req,
                                    String mediaLocation, String saveToDb)
     throws Exception{
     // read parameters passed in
@@ -310,7 +346,7 @@ public class UploadAudioMediaServlet extends HttpServlet
     PublishedAssessmentService pubService = new PublishedAssessmentService();
     int assessmentIndex = mediaLocation.indexOf("assessment");
     int questionIndex = mediaLocation.indexOf("question");
-    int agentIndex = mediaLocation.indexOf("/", questionIndex + 8);
+    int agentIndex = mediaLocation.indexOf(File.separator, questionIndex + 8);
     //int myfileIndex = mediaLocation.lastIndexOf("/");
     String pubAssessmentId = mediaLocation.substring(assessmentIndex + 10,
 						     questionIndex - 1);
@@ -387,7 +423,7 @@ public class UploadAudioMediaServlet extends HttpServlet
     return saveMedia(attemptsRemaining, mimeType, agentId, mediaLocation, itemGrading, saveToDb, duration);
   }
 
-  private String saveMedia(int attemptsRemaining, String mimeType, String agent,
+  private JsonObject saveMedia(int attemptsRemaining, String mimeType, String agent,
                          String mediaLocation, ItemGradingData itemGrading,
                         String saveToDb, String duration){
     boolean SAVETODB = false;
@@ -424,6 +460,7 @@ public class UploadAudioMediaServlet extends HttpServlet
 
     }
     Long mediaId = gradingService.saveMedia(mediaData);
+    mediaData.setMediaId(mediaId);
     log.debug("mediaId=" + mediaId);
 
     // 2. store mediaId in itemGradingRecord.answerText
@@ -444,7 +481,12 @@ public class UploadAudioMediaServlet extends HttpServlet
     catch(Exception e){
       log.warn(e.getMessage());
     }
-    return mediaId.toString();
+    JsonObject json = new JsonObject();
+    json.addProperty("mediaId", mediaId);
+    json.addProperty("duration", mediaData.getDuration());
+    json.addProperty("createdDate", mediaData.getCreatedDate().toString());
+    json.addProperty("attemptsRemaining", attemptsRemaining);
+    return json;
   }
 
   private byte[] getMediaStream(String mediaLocation)

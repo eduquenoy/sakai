@@ -23,6 +23,7 @@ package org.sakaiproject.lessonbuildertool.tool.producers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.Arrays;
 import java.io.BufferedReader;
@@ -443,11 +444,14 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 		    LessonEntity lessonEntity = null;
 		    switch (item.getType()) {
 		    case SimplePageItem.ASSIGNMENT:
-			lessonEntity = assignmentEntity.getEntity(item.getSakaiId()); break;
+			    lessonEntity = assignmentEntity.getEntity(item.getSakaiId());
+			    break;
 		    case SimplePageItem.ASSESSMENT:
-			lessonEntity = quizEntity.getEntity(item.getSakaiId(),simplePageBean); break;
+			    lessonEntity = quizEntity.getEntity(item.getSakaiId(),simplePageBean);
+			    break;
 		    case SimplePageItem.FORUM:
-			lessonEntity = forumEntity.getEntity(item.getSakaiId()); break;
+			    lessonEntity = forumEntity.getEntity(item.getSakaiId());
+			    break;
 		    case SimplePageItem.BLTI:
 			if (bltiEntity != null)
 			    lessonEntity = bltiEntity.getEntity(item.getSakaiId()); break;
@@ -461,11 +465,14 @@ public class ShowItemProducer implements ViewComponentProducer, NavigationCaseRe
 			source = (lessonEntity==null)?"dummy":lessonEntity.getUrl();
 		}
 
-	    UIComponent iframe = UILink.make(tofill, "iframe1", source);
+	    UIComponent iframe = UILink.make(tofill, "iframe1", source)
+				.decorate(new UIFreeAttributeDecorator("allow", String.join(";",
+						Optional.ofNullable(ServerConfigurationService.getStrings("browser.feature.allow"))
+								.orElseGet(() -> new String[]{}))));
 	    if (item != null && item.getType() == SimplePageItem.BLTI) {
 		String height = item.getHeight();
 		if (height == null || height.equals(""))
-		    iframe.decorate(new UIFreeAttributeDecorator("height", "1200"));
+			iframe.decorate(new UIFreeAttributeDecorator("height", "1200"));
 		else
 		    iframe.decorate(new UIFreeAttributeDecorator("height", height));
 		iframe.decorate(new UIFreeAttributeDecorator("onload", ""));

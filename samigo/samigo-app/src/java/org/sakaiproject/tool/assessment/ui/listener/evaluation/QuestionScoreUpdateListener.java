@@ -29,7 +29,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -47,6 +49,8 @@ import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Statement;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb;
 import org.sakaiproject.event.api.LearningResourceStoreService.LRS_Verb.SAKAI_VERB;
 import org.sakaiproject.event.api.NotificationService;
+import org.sakaiproject.rubrics.logic.RubricsConstants;
+import org.sakaiproject.rubrics.logic.RubricsService;
 import org.sakaiproject.samigo.util.SamigoConstants;
 import org.sakaiproject.tool.assessment.data.dao.grading.AssessmentGradingData;
 import org.sakaiproject.tool.assessment.data.dao.grading.ItemGradingAttachment;
@@ -59,8 +63,10 @@ import org.sakaiproject.tool.assessment.ui.bean.evaluation.AgentResults;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.QuestionScoresBean;
 import org.sakaiproject.tool.assessment.ui.bean.evaluation.TotalScoresBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
+import org.sakaiproject.tool.assessment.util.ParameterUtil;
 import org.sakaiproject.tool.assessment.util.SamigoLRSStatements;
 import org.sakaiproject.tool.assessment.util.TextFormat;
+import org.sakaiproject.tool.cover.SessionManager;
 
 /**
  * <p>
@@ -78,6 +84,7 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
   implements ActionListener
 {
   private final EventTrackingService eventTrackingService= ComponentManager.get( EventTrackingService.class );
+  private final RubricsService rubricsService = ComponentManager.get(RubricsService.class);
 
   //private static EvaluationListenerUtil util;
   //private static BeanSort bs;
@@ -126,19 +133,15 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
   {
     try
     {
+      ParameterUtil paramUtil = new ParameterUtil();
       GradingService delegate = new GradingService();
       //String publishedId = ContextUtil.lookupParam("publishedId");
       String itemId = ContextUtil.lookupParam("itemId");
       String which = ContextUtil.lookupParam("allSubmissions");
       if (which == null)
         which = "false";
-      Collection agents = bean.getAgents();
-      //ArrayList items = new ArrayList();
-      Iterator iter = agents.iterator();
-      while (iter.hasNext())
-      {
-        // each agent has a list of modified itemGrading
-        AgentResults ar = (AgentResults) iter.next();
+      List<AgentResults> agents = (List<AgentResults>) bean.getAgents();
+      for(AgentResults ar : agents){
         // Get the itemgradingdata list for this result
         ArrayList datas = (ArrayList) bean.getScoresByItem().get
           (ar.getAssessmentGradingId() + ":" + itemId);
@@ -252,11 +255,13 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
   }
 
   private void updateAttachment(ItemGradingData itemGradingData, AgentResults agentResults, QuestionScoresBean bean){
-	  List oldList = itemGradingData.getItemGradingAttachmentList();
+
+	  Set<ItemGradingAttachment> oldList = itemGradingData.getItemGradingAttachmentSet();
 	  List newList = agentResults.getItemGradingAttachmentList();
 	  if ((oldList == null || oldList.size() == 0 ) && (newList == null || newList.size() == 0)) return;
-	  List attachmentList = new ArrayList();
-	  HashMap map = getAttachmentIdHash(oldList);
+	  final Map<Long, ItemGradingAttachment> map
+		  = oldList.stream().collect(Collectors.toMap(a -> a.getAttachmentId(), a -> a));
+	  List<ItemGradingAttachment> attachmentList = new ArrayList<>();
 	  for (int i=0; i<newList.size(); i++){
 		  ItemGradingAttachment itemGradingAttachment = (ItemGradingAttachment) newList.get(i);
 		  if (map.get(itemGradingAttachment.getAttachmentId()) != null){
@@ -288,15 +293,6 @@ import org.sakaiproject.tool.assessment.util.TextFormat;
 		  eventTrackingService.post(eventTrackingService.newEvent(SamigoConstants.EVENT_ASSESSMENT_STUDENT_SCORE_UPDATE, 
 				  "siteId=" + AgentFacade.getCurrentSiteId() + ", Removing attachmentId = " + attachmentId, true));
 	  }
-	  bean.setIsAnyItemGradingAttachmentListModified(true);
-  }
-
-  private HashMap getAttachmentIdHash(List list){
-    HashMap map = new HashMap();
-    for (int i=0; i<list.size(); i++){
-    	ItemGradingAttachment a = (ItemGradingAttachment)list.get(i);
-      map.put(a.getAttachmentId(), a);
-    }
-    return map;
+	  bean.setAnyItemGradingAttachmentListModified(true);
   }
 }

@@ -42,16 +42,24 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.ServletContext;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.StringUtils;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.component.cover.ServerConfigurationService;
 import org.sakaiproject.authz.api.SecurityAdvisor;
 import org.sakaiproject.authz.cover.SecurityService;
@@ -68,6 +76,8 @@ import org.sakaiproject.event.cover.NotificationService;
 import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.PermissionException;
 import org.sakaiproject.exception.TypeException;
+import org.sakaiproject.portal.util.PortalUtils;
+import org.sakaiproject.rubrics.logic.RubricsConstants;
 import org.sakaiproject.tool.api.ToolSession;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AttachmentIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.ItemAttachmentIfc;
@@ -93,17 +103,14 @@ import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.tool.assessment.util.MimeTypesLocator;
 import org.sakaiproject.tool.cover.SessionManager;
 import org.sakaiproject.tool.cover.ToolManager;
-import org.sakaiproject.util.FormattedText;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.util.api.FormattedText;
 
-/**
- * Backing bean for Item Authoring, uses ItemBean for UI
- * $Id$
- */
+/* For author: Item Author backing bean. */
 @Slf4j
-public class ItemAuthorBean
-  implements Serializable
-{
+@ManagedBean(name="itemauthor")
+@SessionScoped
+public class ItemAuthorBean implements Serializable {
 
   /** Use serialVersionUID for interoperability. */
   private final static long serialVersionUID = 8266438770394956874L;
@@ -133,7 +140,7 @@ public class ItemAuthorBean
   private ItemBean currentItem;
   private ItemFacade itemToDelete;
   private ItemFacade itemToPreview;
-  private List attachmentList;
+  @Getter @Setter private List<ItemAttachmentIfc> attachmentList;
   private Set<ItemTagIfc> tagsList;
   private String tagsListToJson;
   private String tagsTempListToJson;
@@ -145,6 +152,10 @@ public class ItemAuthorBean
 
 
   private String language;
+
+  // Rubrics
+  private String rbcsToken;
+  private String rubricStateDetails;
 
   public String getLanguage() {
     Locale loc = new ResourceLoader().getLocale();
@@ -785,7 +796,7 @@ public class ItemAuthorBean
           selection.setLabel(rb.getString("p")+" "+ i );
         }
         else {
-          selection.setLabel(rb.getString("p")+" " + i + " - " + FormattedText.convertFormattedTextToPlaintext(part.getTitle()));
+          selection.setLabel(rb.getString("p")+" " + i + " - " + ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(part.getTitle()));
         }
         selection.setValue(part.getSectionId());
         list.add(selection);
@@ -918,10 +929,11 @@ public class ItemAuthorBean
         
         // SAM-2269 - add the appropriate string to the list
         String original = pool.getDisplayName() + " (" + delegate.getCountItems(pool.getQuestionPoolId()) + ")";
+        FormattedText formattedText = ComponentManager.get(FormattedText.class);
         if (parent != null) {
-            poolListSelectItems.add(new SelectItem(pool.getQuestionPoolId().toString(), FormattedText.convertFormattedTextToPlaintext(parent.getDisplayName() + ": " + original)));
+            poolListSelectItems.add(new SelectItem(pool.getQuestionPoolId().toString(), formattedText.convertFormattedTextToPlaintext(parent.getDisplayName() + ": " + original)));
         } else {
-            poolListSelectItems.add(new SelectItem(pool.getQuestionPoolId().toString(), FormattedText.convertFormattedTextToPlaintext(original)));
+            poolListSelectItems.add(new SelectItem(pool.getQuestionPoolId().toString(), formattedText.convertFormattedTextToPlaintext(original)));
         }
       }
 
@@ -1113,24 +1125,8 @@ public class ItemAuthorBean
     showFeedbackAuthoring= string;
   }
 
-  public List getAttachmentList() {
-    return attachmentList;
-  }
-
-
-  /**
-   * @param list
-   */
-  public void setAttachmentList(List attachmentList)
-  {
-    this.attachmentList = attachmentList;
-  }
-
-  public boolean getHasAttachment(){
-    if (attachmentList != null && attachmentList.size() >0)
-      return true;
-    else
-      return false;    
+  public boolean getHasAttachment() {
+    return attachmentList != null && attachmentList.size() > 0;
   }
 
   public Set<ItemTagIfc> getTagsList() {
@@ -1195,7 +1191,7 @@ public class ItemAuthorBean
     ItemService service = loadItemService(isEditPendingAssessmentFlow);
     ItemFacade itemData = null;
     // itemId == null => new questiion
-    if (this.itemId!=null){
+    if (StringUtils.isNotEmpty(this.itemId)){
       try{
         itemData = service.getItem(this.itemId);
       }
@@ -1267,12 +1263,12 @@ public class ItemAuthorBean
     ToolSession session = SessionManager.getCurrentToolSession();
     if (session.getAttribute(FilePickerHelper.FILE_PICKER_ATTACHMENTS) != null) {
 
-      Set attachmentSet = new HashSet();
+      Set<ItemAttachmentIfc> attachmentSet = new HashSet<>();
       if (item != null){
         attachmentSet = item.getItemAttachmentSet();
       }
-      Map map = getResourceIdHash(attachmentSet);
-      List newAttachmentList = new ArrayList();
+      Map<String, ItemAttachmentIfc> map = getResourceIdHash(attachmentSet);
+      List<ItemAttachmentIfc> newAttachmentList = new ArrayList<>();
       
       AssessmentService assessmentService = new AssessmentService();
       String protocol = ContextUtil.getProtocol();
@@ -1315,16 +1311,8 @@ public class ItemAuthorBean
     else return item.getItemAttachmentList();
   }
 
-  private Map getResourceIdHash(Set attachmentSet){
-    Map map = new HashMap();
-    if (attachmentSet !=null ){
-      Iterator iter = attachmentSet.iterator();
-      while (iter.hasNext()){
-        ItemAttachmentIfc attach = (ItemAttachmentIfc) iter.next();
-        map.put(attach.getResourceId(), attach);
-      }
-    }
-    return map;
+  private Map<String, ItemAttachmentIfc> getResourceIdHash(Set<ItemAttachmentIfc> attachmentSet) {
+    return attachmentSet.stream().collect(Collectors.toMap(AttachmentIfc::getResourceId, Function.identity()));
   }
 
   private Map resourceHash = new HashMap();
@@ -1538,7 +1526,7 @@ public class ItemAuthorBean
 	    FacesContext context = FacesContext.getCurrentInstance();
 	    ExternalContext external = context.getExternalContext();
 	    Long fileSize = (Long)((ServletContext)external.getContext()).getAttribute("TEMP_FILEUPLOAD_SIZE");
-	    Long maxSize = (Long)((ServletContext)external.getContext()).getAttribute("FILEUPLOAD_SIZE_MAX");
+	    Long maxSize = Long.valueOf(ServerConfigurationService.getString("samigo.sizeMax", "40960"));
 
 	    ((ServletContext)external.getContext()).removeAttribute("TEMP_FILEUPLOAD_SIZE");
 	    if (fileSize!=null){
@@ -1602,4 +1590,27 @@ public class ItemAuthorBean
         }
     }
 
+    public String getRbcsToken() {
+        return rbcsToken;
+    }
+
+    public void setRbcsToken(String rbcsToken) {
+        this.rbcsToken = rbcsToken;
+    }
+
+    public String getRubricStateDetails() {
+        if (StringUtils.isNotBlank(this.rubricStateDetails) && !StringUtils.isNotBlank(ContextUtil.lookupParam(RubricsConstants.RBCS_ASSOCIATION_STATE_DETAILS))) {
+            return this.rubricStateDetails;
+        }
+        this.rubricStateDetails = ContextUtil.lookupParam(RubricsConstants.RBCS_ASSOCIATION_STATE_DETAILS);
+        return this.rubricStateDetails;
+    }
+
+    public void setRubricStateDetails(String rubricStateDetails) {
+        this.rubricStateDetails = rubricStateDetails;
+    }
+
+    public String getCDNQuery() {
+        return PortalUtils.getCDNQuery();
+    }
 }

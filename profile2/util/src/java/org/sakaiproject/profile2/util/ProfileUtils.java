@@ -38,16 +38,17 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.text.WordUtils;
 import org.imgscalr.Scalr;
-
-import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.util.ResourceLoader;
+import org.sakaiproject.util.api.FormattedText;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ProfileUtils {
@@ -403,7 +404,7 @@ public class ProfileUtils {
 	 * @return
 	 */
 	public static String processHtml(String s){
-		return FormattedText.processFormattedText(s, new StringBuilder(), true, false);
+		return ComponentManager.get(FormattedText.class).processFormattedText(s, new StringBuilder(), true, false);
 	}
 	
 	/**
@@ -413,7 +414,7 @@ public class ProfileUtils {
 	 * @return
 	 */
 	public static String stripHtml(String s) {
-		return FormattedText.convertFormattedTextToPlaintext(s);
+		return ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(s);
 	}
 	
 	/**
@@ -426,12 +427,28 @@ public class ProfileUtils {
 	 */
 	public static String stripAndCleanHtml(String s) {
 		//Attempt to strip HTML. This doesn't work on poorly formatted HTML though
-		String stripped = FormattedText.convertFormattedTextToPlaintext(s);
+		String stripped = ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(s);
 		
 		//so we escape anything that is left
-		return StringEscapeUtils.escapeHtml(stripped);
+		return StringEscapeUtils.escapeHtml4(stripped);
 	}
-	
+
+	/**
+	 * Strips html/xml tags from a string and returns the cleaned version.
+	 *
+	 * @param text any text (if this is null or empty then the input text is returned unchanged)
+	 * @param smartSpacing if true then try to make the text represent the intent of the html,
+	 *                     trims out duplicate spaces, converts block type html into a space, etc.,
+	 *                     else just removes html tags and leaves all other parts of the string intact,
+	 *                     NOTE: false is also slightly faster
+	 * @param stripEscapeSequences if true, strips out any escape sequences such as '&nbsp;'
+	 * @return the cleaned string
+	 * @see #convertFormattedTextToPlaintext(String) for alternative mechanism
+	 */
+	public static String stripHtmlFromText(String text, boolean smartSpacing, boolean stripEscapeSequences) {
+		return ComponentManager.get(FormattedText.class).stripHtmlFromText(text, smartSpacing, stripEscapeSequences);
+	}
+
 	/**
 	 * Trims text to the given maximum number of displayed characters.
 	 * Supports HTML and preserves formatting. 
@@ -450,7 +467,7 @@ public class ProfileUtils {
 		//html
 		if(isHtml) {
 			StringBuilder trimmedHtml = new StringBuilder();
-			FormattedText.trimFormattedText(s, maxNumOfChars, trimmedHtml);
+			ComponentManager.get(FormattedText.class).trimFormattedText(s, maxNumOfChars, trimmedHtml);
 			return trimmedHtml.toString();
 		} 
 		
@@ -479,7 +496,7 @@ public class ProfileUtils {
 		if(isHtml) {
 			StringBuilder trimmedHtml = new StringBuilder();
 		
-			boolean trimmed = FormattedText.trimFormattedText(s, maxNumOfChars - 3, trimmedHtml);
+			boolean trimmed = ComponentManager.get(FormattedText.class).trimFormattedText(s, maxNumOfChars - 3, trimmedHtml);
 		
 			if (trimmed) {
 				int index = trimmedHtml.lastIndexOf("</");

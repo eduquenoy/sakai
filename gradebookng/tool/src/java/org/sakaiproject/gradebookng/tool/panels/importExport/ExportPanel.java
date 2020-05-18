@@ -15,15 +15,20 @@
  */
 package org.sakaiproject.gradebookng.tool.panels.importExport;
 
-import au.com.bytecode.opencsv.CSVWriter;
+import com.opencsv.CSVWriter;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxCheckBox;
@@ -33,18 +38,21 @@ import org.apache.wicket.markup.html.link.DownloadLink;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
-
+import org.sakaiproject.component.cover.ComponentManager;
 import org.sakaiproject.gradebookng.business.GbCategoryType;
 import org.sakaiproject.gradebookng.business.model.GbCourseGrade;
 import org.sakaiproject.gradebookng.business.model.GbGradeInfo;
 import org.sakaiproject.gradebookng.business.model.GbGroup;
 import org.sakaiproject.gradebookng.business.model.GbStudentGradeInfo;
+import org.sakaiproject.gradebookng.business.util.EventHelper;
 import org.sakaiproject.gradebookng.business.util.FormatHelper;
 import org.sakaiproject.gradebookng.tool.model.GradebookUiSettings;
 import org.sakaiproject.gradebookng.tool.panels.BasePanel;
 import org.sakaiproject.service.gradebook.shared.Assignment;
 import org.sakaiproject.service.gradebook.shared.CourseGrade;
-import org.sakaiproject.util.FormattedText;
+import org.sakaiproject.service.gradebook.shared.SortType;
+import org.sakaiproject.util.Validator;
+import org.sakaiproject.util.api.FormattedText;
 
 public class ExportPanel extends BasePanel {
 
@@ -53,6 +61,7 @@ public class ExportPanel extends BasePanel {
 	private static final String IGNORE_COLUMN_PREFIX = "#";
 	private static final String COMMENTS_COLUMN_PREFIX = "*";
 	private static final char CSV_SEMICOLON_SEPARATOR = ';';
+	private static final String BOM = "\uFEFF";
 
 	enum ExportFormat {
 		CSV
@@ -63,6 +72,7 @@ public class ExportPanel extends BasePanel {
 	boolean includeStudentName = true;
 	boolean includeStudentId = true;
 	boolean includeStudentNumber = false;
+	private boolean includeSectionMembership = false;
 	boolean includeStudentDisplayId = false;
 	boolean includeGradeItemScores = true;
 	boolean includeGradeItemComments = true;
@@ -72,6 +82,8 @@ public class ExportPanel extends BasePanel {
 	boolean includeCalculatedGrade = false;
 	boolean includeGradeOverride = false;
 	GbGroup group;
+
+	private Component customDownloadLink;
 
 	public ExportPanel(final String id) {
 		super(id);
@@ -125,6 +137,16 @@ public class ExportPanel extends BasePanel {
 			public boolean isVisible()
 			{
 				return stuNumVisible;
+			}
+		});
+
+		add(new AjaxCheckBox("includeSectionMembership", Model.of(this.includeSectionMembership)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onUpdate(final AjaxRequestTarget ajaxRequestTarget) {
+				ExportPanel.this.includeSectionMembership = !ExportPanel.this.includeSectionMembership;
+				setDefaultModelObject(ExportPanel.this.includeSectionMembership);
 			}
 		});
 
@@ -224,6 +246,11 @@ public class ExportPanel extends BasePanel {
 				} else {
 					ExportPanel.this.group = (GbGroup) ((DropDownChoice) getComponent()).getDefaultModelObject();
 				}
+				// Rebuild the custom download link so it has a filename including the selected group
+				Component updatedCustomDownloadLink = buildCustomDownloadLink();
+				ExportPanel.this.customDownloadLink.replaceWith(updatedCustomDownloadLink);
+				ExportPanel.this.customDownloadLink = updatedCustomDownloadLink;
+				target.add(ExportPanel.this.customDownloadLink);
 			}
 		}));
 
@@ -235,9 +262,15 @@ public class ExportPanel extends BasePanel {
 				return buildFile(false);
 			}
 
-		}, buildFileName()).setCacheDuration(Duration.NONE).setDeleteAfterDownload(true));
+		}, buildFileName(false)).setCacheDuration(Duration.NONE).setDeleteAfterDownload(true));
 
-		add(new DownloadLink("downloadCustomGradebook", new LoadableDetachableModel<File>() {
+
+		this.customDownloadLink = buildCustomDownloadLink();
+		add(this.customDownloadLink);
+	}
+
+	private Component buildCustomDownloadLink() {
+		return new DownloadLink("downloadCustomGradebook", new LoadableDetachableModel<File>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -245,7 +278,7 @@ public class ExportPanel extends BasePanel {
 				return buildFile(true);
 			}
 
-		}, buildFileName()).setCacheDuration(Duration.NONE).setDeleteAfterDownload(true));
+		}, buildFileName(true)).setCacheDuration(Duration.NONE).setDeleteAfterDownload(true).setOutputMarkupId(true);
 	}
 
 	private File buildFile(final boolean isCustomExport) {
@@ -255,27 +288,36 @@ public class ExportPanel extends BasePanel {
 			tempFile = File.createTempFile("gradebookTemplate", ".csv");
 
 			//CSV separator is comma unless the comma is the decimal separator, then is ;
-			try (FileWriter fw = new FileWriter(tempFile);
-					CSVWriter csvWriter = new CSVWriter(fw, ".".equals(FormattedText.getDecimalSeparator()) ? CSVWriter.DEFAULT_SEPARATOR : CSV_SEMICOLON_SEPARATOR)) {
-
+			try (OutputStreamWriter fstream = new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.ISO_8859_1.name())){
+				FormattedText formattedText = ComponentManager.get(FormattedText.class);
+				CSVWriter csvWriter = new CSVWriter(fstream, ".".equals(formattedText.getDecimalSeparator()) ? CSVWriter.DEFAULT_SEPARATOR : CSV_SEMICOLON_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
+				
 				// Create csv header
 				final List<String> header = new ArrayList<>();
 				if (!isCustomExport || this.includeStudentId) {
 					header.add(getString("importExport.export.csv.headers.studentId"));
 				}
-				if (isCustomExport || this.includeStudentDisplayId) {
-					header.add(getString("importExport.export.csv.headers.studentDisplayId"));
-				}
 				if (!isCustomExport || this.includeStudentName) {
 					header.add(getString("importExport.export.csv.headers.studentName"));
 				}
+				if (isCustomExport && this.includeStudentDisplayId) {
+					header.add(String.join(" ", IGNORE_COLUMN_PREFIX, getString("importExport.export.csv.headers.studentDisplayId")));
+				}
 				if (isCustomExport && this.includeStudentNumber) {
-					header.add(String.join(" ", IGNORE_COLUMN_PREFIX, getString("importExport.export.csv.headers.studentNumber")));
+					header.add(String.join(" ", IGNORE_COLUMN_PREFIX, getString("column.header.studentNumber")));
+				}
+				if (isCustomExport && this.includeSectionMembership) {
+					header.add(String.join(" ", IGNORE_COLUMN_PREFIX, getString("column.header.section")));
 				}
 
 				// get list of assignments. this allows us to build the columns and then fetch the grades for each student for each assignment from the map
-				final List<Assignment> assignments = this.businessService.getGradebookAssignments();
-				
+				SortType sortBy = SortType.SORT_BY_SORTING;
+				final String userGbUiCatPref = this.businessService.getUserGbPreference("GROUP_BY_CAT");
+				if (this.businessService.categoriesAreEnabled() && (StringUtils.isBlank(userGbUiCatPref) || BooleanUtils.toBoolean(userGbUiCatPref))) {
+					sortBy = SortType.SORT_BY_CATEGORY;
+				}
+				final List<Assignment> assignments = this.businessService.getGradebookAssignments(sortBy);
+
 				// no assignments, give a template
 				if (assignments.isEmpty()) {
 					// with points
@@ -295,7 +337,7 @@ public class ExportPanel extends BasePanel {
 				assignments.forEach(assignment -> {
 					final String assignmentPoints = FormatHelper.formatGradeForDisplay(assignment.getPoints().toString());
 					if (!isCustomExport || this.includeGradeItemScores) {
-						header.add(assignment.getName() + " [" + StringUtils.removeEnd(assignmentPoints, FormattedText.getDecimalSeparator() + "0") + "]");
+						header.add(assignment.getName() + " [" + StringUtils.removeEnd(assignmentPoints, formattedText.getDecimalSeparator() + "0") + "]");
 					}
 					if (!isCustomExport || this.includeGradeItemComments) {
 						header.add(String.join(" ", COMMENTS_COLUMN_PREFIX, assignment.getName()));
@@ -335,15 +377,19 @@ public class ExportPanel extends BasePanel {
 					if (!isCustomExport || this.includeStudentId) {
 						line.add(studentGradeInfo.getStudentEid());
 					}
-					if (isCustomExport || this.includeStudentDisplayId) {
-						header.add(studentGradeInfo.getStudentDisplayId());
-					}
 					if (!isCustomExport || this.includeStudentName) {
-						line.add(studentGradeInfo.getStudentLastName() + ", " + studentGradeInfo.getStudentFirstName());
+						line.add(FormatHelper.htmlUnescape(studentGradeInfo.getStudentLastName()) + ", " + FormatHelper.htmlUnescape(studentGradeInfo.getStudentFirstName()));
+					}
+					if (isCustomExport && this.includeStudentDisplayId) {
+						line.add(studentGradeInfo.getStudentDisplayId());
 					}
 					if (isCustomExport && this.includeStudentNumber)
 					{
 						line.add(studentGradeInfo.getStudentNumber());
+					}
+					List<String> userSections = studentGradeInfo.getSections();
+					if (isCustomExport && this.includeSectionMembership) {
+						line.add((userSections.size() > 0) ? userSections.get(0) : getString("sections.label.none"));
 					}
 					if (!isCustomExport || this.includeGradeItemScores || this.includeGradeItemComments) {
 						assignments.forEach(assignment -> {
@@ -351,7 +397,7 @@ public class ExportPanel extends BasePanel {
 							if (gradeInfo != null) {
 								if (!isCustomExport || this.includeGradeItemScores) {
 									String grade = FormatHelper.formatGradeForDisplay(gradeInfo.getGrade());
-									line.add(StringUtils.removeEnd(grade, FormattedText.getDecimalSeparator() + "0"));
+									line.add(StringUtils.removeEnd(grade, formattedText.getDecimalSeparator() + "0"));
 								}
 								if (!isCustomExport || this.includeGradeItemComments) {
 									line.add(gradeInfo.getGradeComment());
@@ -393,24 +439,43 @@ public class ExportPanel extends BasePanel {
 
 					csvWriter.writeNext(line.toArray(new String[] {}));
 				});
+				csvWriter.close();
 			}
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
 
+		EventHelper.postExportEvent(getGradebook(), isCustomExport);
+
 		return tempFile;
 	}
 
-	private String buildFileName() {
-		final String prefix = "gradebook_export";
-		final String extension = this.exportFormat.toString().toLowerCase();
-		String gradebookName = this.businessService.getGradebook().getName();
 
-		if (StringUtils.trimToNull(gradebookName) == null) {
-			return String.format("%s.%s", gradebookName, extension);
-		} else {
-			gradebookName = gradebookName.replaceAll("\\s", "_");
-			return String.format("%s-%s.%s", prefix, gradebookName, extension);
+	private String buildFileName(final boolean customDownload) {
+		final String prefix = getString("importExport.download.filenameprefix");
+		final String extension = this.exportFormat.toString().toLowerCase();
+		final String gradebookName = this.businessService.getGradebook().getName();
+
+		// File name contains the prefix
+		final List<String> fileNameComponents = new ArrayList<>();
+		fileNameComponents.add(prefix);
+
+		// Add gradebook name/site id to filename
+		if (StringUtils.trimToNull(gradebookName) != null) {
+			fileNameComponents.add(gradebookName.replaceAll("\\s", "_"));
 		}
+
+		// If custom download for all sections, append 'ALL' to filename
+		if (customDownload && (this.group == null || this.group.getId() == null)) {
+			fileNameComponents.add(getString("importExport.download.filenameallsuffix"));
+
+		// If group/section filter is selected, add group title to filename
+		} else if (this.group != null && this.group.getId() != null && StringUtils.isNotBlank(this.group.getTitle())) {
+			fileNameComponents.add(this.group.getTitle());
+		}
+
+		final String cleanFilename = Validator.cleanFilename(fileNameComponents.stream().collect(Collectors.joining("-")));
+
+		return String.format("%s.%s", cleanFilename, extension);
 	}
 }

@@ -34,7 +34,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.sakaiproject.accountvalidator.logic.ValidationLogic;
@@ -87,12 +87,13 @@ import org.sakaiproject.user.api.UserPermissionException;
 import org.sakaiproject.user.tool.PasswordPolicyHelper.TempUser;
 import org.sakaiproject.util.BaseResourcePropertiesEdit;
 import org.sakaiproject.util.ExternalTrustedEvidence;
-import org.sakaiproject.util.PasswordCheck;
 import org.sakaiproject.util.RequestFilter;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.StringUtil;
+import org.sakaiproject.util.api.PasswordFactory;
 
-import au.com.bytecode.opencsv.CSVReader;
+import com.opencsv.CSVReader;
+
 import lombok.extern.slf4j.Slf4j;
 import net.tanesha.recaptcha.ReCaptcha;
 import net.tanesha.recaptcha.ReCaptchaFactory;
@@ -121,7 +122,6 @@ public class UsersAction extends PagedResourceActionII
 	private static final String IMPORT_EMAIL="email";
 	private static final String IMPORT_PASSWORD="password";
 	private static final String IMPORT_TYPE="type";
-	private ValidationLogic validationLogic;
 
 	// SAK-23568
 	private static final PasswordPolicyHelper pwHelper = new PasswordPolicyHelper();
@@ -158,6 +158,7 @@ public class UsersAction extends PagedResourceActionII
 	
 	private ThreadLocalManager threadLocalManager;
 	private UserTimeService userTimeService;
+	private PasswordFactory passwordFactory;
 	
 	public UsersAction() {
 		super();
@@ -169,9 +170,8 @@ public class UsersAction extends PagedResourceActionII
 		usageSessionService =  ComponentManager.get(UsageSessionService.class);
 		sessionManager =  ComponentManager.get(SessionManager.class);
 		threadLocalManager = ComponentManager.get(ThreadLocalManager.class);
-		this.validationLogic = (ValidationLogic)ComponentManager.get(ValidationLogic.class);
 		userTimeService = (UserTimeService)ComponentManager.get(UserTimeService.class);
-		
+		passwordFactory = ComponentManager.get(PasswordFactory.class);
 	}
 
 	/**
@@ -280,6 +280,7 @@ public class UsersAction extends PagedResourceActionII
 	public String buildMainPanelContext(VelocityPortlet portlet, Context context, RunData rundata, SessionState state)
 	{
 		context.put("tlang", rb);
+		context.put("userTimeService", userTimeService);
 		context.put("includeLatestJQuery", PortalUtils.includeLatestJQuery("UsersAction"));
 		boolean singleUser = ((Boolean) state.getAttribute("single-user")).booleanValue();
 		boolean createUser = ((Boolean) state.getAttribute("create-user")).booleanValue();
@@ -977,8 +978,6 @@ public class UsersAction extends PagedResourceActionII
 		
 		// commit the change
 		UserEdit edit = (UserEdit) state.getAttribute("user");
-		String valueEmail = (String)state.getAttribute("valueEmail");
-		String oldEmail = (String)state.getAttribute("oldEmail");
 		if (edit != null)
 		{
 			
@@ -992,12 +991,6 @@ public class UsersAction extends PagedResourceActionII
 			
 			try
 			{
-				//start this validation only when user has changed the email for the account else skip, also skip for admin user
-				if (!securityService.isSuperUser() && StringUtils.trimToNull(valueEmail) != null && StringUtils.trimToNull(oldEmail) != null && !(oldEmail.equals(valueEmail))
-						&& EmailValidator.getInstance().isValid(edit.getEid()) && !(StringUtils.equalsIgnoreCase(edit.getEid(), valueEmail))) {
-					validationLogic.createValidationAccount(edit.getId(),valueEmail);
-					addAlert(state,rb.getFormattedMessage("useedi.val.email",new String[]{valueEmail}));
-				}
 				userDirectoryService.commitEdit(edit);
 			}
 			catch (UserAlreadyDefinedException e)
@@ -1375,19 +1368,6 @@ public class UsersAction extends PagedResourceActionII
 		
 		// get the user
 		UserEdit user = (UserEdit) state.getAttribute("user");
-		//if user has not changed the email then skip the 'email exists' verification. Also, skip it when user is admin
-		if(!securityService.isSuperUser() && user != null && !(StringUtils.equals(user.getEmail(), email))){
-			try {
-				userDirectoryService.getUserByEid(email);
-				addAlert(state,rb.getString("useedi.email.exists"));
-				return false;
-			} catch (UserNotDefinedException e) {
-				//unique user ,so continue
-			}
-			//user has changed the email so save the old email in the state
-			state.setAttribute("oldEmail",user.getEmail());
-		}
-		
 		//process any additional attributes
 		//we continue processing these until we get an empty attribute KEY
 		//counter starts at 1
@@ -1513,7 +1493,7 @@ public class UsersAction extends PagedResourceActionII
 				if (validateWithAccountValidator)
 				{
 					// the eid is their email address. The password is random
-					newUser = userDirectoryService.addUser(id, eid, firstName, lastName, email, PasswordCheck.generatePassword(), type, properties);
+					newUser = userDirectoryService.addUser(id, eid, firstName, lastName, email, passwordFactory.generatePassword(), type, properties);
 					// Invoke AccountValidator to send an email to the user containing a link to a form on which they can set their name and password
 					ValidationLogic validationLogic = (ValidationLogic) ComponentManager.get(ValidationLogic.class);
 					validationLogic.createValidationAccount(newUser.getId(), ValidationAccount.ACCOUNT_STATUS_REQUEST_ACCOUNT);
@@ -1527,7 +1507,11 @@ public class UsersAction extends PagedResourceActionII
 							try {
 								UserEdit editUser = userDirectoryService.editUser(newUser.getId());
 								editUser.getProperties().addProperty("disabled", "true");
+								userDirectoryService.commitEdit(editUser);
 								newUser = editUser;
+							} catch (UserAlreadyDefinedException e) {
+								addAlert(state, rb.getString("useact.theuseid1"));
+								return false;
 							} catch (UserNotDefinedException e) {
 								addAlert(state, rb.getString("usecre.disableFailed"));
 								return false;

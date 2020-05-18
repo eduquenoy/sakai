@@ -7,1618 +7,9 @@
     </property>
     <property name="categories">
       <list>
-        <ref bean="administratorGuide"/>
         <ref bean="userGuide"/>
+        <ref bean="administratorGuide"/>
       </list>
-    </property>
-  </bean>
-  <bean id="administratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Administrator Guide</value>
-    </property>
-    <property name="categories">
-      <list>
-        <ref bean="adminSitePermsAdministratorGuide"/>
-        <ref bean="aliasesAdministratorGuide"/>
-        <ref bean="announcementsorMessageoftheDayAdministratorGuide"/>
-        <ref bean="becomeUserAdministratorGuide"/>
-        <ref bean="delegatedAccessAdministratorGuide"/>
-        <ref bean="emailTemplatesAdministratorGuide"/>
-        <ref bean="externalToolsAdministratorGuide"/>
-        <ref bean="jobSchedulerAdministratorGuide"/>
-        <ref bean="memoryAdministratorGuide"/>
-        <ref bean="messageBundleManagerAdministratorGuide"/>
-        <ref bean="onlineAdministratorGuide"/>
-        <ref bean="pASystemAdministratorGuide"/>
-        <ref bean="permissionsandRolesAdministratorGuide"/>
-        <ref bean="realmsAdministratorGuide"/>
-        <ref bean="resourcesAdministratorGuide"/>
-        <ref bean="searchAdministratorGuide"/>
-        <ref bean="siteArchiveAdministratorGuide"/>
-        <ref bean="sitesAdministratorGuide"/>
-        <ref bean="sitestatsAdminAdministratorGuide"/>
-        <ref bean="usersAdministratorGuide"/>
-        <ref bean="userMembershipAdministratorGuide"/>
-        <ref bean="worksiteSetupAdministratorGuide"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="adminSitePermsAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Admin Site Perms</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheAdminSitePermstool"/>
-        <ref bean="howdoIaddsiterolepermissionsforallsites"/>
-        <ref bean="howdoIremovesiterolepermissionsforallsites"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheAdminSitePermstool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheAdminSitePermstool</value>
-    </property>
-    <property name="name">
-      <value>What is the Admin Site Perms tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_adminSitePermsAdministratorGuide/whatistheAdminSitePermstool.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.adminSitePerms</value>
-    </property>
-  </bean>
-  <bean id="howdoIaddsiterolepermissionsforallsites" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaddsiterolepermissionsforallsites</value>
-    </property>
-    <property name="name">
-      <value>How do I add site role permissions for all sites?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_adminSitePermsAdministratorGuide/howdoIaddsiterolepermissionsforallsites.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIremovesiterolepermissionsforallsites" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIremovesiterolepermissionsforallsites</value>
-    </property>
-    <property name="name">
-      <value>How do I remove site role permissions for all sites?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_adminSitePermsAdministratorGuide/howdoIremovesiterolepermissionsforallsites.html</value>
-    </property>
-  </bean>
-  <bean id="aliasesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Aliases</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatareAliases"/>
-        <ref bean="howdoIaddanalias"/>
-        <ref bean="howdoIdeleteanalias"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatareAliases" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatareAliases</value>
-    </property>
-    <property name="name">
-      <value>What are Aliases?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_aliasesAdministratorGuide/whatareAliases.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.aliases</value>
-    </property>
-  </bean>
-  <bean id="howdoIaddanalias" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaddanalias</value>
-    </property>
-    <property name="name">
-      <value>How do I add an alias?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_aliasesAdministratorGuide/howdoIaddanalias.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdeleteanalias" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdeleteanalias</value>
-    </property>
-    <property name="name">
-      <value>How do I delete an alias?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_aliasesAdministratorGuide/howdoIdeleteanalias.html</value>
-    </property>
-  </bean>
-  <bean id="announcementsorMessageoftheDayAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Announcements (or Message of the Day)</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheadminAnnouncementstoolorMessageoftheDayMOTD"/>
-        <ref bean="howdoIaddanMOTDannouncement"/>
-        <ref bean="howdoIeditanMOTDannouncement"/>
-        <ref bean="howdoIdeleteanMOTDannouncement"/>
-        <ref bean="howdoIreorderMOTDannouncements"/>
-        <ref bean="howdoIconfigureMOTDannouncementoptions"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheadminAnnouncementstoolorMessageoftheDayMOTD" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheadminAnnouncementstoolorMessageoftheDayMOTD</value>
-    </property>
-    <property name="name">
-      <value>What is the admin Announcements tool or Message of the Day (MOTD)?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/whatistheadminAnnouncementstoolorMessageoftheDayMOTD.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.announcementsorMessageoftheDay</value>
-    </property>
-  </bean>
-  <bean id="howdoIaddanMOTDannouncement" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaddanMOTDannouncement</value>
-    </property>
-    <property name="name">
-      <value>How do I add an MOTD announcement?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIaddanMOTDannouncement.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIeditanMOTDannouncement" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIeditanMOTDannouncement</value>
-    </property>
-    <property name="name">
-      <value>How do I edit an MOTD announcement?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIeditanMOTDannouncement.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdeleteanMOTDannouncement" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdeleteanMOTDannouncement</value>
-    </property>
-    <property name="name">
-      <value>How do I delete an MOTD announcement?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIdeleteanMOTDannouncement.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIreorderMOTDannouncements" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIreorderMOTDannouncements</value>
-    </property>
-    <property name="name">
-      <value>How do I reorder MOTD announcements?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIreorderMOTDannouncements.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIconfigureMOTDannouncementoptions" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIconfigureMOTDannouncementoptions</value>
-    </property>
-    <property name="name">
-      <value>How do I configure MOTD announcement options?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIconfigureMOTDannouncementoptions.html</value>
-    </property>
-  </bean>
-  <bean id="becomeUserAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Become User</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatisBecomeUser"/>
-        <ref bean="howdoIloginasanotheruser"/>
-        <ref bean="howdoIviewuserinfo"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatisBecomeUser" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatisBecomeUser</value>
-    </property>
-    <property name="name">
-      <value>What is Become User?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_becomeUserAdministratorGuide/whatisBecomeUser.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.becomeUser</value>
-    </property>
-  </bean>
-  <bean id="howdoIloginasanotheruser" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIloginasanotheruser</value>
-    </property>
-    <property name="name">
-      <value>How do I log in as another user?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_becomeUserAdministratorGuide/howdoIloginasanotheruser.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewuserinfo" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewuserinfo</value>
-    </property>
-    <property name="name">
-      <value>How do I view user info?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_becomeUserAdministratorGuide/howdoIviewuserinfo.html</value>
-    </property>
-  </bean>
-  <bean id="delegatedAccessAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Delegated Access</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatisDelegatedAccess"/>
-        <ref bean="howdoIletanonadminmanagedelegatedaccess"/>
-        <ref bean="howdoIletanonadminmanageshoppingperiodaccess"/>
-        <ref bean="howdoIdelegatesiteaccesstoauser"/>
-        <ref bean="howdoIedituserpermissionsinDelegatedAccess"/>
-        <ref bean="howdoIremoveuserpermissionsinDelegatedAccess"/>
-        <ref bean="howdoIsearchusersinDelegatedAccess"/>
-        <ref bean="howdoIaccessasiteviadelegatedaccess"/>
-        <ref bean="howdoIsetashoppingperiod"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatisDelegatedAccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatisDelegatedAccess</value>
-    </property>
-    <property name="name">
-      <value>What is Delegated Access?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/whatisDelegatedAccess.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.delegatedAccess</value>
-    </property>
-  </bean>
-  <bean id="howdoIletanonadminmanagedelegatedaccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIletanonadminmanagedelegatedaccess</value>
-    </property>
-    <property name="name">
-      <value>How do I let a non-admin manage delegated access?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIletanonadminmanagedelegatedaccess.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIletanonadminmanageshoppingperiodaccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIletanonadminmanageshoppingperiodaccess</value>
-    </property>
-    <property name="name">
-      <value>How do I let a non-admin manage shopping period access?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIletanonadminmanageshoppingperiodaccess.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdelegatesiteaccesstoauser" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdelegatesiteaccesstoauser</value>
-    </property>
-    <property name="name">
-      <value>How do I delegate site access to a user?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIdelegatesiteaccesstoauser.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIedituserpermissionsinDelegatedAccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIedituserpermissionsinDelegatedAccess</value>
-    </property>
-    <property name="name">
-      <value>How do I edit user permissions in Delegated Access?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIedituserpermissionsinDelegatedAccess.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIremoveuserpermissionsinDelegatedAccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIremoveuserpermissionsinDelegatedAccess</value>
-    </property>
-    <property name="name">
-      <value>How do I remove user permissions in Delegated Access?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIremoveuserpermissionsinDelegatedAccess.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIsearchusersinDelegatedAccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIsearchusersinDelegatedAccess</value>
-    </property>
-    <property name="name">
-      <value>How do I search users in Delegated Access?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIsearchusersinDelegatedAccess.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIaccessasiteviadelegatedaccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaccessasiteviadelegatedaccess</value>
-    </property>
-    <property name="name">
-      <value>How do I access a site via delegated access?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIaccessasiteviadelegatedaccess.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIsetashoppingperiod" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIsetashoppingperiod</value>
-    </property>
-    <property name="name">
-      <value>How do I set a shopping period?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIsetashoppingperiod.html</value>
-    </property>
-  </bean>
-  <bean id="emailTemplatesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Email Templates</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheEmailTemplatestool"/>
-        <ref bean="howdoIeditanemailtemplate"/>
-        <ref bean="howdoIaddanewemailtemplate"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheEmailTemplatestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheEmailTemplatestool</value>
-    </property>
-    <property name="name">
-      <value>What is the Email Templates tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_emailTemplatesAdministratorGuide/whatistheEmailTemplatestool.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.emailTemplates</value>
-    </property>
-  </bean>
-  <bean id="howdoIeditanemailtemplate" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIeditanemailtemplate</value>
-    </property>
-    <property name="name">
-      <value>How do I edit an email template?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_emailTemplatesAdministratorGuide/howdoIeditanemailtemplate.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIaddanewemailtemplate" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaddanewemailtemplate</value>
-    </property>
-    <property name="name">
-      <value>How do I add a new email template?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_emailTemplatesAdministratorGuide/howdoIaddanewemailtemplate.html</value>
-    </property>
-  </bean>
-  <bean id="externalToolsAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>External Tools</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatareExternalTools"/>
-        <ref bean="howdoImakeanLTI11toolavailabletositeowners"/>
-        <ref bean="howdoIviewLTI2xdeploymentsinthesystem"/>
-        <ref bean="howdoIviewcurrentlyinstalledLTI11toolsinthesystem"/>
-        <ref bean="howdoIaddanLTItooltoasiteasanadmin"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatareExternalTools" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatareExternalTools</value>
-    </property>
-    <property name="name">
-      <value>What are External Tools?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_externalToolsAdministratorGuide/whatareExternalTools.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.externalTools</value>
-    </property>
-  </bean>
-  <bean id="howdoImakeanLTI11toolavailabletositeowners" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoImakeanLTI11toolavailabletositeowners</value>
-    </property>
-    <property name="name">
-      <value>How do I make an LTI 1.1 tool available to site owners?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_externalToolsAdministratorGuide/howdoImakeanLTI11toolavailabletositeowners.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewLTI2xdeploymentsinthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewLTI2xdeploymentsinthesystem</value>
-    </property>
-    <property name="name">
-      <value>How do I view LTI 2.x deployments in the system?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_externalToolsAdministratorGuide/howdoIviewLTI2xdeploymentsinthesystem.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewcurrentlyinstalledLTI11toolsinthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewcurrentlyinstalledLTI11toolsinthesystem</value>
-    </property>
-    <property name="name">
-      <value>How do I view currently installed LTI 1.1 tools in the system?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_externalToolsAdministratorGuide/howdoIviewcurrentlyinstalledLTI11toolsinthesystem.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIaddanLTItooltoasiteasanadmin" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaddanLTItooltoasiteasanadmin</value>
-    </property>
-    <property name="name">
-      <value>How do I add an LTI tool to a site as an admin?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_externalToolsAdministratorGuide/howdoIaddanLTItooltoasiteasanadmin.html</value>
-    </property>
-  </bean>
-  <bean id="jobSchedulerAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Job Scheduler</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheJobScheduler"/>
-        <ref bean="howdoIviewtheeventlog"/>
-        <ref bean="howdoIfilterevents"/>
-        <ref bean="howdoIviewjobs"/>
-        <ref bean="howdoIscheduleanewjob"/>
-        <ref bean="howdoIcreatecronexpressions"/>
-        <ref bean="howdoIdeleteajob"/>
-        <ref bean="howdoIviewrunningjobs"/>
-        <ref bean="howdoIpurgesoftlydeletedsites"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheJobScheduler" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheJobScheduler</value>
-    </property>
-    <property name="name">
-      <value>What is the Job Scheduler?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/whatistheJobScheduler.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.scheduler</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewtheeventlog" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewtheeventlog</value>
-    </property>
-    <property name="name">
-      <value>How do I view the event log?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIviewtheeventlog.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIfilterevents" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIfilterevents</value>
-    </property>
-    <property name="name">
-      <value>How do I filter events?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIfilterevents.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewjobs" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewjobs</value>
-    </property>
-    <property name="name">
-      <value>How do I view jobs?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIviewjobs.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIscheduleanewjob" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIscheduleanewjob</value>
-    </property>
-    <property name="name">
-      <value>How do I schedule a new job?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIscheduleanewjob.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIcreatecronexpressions" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIcreatecronexpressions</value>
-    </property>
-    <property name="name">
-      <value>How do I create cron expressions?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIcreatecronexpressions.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdeleteajob" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdeleteajob</value>
-    </property>
-    <property name="name">
-      <value>How do I delete a job?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIdeleteajob.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewrunningjobs" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewrunningjobs</value>
-    </property>
-    <property name="name">
-      <value>How do I view running jobs?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIviewrunningjobs.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIpurgesoftlydeletedsites" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIpurgesoftlydeletedsites</value>
-    </property>
-    <property name="name">
-      <value>How do I purge softly deleted sites?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIpurgesoftlydeletedsites.html</value>
-    </property>
-  </bean>
-  <bean id="memoryAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Memory</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheadminMemorytool"/>
-        <ref bean="howdoIviewMemoryStatus"/>
-        <ref bean="howdoIlocatemaxedoutcaches"/>
-        <ref bean="howdoIresetallcaches"/>
-        <ref bean="howdoIevictexpiredmembers"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheadminMemorytool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheadminMemorytool</value>
-    </property>
-    <property name="name">
-      <value>What is the admin Memory tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_memoryAdministratorGuide/whatistheadminMemorytool.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.memory</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewMemoryStatus" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewMemoryStatus</value>
-    </property>
-    <property name="name">
-      <value>How do I view Memory Status?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_memoryAdministratorGuide/howdoIviewMemoryStatus.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIlocatemaxedoutcaches" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIlocatemaxedoutcaches</value>
-    </property>
-    <property name="name">
-      <value>How do I locate maxed out caches?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_memoryAdministratorGuide/howdoIlocatemaxedoutcaches.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIresetallcaches" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIresetallcaches</value>
-    </property>
-    <property name="name">
-      <value>How do I reset all caches?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_memoryAdministratorGuide/howdoIresetallcaches.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIevictexpiredmembers" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIevictexpiredmembers</value>
-    </property>
-    <property name="name">
-      <value>How do I evict expired members? </value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_memoryAdministratorGuide/howdoIevictexpiredmembers.html</value>
-    </property>
-  </bean>
-  <bean id="messageBundleManagerAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Message Bundle Manager</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheMessageBundleManagertool"/>
-        <ref bean="howdoIfindthenumberofmodifiedmessagesinthesystem"/>
-        <ref bean="howdoIsearchsystemmessages"/>
-        <ref bean="howdoIviewsystemmessagesbymodule"/>
-        <ref bean="howdoIcustomizeadefaultsystemmessage"/>
-        <ref bean="howdoIviewandeditmodifiedmessagesinthesystem"/>
-        <ref bean="howdoIdeleteamodifiedmessageandrevertbacktothedefaultvalue"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheMessageBundleManagertool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheMessageBundleManagertool</value>
-    </property>
-    <property name="name">
-      <value>What is the Message Bundle Manager tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/whatistheMessageBundleManagertool.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.messageBundleManager</value>
-    </property>
-  </bean>
-  <bean id="howdoIfindthenumberofmodifiedmessagesinthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIfindthenumberofmodifiedmessagesinthesystem</value>
-    </property>
-    <property name="name">
-      <value>How do I find the number of modified messages in the system?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIfindthenumberofmodifiedmessagesinthesystem.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIsearchsystemmessages" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIsearchsystemmessages</value>
-    </property>
-    <property name="name">
-      <value>How do I search system messages?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIsearchsystemmessages.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewsystemmessagesbymodule" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewsystemmessagesbymodule</value>
-    </property>
-    <property name="name">
-      <value>How do I view system messages by module?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIviewsystemmessagesbymodule.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIcustomizeadefaultsystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIcustomizeadefaultsystemmessage</value>
-    </property>
-    <property name="name">
-      <value>How do I customize a default system message?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIcustomizeadefaultsystemmessage.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewandeditmodifiedmessagesinthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewandeditmodifiedmessagesinthesystem</value>
-    </property>
-    <property name="name">
-      <value>How do I view and edit modified messages in the system?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIviewandeditmodifiedmessagesinthesystem.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdeleteamodifiedmessageandrevertbacktothedefaultvalue" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdeleteamodifiedmessageandrevertbacktothedefaultvalue</value>
-    </property>
-    <property name="name">
-      <value>How do I delete a modified message and revert back to the default value?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIdeleteamodifiedmessageandrevertbacktothedefaultvalue.html</value>
-    </property>
-  </bean>
-  <bean id="onlineAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Online</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheOnlinetool"/>
-        <ref bean="howdoIviewactiveservers"/>
-        <ref bean="howdoIviewuserlocations"/>
-        <ref bean="howdoIviewactivesessions"/>
-        <ref bean="howdoIrefreshlocationsessionandserverdata"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheOnlinetool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheOnlinetool</value>
-    </property>
-    <property name="name">
-      <value>What is the Online tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_onlineAdministratorGuide/whatistheOnlinetool.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.online</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewactiveservers" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewactiveservers</value>
-    </property>
-    <property name="name">
-      <value>How do I view active servers?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_onlineAdministratorGuide/howdoIviewactiveservers.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewuserlocations" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewuserlocations</value>
-    </property>
-    <property name="name">
-      <value>How do I view user locations?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_onlineAdministratorGuide/howdoIviewuserlocations.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewactivesessions" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewactivesessions</value>
-    </property>
-    <property name="name">
-      <value>How do I view active sessions?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_onlineAdministratorGuide/howdoIviewactivesessions.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIrefreshlocationsessionandserverdata" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIrefreshlocationsessionandserverdata</value>
-    </property>
-    <property name="name">
-      <value>How do I refresh location, session, and server data?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_onlineAdministratorGuide/howdoIrefreshlocationsessionandserverdata.html</value>
-    </property>
-  </bean>
-  <bean id="pASystemAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>PA System</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatisthePASystem"/>
-        <ref bean="howdoIcreateabannersystemmessage"/>
-        <ref bean="howdoIeditabannersystemmessage"/>
-        <ref bean="howdoIdeleteabannersystemmessage"/>
-        <ref bean="howdoIcreateapopupsystemmessage"/>
-        <ref bean="howdoIeditanexistingpopupsystemmessage"/>
-        <ref bean="howdoIdeleteapopupsystemmessage"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatisthePASystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatisthePASystem</value>
-    </property>
-    <property name="name">
-      <value>What is the PA System?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_pASystemAdministratorGuide/whatisthePASystem.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.pASystem</value>
-    </property>
-  </bean>
-  <bean id="howdoIcreateabannersystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIcreateabannersystemmessage</value>
-    </property>
-    <property name="name">
-      <value>How do I create a banner system message?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIcreateabannersystemmessage.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIeditabannersystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIeditabannersystemmessage</value>
-    </property>
-    <property name="name">
-      <value>How do I edit a banner system message?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIeditabannersystemmessage.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdeleteabannersystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdeleteabannersystemmessage</value>
-    </property>
-    <property name="name">
-      <value>How do I delete a banner system message?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIdeleteabannersystemmessage.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIcreateapopupsystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIcreateapopupsystemmessage</value>
-    </property>
-    <property name="name">
-      <value>How do I create a popup system message?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIcreateapopupsystemmessage.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIeditanexistingpopupsystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIeditanexistingpopupsystemmessage</value>
-    </property>
-    <property name="name">
-      <value>How do I edit an existing popup system message?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIeditanexistingpopupsystemmessage.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdeleteapopupsystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdeleteapopupsystemmessage</value>
-    </property>
-    <property name="name">
-      <value>How do I delete a popup system message?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIdeleteapopupsystemmessage.html</value>
-    </property>
-  </bean>
-  <bean id="permissionsandRolesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Permissions and Roles</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatarePermissionsandRoles"/>
-        <ref bean="howdoIchangeparticipantroleswithinasite"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatarePermissionsandRoles" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatarePermissionsandRoles</value>
-    </property>
-    <property name="name">
-      <value>What are Permissions and Roles?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_permissionsandRolesAdministratorGuide/whatarePermissionsandRoles.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.permissionsandRoles</value>
-    </property>
-  </bean>
-  <bean id="howdoIchangeparticipantroleswithinasite" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIchangeparticipantroleswithinasite</value>
-    </property>
-    <property name="name">
-      <value>How do I change participant roles within a site?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_permissionsandRolesAdministratorGuide/howdoIchangeparticipantroleswithinasite.html</value>
-    </property>
-  </bean>
-  <bean id="realmsAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Realms</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatareRealms"/>
-        <ref bean="howdoIsearchRealms"/>
-        <ref bean="howdoImodifyanexistingrolewithinaRealm"/>
-        <ref bean="howdoIcreateaneworcustomrolewithinaRealm"/>
-        <ref bean="whatdothevariousrealmsinSakaido"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatareRealms" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatareRealms</value>
-    </property>
-    <property name="name">
-      <value>What are Realms?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_realmsAdministratorGuide/whatareRealms.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.realms</value>
-    </property>
-  </bean>
-  <bean id="howdoIsearchRealms" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIsearchRealms</value>
-    </property>
-    <property name="name">
-      <value>How do I search Realms?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_realmsAdministratorGuide/howdoIsearchRealms.html</value>
-    </property>
-  </bean>
-  <bean id="howdoImodifyanexistingrolewithinaRealm" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoImodifyanexistingrolewithinaRealm</value>
-    </property>
-    <property name="name">
-      <value>How do I modify an existing role within a Realm?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_realmsAdministratorGuide/howdoImodifyanexistingrolewithinaRealm.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIcreateaneworcustomrolewithinaRealm" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIcreateaneworcustomrolewithinaRealm</value>
-    </property>
-    <property name="name">
-      <value>How do I create a new, or custom role within a Realm?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_realmsAdministratorGuide/howdoIcreateaneworcustomrolewithinaRealm.html</value>
-    </property>
-  </bean>
-  <bean id="whatdothevariousrealmsinSakaido" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatdothevariousrealmsinSakaido</value>
-    </property>
-    <property name="name">
-      <value>What do the various realms in Sakai do?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_realmsAdministratorGuide/whatdothevariousrealmsinSakaido.html</value>
-    </property>
-  </bean>
-  <bean id="resourcesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Resources</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatResourcesarespecifictoadminusers"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatResourcesarespecifictoadminusers" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatResourcesarespecifictoadminusers</value>
-    </property>
-    <property name="name">
-      <value>What Resources are specific to admin users?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_resourcesAdministratorGuide/whatResourcesarespecifictoadminusers.html</value>
-    </property>
-  </bean>
-  <bean id="searchAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Search</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="searchAdministration"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="searchAdministration" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>searchAdministration</value>
-    </property>
-    <property name="name">
-      <value>Search Administration</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_searchAdministratorGuide/searchAdministration.html</value>
-    </property>
-  </bean>
-  <bean id="siteArchiveAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Site Archive</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheSiteArchivetool"/>
-        <ref bean="howdoIexportarchiveanindividualsite"/>
-        <ref bean="howdoIbatchexportorarchivemultiplesites"/>
-        <ref bean="howdoIdownloadarchivefiles"/>
-        <ref bean="howdoIimportanindividualsitearchive"/>
-        <ref bean="howdoIbatchimportmultiplesitearchives"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheSiteArchivetool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheSiteArchivetool</value>
-    </property>
-    <property name="name">
-      <value>What is the Site Archive tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_siteArchiveAdministratorGuide/whatistheSiteArchivetool.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.archive</value>
-    </property>
-  </bean>
-  <bean id="howdoIexportarchiveanindividualsite" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIexportarchiveanindividualsite</value>
-    </property>
-    <property name="name">
-      <value>How do I export/archive an individual site?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIexportarchiveanindividualsite.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIbatchexportorarchivemultiplesites" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIbatchexportorarchivemultiplesites</value>
-    </property>
-    <property name="name">
-      <value>How do I batch export or archive multiple sites?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIbatchexportorarchivemultiplesites.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdownloadarchivefiles" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdownloadarchivefiles</value>
-    </property>
-    <property name="name">
-      <value>How do I download archive files?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIdownloadarchivefiles.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIimportanindividualsitearchive" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIimportanindividualsitearchive</value>
-    </property>
-    <property name="name">
-      <value>How do I import an individual site archive?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIimportanindividualsitearchive.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIbatchimportmultiplesitearchives" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIbatchimportmultiplesitearchives</value>
-    </property>
-    <property name="name">
-      <value>How do I batch import multiple site archives?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIbatchimportmultiplesitearchives.html</value>
-    </property>
-  </bean>
-  <bean id="sitesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Sites</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheSitestool"/>
-        <ref bean="howdoIsearchforasiteusingtheSitestool"/>
-        <ref bean="howdoIaddasiteusingtheSitestool"/>
-        <ref bean="howdoIeditasiteusingtheSitestool"/>
-        <ref bean="howdoISoftDeleteasitefromtheSitestool"/>
-        <ref bean="howdoIaddastealthedtooltoasite"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheSitestool</value>
-    </property>
-    <property name="name">
-      <value>What is the Sites tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitesAdministratorGuide/whatistheSitestool.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.sites</value>
-    </property>
-  </bean>
-  <bean id="howdoIsearchforasiteusingtheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIsearchforasiteusingtheSitestool</value>
-    </property>
-    <property name="name">
-      <value>How do I search for a site using the Sites tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitesAdministratorGuide/howdoIsearchforasiteusingtheSitestool.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIaddasiteusingtheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaddasiteusingtheSitestool</value>
-    </property>
-    <property name="name">
-      <value>How do I add a site using the Sites tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitesAdministratorGuide/howdoIaddasiteusingtheSitestool.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIeditasiteusingtheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIeditasiteusingtheSitestool</value>
-    </property>
-    <property name="name">
-      <value>How do I edit a site using the Sites tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitesAdministratorGuide/howdoIeditasiteusingtheSitestool.html</value>
-    </property>
-  </bean>
-  <bean id="howdoISoftDeleteasitefromtheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoISoftDeleteasitefromtheSitestool</value>
-    </property>
-    <property name="name">
-      <value>How do I Soft Delete a site from the Sites tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitesAdministratorGuide/howdoISoftDeleteasitefromtheSitestool.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIaddastealthedtooltoasite" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaddastealthedtooltoasite</value>
-    </property>
-    <property name="name">
-      <value>How do I add a stealthed tool to a site?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitesAdministratorGuide/howdoIaddastealthedtooltoasite.html</value>
-    </property>
-  </bean>
-  <bean id="sitestatsAdminAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Sitestats Admin</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatisSitestatsAdmin"/>
-        <ref bean="howdoIviewreportsforaspecificsite"/>
-        <ref bean="howdoIcreatepredefinedreportsavailablethroughoutthesystem"/>
-        <ref bean="howdoIviewserverwidereports"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatisSitestatsAdmin" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatisSitestatsAdmin</value>
-    </property>
-    <property name="name">
-      <value>What is Sitestats Admin?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitestatsAdminAdministratorGuide/whatisSitestatsAdmin.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.sitestats.admin</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewreportsforaspecificsite" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewreportsforaspecificsite</value>
-    </property>
-    <property name="name">
-      <value>How do I view reports for a specific site?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitestatsAdminAdministratorGuide/howdoIviewreportsforaspecificsite.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIcreatepredefinedreportsavailablethroughoutthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIcreatepredefinedreportsavailablethroughoutthesystem</value>
-    </property>
-    <property name="name">
-      <value>How do I create predefined reports available throughout the system?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitestatsAdminAdministratorGuide/howdoIcreatepredefinedreportsavailablethroughoutthesystem.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewserverwidereports" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewserverwidereports</value>
-    </property>
-    <property name="name">
-      <value>How do I view server-wide reports?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_sitestatsAdminAdministratorGuide/howdoIviewserverwidereports.html</value>
-    </property>
-  </bean>
-  <bean id="usersAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Users</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatistheUserstool"/>
-        <ref bean="howdoIaddanewaccount"/>
-        <ref bean="howdoIcreatemultiplenewuseraccountsbyimportingafile"/>
-        <ref bean="howdoIsearchforauseraccount"/>
-        <ref bean="howdoIeditauseraccount"/>
-        <ref bean="howdoIdisableauseraccount"/>
-        <ref bean="howdoIremoveauseraccount"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatistheUserstool" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatistheUserstool</value>
-    </property>
-    <property name="name">
-      <value>What is the Users tool?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_usersAdministratorGuide/whatistheUserstool.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.users</value>
-    </property>
-  </bean>
-  <bean id="howdoIaddanewaccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIaddanewaccount</value>
-    </property>
-    <property name="name">
-      <value>How do I add a new account?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_usersAdministratorGuide/howdoIaddanewaccount.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIcreatemultiplenewuseraccountsbyimportingafile" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIcreatemultiplenewuseraccountsbyimportingafile</value>
-    </property>
-    <property name="name">
-      <value>How do I create multiple new user accounts by importing a file?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_usersAdministratorGuide/howdoIcreatemultiplenewuseraccountsbyimportingafile.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIsearchforauseraccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIsearchforauseraccount</value>
-    </property>
-    <property name="name">
-      <value>How do I search for a user account?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_usersAdministratorGuide/howdoIsearchforauseraccount.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIeditauseraccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIeditauseraccount</value>
-    </property>
-    <property name="name">
-      <value>How do I edit a user account?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_usersAdministratorGuide/howdoIeditauseraccount.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdisableauseraccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdisableauseraccount</value>
-    </property>
-    <property name="name">
-      <value>How do I disable a user account?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_usersAdministratorGuide/howdoIdisableauseraccount.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIremoveauseraccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIremoveauseraccount</value>
-    </property>
-    <property name="name">
-      <value>How do I remove a user account?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_usersAdministratorGuide/howdoIremoveauseraccount.html</value>
-    </property>
-  </bean>
-  <bean id="userMembershipAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>User Membership</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatisUserMembership"/>
-        <ref bean="howdoIsearchforanaccountinUserMembership"/>
-        <ref bean="howdoIfiltersearchresultsinUserMembership"/>
-        <ref bean="howdoIexportsearchresultsfromUserMembership"/>
-        <ref bean="howdoImakeauserinactiveinmultiplesites"/>
-        <ref bean="howdoImakeauseractiveinmultiplesites"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatisUserMembership" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatisUserMembership</value>
-    </property>
-    <property name="name">
-      <value>What is User Membership?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_userMembershipAdministratorGuide/whatisUserMembership.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.membership</value>
-    </property>
-  </bean>
-  <bean id="howdoIsearchforanaccountinUserMembership" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIsearchforanaccountinUserMembership</value>
-    </property>
-    <property name="name">
-      <value>How do I search for an account in User Membership?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoIsearchforanaccountinUserMembership.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIfiltersearchresultsinUserMembership" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIfiltersearchresultsinUserMembership</value>
-    </property>
-    <property name="name">
-      <value>How do I filter search results in User Membership?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoIfiltersearchresultsinUserMembership.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIexportsearchresultsfromUserMembership" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIexportsearchresultsfromUserMembership</value>
-    </property>
-    <property name="name">
-      <value>How do I export search results from User Membership?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoIexportsearchresultsfromUserMembership.html</value>
-    </property>
-  </bean>
-  <bean id="howdoImakeauserinactiveinmultiplesites" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoImakeauserinactiveinmultiplesites</value>
-    </property>
-    <property name="name">
-      <value>How do I make a user inactive in multiple sites?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoImakeauserinactiveinmultiplesites.html</value>
-    </property>
-  </bean>
-  <bean id="howdoImakeauseractiveinmultiplesites" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoImakeauseractiveinmultiplesites</value>
-    </property>
-    <property name="name">
-      <value>How do I make a user active in multiple sites?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoImakeauseractiveinmultiplesites.html</value>
-    </property>
-  </bean>
-  <bean id="worksiteSetupAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
-    <property name="name">
-      <value>Worksite Setup</value>
-    </property>
-    <property name="resources">
-      <list>
-        <ref bean="whatisWorksiteSetup"/>
-        <ref bean="howdoesWorksiteSetupdifferforadminusers"/>
-        <ref bean="howdoIdefinethedefaultsetoftoolsaddedtositeonsitecreation"/>
-        <ref bean="howaresitesdeleted"/>
-        <ref bean="howdoISoftDeleteasitefromWorksiteSetup"/>
-        <ref bean="howdoIrestoreasoftlydeletedsite"/>
-        <ref bean="howdoIHardDeleteasite"/>
-      </list>
-    </property>
-  </bean>
-  <bean id="whatisWorksiteSetup" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>whatisWorksiteSetup</value>
-    </property>
-    <property name="name">
-      <value>What is Worksite Setup?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/whatisWorksiteSetup.html</value>
-    </property>
-    <property name="defaultForTool">
-      <value>sakai.sitesetup</value>
-    </property>
-  </bean>
-  <bean id="howdoesWorksiteSetupdifferforadminusers" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoesWorksiteSetupdifferforadminusers</value>
-    </property>
-    <property name="name">
-      <value>How does Worksite Setup differ for admin users?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoesWorksiteSetupdifferforadminusers.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIdefinethedefaultsetoftoolsaddedtositeonsitecreation" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIdefinethedefaultsetoftoolsaddedtositeonsitecreation</value>
-    </property>
-    <property name="name">
-      <value>How do I define the default set of tools added to site on site creation?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoIdefinethedefaultsetoftoolsaddedtositeonsitecreation.html</value>
-    </property>
-  </bean>
-  <bean id="howaresitesdeleted" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howaresitesdeleted</value>
-    </property>
-    <property name="name">
-      <value>How are sites deleted?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howaresitesdeleted.html</value>
-    </property>
-  </bean>
-  <bean id="howdoISoftDeleteasitefromWorksiteSetup" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoISoftDeleteasitefromWorksiteSetup</value>
-    </property>
-    <property name="name">
-      <value>How do I Soft Delete a site from Worksite Setup?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoISoftDeleteasitefromWorksiteSetup.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIrestoreasoftlydeletedsite" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIrestoreasoftlydeletedsite</value>
-    </property>
-    <property name="name">
-      <value>How do I restore a softly deleted site?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoIrestoreasoftlydeletedsite.html</value>
-    </property>
-  </bean>
-  <bean id="howdoIHardDeleteasite" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIHardDeleteasite</value>
-    </property>
-    <property name="name">
-      <value>How do I Hard Delete a site?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoIHardDeleteasite.html</value>
     </property>
   </bean>
   <bean id="userGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
@@ -1631,6 +22,7 @@
         <ref bean="accessibilityUserGuide"/>
         <ref bean="announcementsUserGuide"/>
         <ref bean="assignmentsUserGuide"/>
+        <ref bean="bullhornsUserGuide"/>
         <ref bean="calendarUserGuide"/>
         <ref bean="chatUserGuide"/>
         <ref bean="commonsUserGuide"/>
@@ -1646,6 +38,7 @@
         <ref bean="lessonsUserGuide"/>
         <ref bean="messagesUserGuide"/>
         <ref bean="newsUserGuide"/>
+        <ref bean="overviewUserGuide"/>
         <ref bean="permissionsandRolesUserGuide"/>
         <ref bean="podcastsUserGuide"/>
         <ref bean="pollsUserGuide"/>
@@ -1654,6 +47,7 @@
         <ref bean="resourcesUserGuide"/>
         <ref bean="richTextEditorUserGuide"/>
         <ref bean="rosterUserGuide"/>
+        <ref bean="rubricsUserGuide"/>
         <ref bean="searchUserGuide"/>
         <ref bean="sectionInfoUserGuide"/>
         <ref bean="signUpUserGuide"/>
@@ -1707,6 +101,7 @@
         <ref bean="howcanchoicesinbackgroundandtextcoloraffectaccessibility"/>
         <ref bean="howcanIstructuremydocumenttomakeitmoreaccessible"/>
         <ref bean="whyshouldIuseparagraphbreaksinmydocument"/>
+        <ref bean="howdoIcheckmycontentforaccessibility"/>
       </list>
     </property>
   </bean>
@@ -1834,6 +229,17 @@
       <value>/sakai_screensteps_accessibilityUserGuide/whyshouldIuseparagraphbreaksinmydocument.html</value>
     </property>
   </bean>
+  <bean id="howdoIcheckmycontentforaccessibility" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcheckmycontentforaccessibility</value>
+    </property>
+    <property name="name">
+      <value>How do I check my content for accessibility?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_accessibilityUserGuide/howdoIcheckmycontentforaccessibility.html</value>
+    </property>
+  </bean>
   <bean id="announcementsUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
     <property name="name">
       <value>Announcements</value>
@@ -1957,6 +363,7 @@
         <ref bean="howdostudentssubmitanassignment"/>
         <ref bean="howdoIsubmitanassignmentonbehalfofastudent"/>
         <ref bean="howdoIgradeanassignment"/>
+        <ref bean="howdoIgradeanassignmentusingthelegacygradinginterface"/>
         <ref bean="howdostudentscompleteapeerassessmentassignment"/>
         <ref bean="howdoIgradeapeerreviewassignment"/>
         <ref bean="howdoIdownloadassignmentsforgradingoffline"/>
@@ -2069,6 +476,17 @@
       <value>/sakai_screensteps_assignmentsUserGuide/howdoIgradeanassignment.html</value>
     </property>
   </bean>
+  <bean id="howdoIgradeanassignmentusingthelegacygradinginterface" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIgradeanassignmentusingthelegacygradinginterface</value>
+    </property>
+    <property name="name">
+      <value>How do I grade an assignment using the legacy grading interface?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_assignmentsUserGuide/howdoIgradeanassignmentusingthelegacygradinginterface.html</value>
+    </property>
+  </bean>
   <bean id="howdostudentscompleteapeerassessmentassignment" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
       <value>howdostudentscompleteapeerassessmentassignment</value>
@@ -2146,6 +564,66 @@
       <value>/sakai_screensteps_assignmentsUserGuide/howdoIchangetheAssignmentstoolpermissions.html</value>
     </property>
   </bean>
+  <bean id="bullhornsUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Bullhorns</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatareBullhorns"/>
+        <ref bean="howareBullhornalertscreated"/>
+        <ref bean="howdoIclearmyBullhornalerts"/>
+        <ref bean="howdoIviewthecontentofanBullhornalert"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatareBullhorns" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatareBullhorns</value>
+    </property>
+    <property name="name">
+      <value>What are Bullhorns?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_bullhornsUserGuide/whatareBullhorns.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.bullhorns</value>
+    </property>
+  </bean>
+  <bean id="howareBullhornalertscreated" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howareBullhornalertscreated</value>
+    </property>
+    <property name="name">
+      <value>How are Bullhorn alerts created?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_bullhornsUserGuide/howareBullhornalertscreated.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIclearmyBullhornalerts" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIclearmyBullhornalerts</value>
+    </property>
+    <property name="name">
+      <value>How do I clear my Bullhorn alerts?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_bullhornsUserGuide/howdoIclearmyBullhornalerts.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewthecontentofanBullhornalert" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewthecontentofanBullhornalert</value>
+    </property>
+    <property name="name">
+      <value>How do I view the content of an Bullhorn alert?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_bullhornsUserGuide/howdoIviewthecontentofanBullhornalert.html</value>
+    </property>
+  </bean>
   <bean id="calendarUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
     <property name="name">
       <value>Calendar</value>
@@ -2163,6 +641,7 @@
         <ref bean="howdoImergetheCalendarwithanothersite"/>
         <ref bean="howdoIimportCalendarentriesfromafile"/>
         <ref bean="howdoImodifyCalendarpermissions"/>
+        <ref bean="howdoImergeexternalcalendars"/>
       </list>
     </property>
   </bean>
@@ -2290,6 +769,17 @@
       <value>/sakai_screensteps_calendarUserGuide/howdoImodifyCalendarpermissions.html</value>
     </property>
   </bean>
+  <bean id="howdoImergeexternalcalendars" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoImergeexternalcalendars</value>
+    </property>
+    <property name="name">
+      <value>How do I merge external calendars?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_calendarUserGuide/howdoImergeexternalcalendars.html</value>
+    </property>
+  </bean>
   <bean id="chatUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
     <property name="name">
       <value>Chat</value>
@@ -2381,6 +871,7 @@
     <property name="resources">
       <list>
         <ref bean="whatistheCommonstool"/>
+        <ref bean="howdoIsetpermissionsinCommons"/>
         <ref bean="howdoIcreateapostinCommons"/>
         <ref bean="howdoIcommentreplytoapostinCommons"/>
         <ref bean="howdoIeditapostinCommons"/>
@@ -2402,6 +893,17 @@
     </property>
     <property name="defaultForTool">
       <value>sakai.commons</value>
+    </property>
+  </bean>
+  <bean id="howdoIsetpermissionsinCommons" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsetpermissionsinCommons</value>
+    </property>
+    <property name="name">
+      <value>How do I set permissions in Commons?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_commonsUserGuide/howdoIsetpermissionsinCommons.html</value>
     </property>
   </bean>
   <bean id="howdoIcreateapostinCommons" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -2929,7 +1431,7 @@
       <value>howdoIreplytoaforumpostieconversation</value>
     </property>
     <property name="name">
-      <value>How do I reply to a forum post (i.e. conversation)?</value>
+      <value>How do I reply to a forum post (i.e., conversation)?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_forumsUserGuide/howdoIreplytoaforumpostieconversation.html</value>
@@ -2951,7 +1453,7 @@
       <value>howdoIdeleteaforumpostieconversation</value>
     </property>
     <property name="name">
-      <value>How do I delete a forum post (i.e. conversation)?</value>
+      <value>How do I delete a forum post (i.e., conversation)?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_forumsUserGuide/howdoIdeleteaforumpostieconversation.html</value>
@@ -3041,12 +1543,15 @@
     <property name="resources">
       <list>
         <ref bean="whatisGradebook"/>
-        <ref bean="howdoIviewandorganizeinformationinGradebook"/>
         <ref bean="howdoIsetupmyGradebook"/>
         <ref bean="howaregradescalculatedinGradebook"/>
         <ref bean="howdoIadditemstotheGradebook"/>
         <ref bean="howdoIenterandoreditgradesinGradebook"/>
+        <ref bean="howcaninstructorscustomizetheirGradebookdisplay"/>
+        <ref bean="whatactionscaninstructorsperformonindividualGradebookitems"/>
+        <ref bean="howdoinstructorsviewandprintindividualstudentgrades"/>
         <ref bean="howdoIexportgradesfromGradebook"/>
+        <ref bean="howdoIexcludeagradeforaspecificstudent"/>
         <ref bean="howdoIformatmyfileforimportinggradesintoGradebook"/>
         <ref bean="howdoIimportgradesintoGradebook"/>
         <ref bean="howdoIoverrideacoursegradeinGradebook"/>
@@ -3058,6 +1563,7 @@
         <ref bean="howdoIsetupasimplepointsbasedGradebook"/>
         <ref bean="howdoIsetupaGradebookwithcategoriesfororganizationandordroppinggrades"/>
         <ref bean="howdoIsetupaGradebookwithcategoriesandweighting"/>
+        <ref bean="howdoIsetemptycellstozeroforasinglegradeitem"/>
       </list>
     </property>
   </bean>
@@ -3073,17 +1579,6 @@
     </property>
     <property name="defaultForTool">
       <value>sakai.gradebookng</value>
-    </property>
-  </bean>
-  <bean id="howdoIviewandorganizeinformationinGradebook" class="org.sakaiproject.component.app.help.model.ResourceBean">
-    <property name="docId">
-      <value>howdoIviewandorganizeinformationinGradebook</value>
-    </property>
-    <property name="name">
-      <value>How do I view and organize information in Gradebook?</value>
-    </property>
-    <property name="location">
-      <value>/sakai_screensteps_gradebookUserGuide/howdoIviewandorganizeinformationinGradebook.html</value>
     </property>
   </bean>
   <bean id="howdoIsetupmyGradebook" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -3130,6 +1625,39 @@
       <value>/sakai_screensteps_gradebookUserGuide/howdoIenterandoreditgradesinGradebook.html</value>
     </property>
   </bean>
+  <bean id="howcaninstructorscustomizetheirGradebookdisplay" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howcaninstructorscustomizetheirGradebookdisplay</value>
+    </property>
+    <property name="name">
+      <value>How can instructors customize their Gradebook display?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_gradebookUserGuide/howcaninstructorscustomizetheirGradebookdisplay.html</value>
+    </property>
+  </bean>
+  <bean id="whatactionscaninstructorsperformonindividualGradebookitems" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatactionscaninstructorsperformonindividualGradebookitems</value>
+    </property>
+    <property name="name">
+      <value>What actions can instructors perform on individual Gradebook items?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_gradebookUserGuide/whatactionscaninstructorsperformonindividualGradebookitems.html</value>
+    </property>
+  </bean>
+  <bean id="howdoinstructorsviewandprintindividualstudentgrades" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoinstructorsviewandprintindividualstudentgrades</value>
+    </property>
+    <property name="name">
+      <value>How do instructors view and print individual student grades?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_gradebookUserGuide/howdoinstructorsviewandprintindividualstudentgrades.html</value>
+    </property>
+  </bean>
   <bean id="howdoIexportgradesfromGradebook" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
       <value>howdoIexportgradesfromGradebook</value>
@@ -3139,6 +1667,17 @@
     </property>
     <property name="location">
       <value>/sakai_screensteps_gradebookUserGuide/howdoIexportgradesfromGradebook.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIexcludeagradeforaspecificstudent" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIexcludeagradeforaspecificstudent</value>
+    </property>
+    <property name="name">
+      <value>How do I exclude a grade for a specific student?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_gradebookUserGuide/howdoIexcludeagradeforaspecificstudent.html</value>
     </property>
   </bean>
   <bean id="howdoIformatmyfileforimportinggradesintoGradebook" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -3260,6 +1799,17 @@
     </property>
     <property name="location">
       <value>/sakai_screensteps_gradebookUserGuide/howdoIsetupaGradebookwithcategoriesandweighting.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIsetemptycellstozeroforasinglegradeitem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsetemptycellstozeroforasinglegradeitem</value>
+    </property>
+    <property name="name">
+      <value>How do I set empty cells to zero for a single grade item?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_gradebookUserGuide/howdoIsetemptycellstozeroforasinglegradeitem.html</value>
     </property>
   </bean>
   <bean id="homeUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
@@ -3412,6 +1962,17 @@
       <value>sakai.singleuser</value>
     </property>
   </bean>
+  <bean id="whatisWorksiteSetup" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatisWorksiteSetup</value>
+    </property>
+    <property name="name">
+      <value>What is Worksite Setup?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_homeUserGuide/whatisWorksiteSetup.html</value>
+    </property>
+  </bean>
   <bean id="whatisthePreferencestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
       <value>whatisthePreferencestool</value>
@@ -3470,7 +2031,7 @@
         <ref bean="howdoIdeleteaLessonssubpage"/>
         <ref bean="howdoIexportLessonscontent"/>
         <ref bean="howdoIimportLessonscontent"/>
-        <ref bean="howdostudentaddcontenttoStudentPagesinLessons"/>
+        <ref bean="howdostudentsaddcontenttoStudentPagesinLessons"/>
         <ref bean="howdoIcreatemultiplesectionsonaLessonspage"/>
         <ref bean="howdoIcreatetwocolumnsonaLessonspage"/>
         <ref bean="howdoIcreatetwocolumnsinsideablockonaLessonspage"/>
@@ -3485,6 +2046,7 @@
         <ref bean="howdoIuploadcontentinazipfileonaLessonspage"/>
         <ref bean="howdoIaddanexternaltoolonaLessonspage"/>
         <ref bean="howdoIenableLessonssubpagenavigationintheToolMenu"/>
+        <ref bean="howdoIassignanownertoaLessonspage"/>
       </list>
     </property>
   </bean>
@@ -3788,15 +2350,15 @@
       <value>/sakai_screensteps_lessonsUserGuide/howdoIimportLessonscontent.html</value>
     </property>
   </bean>
-  <bean id="howdostudentaddcontenttoStudentPagesinLessons" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="howdostudentsaddcontenttoStudentPagesinLessons" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>howdostudentaddcontenttoStudentPagesinLessons</value>
+      <value>howdostudentsaddcontenttoStudentPagesinLessons</value>
     </property>
     <property name="name">
-      <value>How do student add content to Student Pages in Lessons?</value>
+      <value>How do students add content to Student Pages in Lessons?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_lessonsUserGuide/howdostudentaddcontenttoStudentPagesinLessons.html</value>
+      <value>/sakai_screensteps_lessonsUserGuide/howdostudentsaddcontenttoStudentPagesinLessons.html</value>
     </property>
   </bean>
   <bean id="howdoIcreatemultiplesectionsonaLessonspage" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -3951,6 +2513,17 @@
     </property>
     <property name="location">
       <value>/sakai_screensteps_lessonsUserGuide/howdoIenableLessonssubpagenavigationintheToolMenu.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIassignanownertoaLessonspage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIassignanownertoaLessonspage</value>
+    </property>
+    <property name="name">
+      <value>How do I assign an "owner" to a Lessons page?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_lessonsUserGuide/howdoIassignanownertoaLessonspage.html</value>
     </property>
   </bean>
   <bean id="messagesUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
@@ -4145,6 +2718,54 @@
       <value>/sakai_screensteps_newsUserGuide/howdoIdeleteaNewstool.html</value>
     </property>
   </bean>
+  <bean id="overviewUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Overview</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatisOverview"/>
+        <ref bean="howdoIedittheOverviewsiteinformationdisplay"/>
+        <ref bean="howdoIchangethelayoutoftheOverviewpage"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatisOverview" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatisOverview</value>
+    </property>
+    <property name="name">
+      <value>What is Overview?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_overviewUserGuide/whatisOverview.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.iframe.site</value>
+    </property>
+  </bean>
+  <bean id="howdoIedittheOverviewsiteinformationdisplay" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIedittheOverviewsiteinformationdisplay</value>
+    </property>
+    <property name="name">
+      <value>How do I edit the Overview site information display?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_overviewUserGuide/howdoIedittheOverviewsiteinformationdisplay.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIchangethelayoutoftheOverviewpage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIchangethelayoutoftheOverviewpage</value>
+    </property>
+    <property name="name">
+      <value>How do I change the layout of the Overview page?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_overviewUserGuide/howdoIchangethelayoutoftheOverviewpage.html</value>
+    </property>
+  </bean>
   <bean id="permissionsandRolesUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
     <property name="name">
       <value>Permissions and Roles</value>
@@ -4154,6 +2775,31 @@
         <ref bean="whatarePermissionsandRoles"/>
         <ref bean="howdoIchangeparticipantroleswithinasite"/>
       </list>
+    </property>
+  </bean>
+  <bean id="whatarePermissionsandRoles" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatarePermissionsandRoles</value>
+    </property>
+    <property name="name">
+      <value>What are Permissions and Roles?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_permissionsandRolesUserGuide/whatarePermissionsandRoles.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.permissionsandRoles</value>
+    </property>
+  </bean>
+  <bean id="howdoIchangeparticipantroleswithinasite" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIchangeparticipantroleswithinasite</value>
+    </property>
+    <property name="name">
+      <value>How do I change participant roles within a site?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_permissionsandRolesUserGuide/howdoIchangeparticipantroleswithinasite.html</value>
     </property>
   </bean>
   <bean id="podcastsUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
@@ -4274,7 +2920,7 @@
         <ref bean="howdoIaddanewpoll"/>
         <ref bean="howdoItakeapoll"/>
         <ref bean="howdoIviewpollresults"/>
-        <ref bean="howdoImodifyPollstoolpermissions"/>
+        <ref bean="howdoImodifythePollstoolpermissions"/>
         <ref bean="howdoIeditapoll"/>
         <ref bean="howdoIresetapoll"/>
         <ref bean="howdoIremoveapoll"/>
@@ -4328,15 +2974,15 @@
       <value>/sakai_screensteps_pollsUserGuide/howdoIviewpollresults.html</value>
     </property>
   </bean>
-  <bean id="howdoImodifyPollstoolpermissions" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="howdoImodifythePollstoolpermissions" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>howdoImodifyPollstoolpermissions</value>
+      <value>howdoImodifythePollstoolpermissions</value>
     </property>
     <property name="name">
-      <value>How do I modify Polls tool permissions?</value>
+      <value>How do I modify the Polls tool permissions?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_pollsUserGuide/howdoImodifyPollstoolpermissions.html</value>
+      <value>/sakai_screensteps_pollsUserGuide/howdoImodifythePollstoolpermissions.html</value>
     </property>
   </bean>
   <bean id="howdoIeditapoll" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -4994,6 +3640,7 @@
         <ref bean="howdoIembedanmp4videoinatextbox"/>
         <ref bean="howdoIembedanmp3audioinatextbox"/>
         <ref bean="howdoIsetmypreferencefortheRichTextEditormode"/>
+        <ref bean="howdoIchangethelefttorightlanguagedirection"/>
       </list>
     </property>
   </bean>
@@ -5027,7 +3674,7 @@
       <value>whataresomekeyboardshortcutsfortheRichTextEditor</value>
     </property>
     <property name="name">
-      <value>What are some keyboard shortcuts for the Rich-Text Editor?</value>
+      <value>What are some keyboard shortcuts for the Rich Text Editor?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_richTextEditorUserGuide/whataresomekeyboardshortcutsfortheRichTextEditor.html</value>
@@ -5170,10 +3817,21 @@
       <value>howdoIsetmypreferencefortheRichTextEditormode</value>
     </property>
     <property name="name">
-      <value>How do I set my preference for the Rich-Text Editor mode?</value>
+      <value>How do I set my preference for the Rich Text Editor mode?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_richTextEditorUserGuide/howdoIsetmypreferencefortheRichTextEditormode.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIchangethelefttorightlanguagedirection" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIchangethelefttorightlanguagedirection</value>
+    </property>
+    <property name="name">
+      <value>How do I change the left to right language direction?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_richTextEditorUserGuide/howdoIchangethelefttorightlanguagedirection.html</value>
     </property>
   </bean>
   <bean id="rosterUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
@@ -5246,6 +3904,222 @@
     </property>
     <property name="location">
       <value>/sakai_screensteps_rosterUserGuide/howdoIeditRostertoolpermissions.html</value>
+    </property>
+  </bean>
+  <bean id="rubricsUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Rubrics</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatareRubrics"/>
+        <ref bean="howdoIaddarubrictomysite"/>
+        <ref bean="howdoIeditarubric"/>
+        <ref bean="howdoIcopyarubric"/>
+        <ref bean="howdoIdeletearubric"/>
+        <ref bean="howdoIsharearubric"/>
+        <ref bean="howdoIstopsharingarubric"/>
+        <ref bean="howdoIaddarubrictoanassignment"/>
+        <ref bean="howdoIaddarubrictoaforumtopic"/>
+        <ref bean="howdoIaddarubrictoanassessmentietestorquiz"/>
+        <ref bean="howdoIaddarubrictoaGradebookitem"/>
+        <ref bean="howdoIgradeanassignmentusingarubric"/>
+        <ref bean="howdoIgradeanassignmentusingarubricinthelegacygradinginterface"/>
+        <ref bean="howdoIgradeaforumtopicusingarubric"/>
+        <ref bean="howdoIgradeanassessmentietestorquizusingarubric"/>
+        <ref bean="howdoIgradeagradebookitemusingarubric"/>
+        <ref bean="howdoIviewmyrubricfeedbackasastudent"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatareRubrics" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatareRubrics</value>
+    </property>
+    <property name="name">
+      <value>What are Rubrics?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/whatareRubrics.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.rubrics</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddarubrictomysite" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddarubrictomysite</value>
+    </property>
+    <property name="name">
+      <value>How do I add a rubric to my site?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIaddarubrictomysite.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIeditarubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIeditarubric</value>
+    </property>
+    <property name="name">
+      <value>How do I edit a rubric?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIeditarubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIcopyarubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcopyarubric</value>
+    </property>
+    <property name="name">
+      <value>How do I copy a rubric?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIcopyarubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdeletearubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdeletearubric</value>
+    </property>
+    <property name="name">
+      <value>How do I delete a rubric?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIdeletearubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIsharearubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsharearubric</value>
+    </property>
+    <property name="name">
+      <value>How do I share a rubric?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIsharearubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIstopsharingarubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIstopsharingarubric</value>
+    </property>
+    <property name="name">
+      <value>How do I stop sharing a rubric?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIstopsharingarubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddarubrictoanassignment" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddarubrictoanassignment</value>
+    </property>
+    <property name="name">
+      <value>How do I add a rubric to an assignment?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIaddarubrictoanassignment.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddarubrictoaforumtopic" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddarubrictoaforumtopic</value>
+    </property>
+    <property name="name">
+      <value>How do I add a rubric to a forum topic?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIaddarubrictoaforumtopic.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddarubrictoanassessmentietestorquiz" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddarubrictoanassessmentietestorquiz</value>
+    </property>
+    <property name="name">
+      <value>How do I add a rubric to an assessment (i.e., test or quiz)?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIaddarubrictoanassessmentietestorquiz.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddarubrictoaGradebookitem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddarubrictoaGradebookitem</value>
+    </property>
+    <property name="name">
+      <value>How do I add a rubric to a Gradebook item?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIaddarubrictoaGradebookitem.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIgradeanassignmentusingarubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIgradeanassignmentusingarubric</value>
+    </property>
+    <property name="name">
+      <value>How do I grade an assignment using a rubric?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIgradeanassignmentusingarubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIgradeanassignmentusingarubricinthelegacygradinginterface" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIgradeanassignmentusingarubricinthelegacygradinginterface</value>
+    </property>
+    <property name="name">
+      <value>How do I grade an assignment using a rubric in the legacy grading interface?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIgradeanassignmentusingarubricinthelegacygradinginterface.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIgradeaforumtopicusingarubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIgradeaforumtopicusingarubric</value>
+    </property>
+    <property name="name">
+      <value>How do I grade a forum topic using a rubric?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIgradeaforumtopicusingarubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIgradeanassessmentietestorquizusingarubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIgradeanassessmentietestorquizusingarubric</value>
+    </property>
+    <property name="name">
+      <value>How do I grade an assessment (i.e. test or quiz) using a rubric? </value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIgradeanassessmentietestorquizusingarubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIgradeagradebookitemusingarubric" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIgradeagradebookitemusingarubric</value>
+    </property>
+    <property name="name">
+      <value>How do I grade a gradebook item using a rubric?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIgradeagradebookitemusingarubric.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewmyrubricfeedbackasastudent" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewmyrubricfeedbackasastudent</value>
+    </property>
+    <property name="name">
+      <value>How do I view my rubric feedback as a student?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_rubricsUserGuide/howdoIviewmyrubricfeedbackasastudent.html</value>
     </property>
   </bean>
   <bean id="searchUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
@@ -5434,56 +4308,56 @@
     </property>
     <property name="resources">
       <list>
-        <ref bean="whatistheSignUptool"/>
-        <ref bean="whatareSignUpmeetingtypes"/>
-        <ref bean="howdoIviewmeetingsinSignUp"/>
+        <ref bean="whatistheSignuptool"/>
+        <ref bean="whatareSignupmeetingtypes"/>
+        <ref bean="howdoIviewmeetingsinSignup"/>
         <ref bean="howdoIcreateameeting"/>
         <ref bean="howdoIeditameeting"/>
         <ref bean="howdoIlockorcancelatimeslot"/>
         <ref bean="howdoIcopyameeting"/>
         <ref bean="howdostudentsorparticipantssignupformeetings"/>
         <ref bean="howdoIexportmeetingdata"/>
-        <ref bean="howcanIusetheSignUptoolinmysite"/>
+        <ref bean="howcanIusetheSignuptoolinmysite"/>
         <ref bean="howdoImanuallyadduserstomeetings"/>
         <ref bean="howdoIaddmeetingstothesiteCalendar"/>
-        <ref bean="howdoImodifySignUptoolpermissions"/>
+        <ref bean="howdoImodifySignuptoolpermissions"/>
       </list>
     </property>
   </bean>
-  <bean id="whatistheSignUptool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="whatistheSignuptool" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>whatistheSignUptool</value>
+      <value>whatistheSignuptool</value>
     </property>
     <property name="name">
-      <value>What is the Sign-Up tool?</value>
+      <value>What is the Sign-up tool?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_signUpUserGuide/whatistheSignUptool.html</value>
+      <value>/sakai_screensteps_signUpUserGuide/whatistheSignuptool.html</value>
     </property>
     <property name="defaultForTool">
       <value>sakai.signup</value>
     </property>
   </bean>
-  <bean id="whatareSignUpmeetingtypes" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="whatareSignupmeetingtypes" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>whatareSignUpmeetingtypes</value>
+      <value>whatareSignupmeetingtypes</value>
     </property>
     <property name="name">
-      <value>What are Sign-Up meeting types?</value>
+      <value>What are Sign-up meeting types?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_signUpUserGuide/whatareSignUpmeetingtypes.html</value>
+      <value>/sakai_screensteps_signUpUserGuide/whatareSignupmeetingtypes.html</value>
     </property>
   </bean>
-  <bean id="howdoIviewmeetingsinSignUp" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="howdoIviewmeetingsinSignup" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>howdoIviewmeetingsinSignUp</value>
+      <value>howdoIviewmeetingsinSignup</value>
     </property>
     <property name="name">
-      <value>How do I view meetings in Sign-Up?</value>
+      <value>How do I view meetings in Sign-up?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_signUpUserGuide/howdoIviewmeetingsinSignUp.html</value>
+      <value>/sakai_screensteps_signUpUserGuide/howdoIviewmeetingsinSignup.html</value>
     </property>
   </bean>
   <bean id="howdoIcreateameeting" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -5552,15 +4426,15 @@
       <value>/sakai_screensteps_signUpUserGuide/howdoIexportmeetingdata.html</value>
     </property>
   </bean>
-  <bean id="howcanIusetheSignUptoolinmysite" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="howcanIusetheSignuptoolinmysite" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>howcanIusetheSignUptoolinmysite</value>
+      <value>howcanIusetheSignuptoolinmysite</value>
     </property>
     <property name="name">
-      <value>How can I use the Sign-Up tool in my site?</value>
+      <value>How can I use the Sign-up tool in my site?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_signUpUserGuide/howcanIusetheSignUptoolinmysite.html</value>
+      <value>/sakai_screensteps_signUpUserGuide/howcanIusetheSignuptoolinmysite.html</value>
     </property>
   </bean>
   <bean id="howdoImanuallyadduserstomeetings" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -5585,15 +4459,15 @@
       <value>/sakai_screensteps_signUpUserGuide/howdoIaddmeetingstothesiteCalendar.html</value>
     </property>
   </bean>
-  <bean id="howdoImodifySignUptoolpermissions" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="howdoImodifySignuptoolpermissions" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>howdoImodifySignUptoolpermissions</value>
+      <value>howdoImodifySignuptoolpermissions</value>
     </property>
     <property name="name">
-      <value>How do I modify Sign-Up tool permissions?</value>
+      <value>How do I modify Sign-up tool permissions?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_signUpUserGuide/howdoImodifySignUptoolpermissions.html</value>
+      <value>/sakai_screensteps_signUpUserGuide/howdoImodifySignuptoolpermissions.html</value>
     </property>
   </bean>
   <bean id="siteInfoUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
@@ -5616,7 +4490,7 @@
         <ref bean="howdoIcontrolsiteaccess"/>
         <ref bean="howdoImakemysitepubliclyavailable"/>
         <ref bean="howdoIduplicateasite"/>
-        <ref bean="howdoIcopymycontentfromonesitetoanother"/>
+        <ref bean="howdoIcopycontentfromonesitetoanotherieimportfromsite"/>
         <ref bean="howdoIimportcontentfromanarchivefile"/>
         <ref bean="whatistheUserAuditLog"/>
         <ref bean="howdoIaddLaTeXlanguagetomycoursesite"/>
@@ -5783,15 +4657,15 @@
       <value>/sakai_screensteps_siteInfoUserGuide/howdoIduplicateasite.html</value>
     </property>
   </bean>
-  <bean id="howdoIcopymycontentfromonesitetoanother" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="howdoIcopycontentfromonesitetoanotherieimportfromsite" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>howdoIcopymycontentfromonesitetoanother</value>
+      <value>howdoIcopycontentfromonesitetoanotherieimportfromsite</value>
     </property>
     <property name="name">
-      <value>How do I copy my content from one site to another?</value>
+      <value>How do I copy content from one site to another (i.e., import from site)?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_siteInfoUserGuide/howdoIcopymycontentfromonesitetoanother.html</value>
+      <value>/sakai_screensteps_siteInfoUserGuide/howdoIcopycontentfromonesitetoanotherieimportfromsite.html</value>
     </property>
   </bean>
   <bean id="howdoIimportcontentfromanarchivefile" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -5799,7 +4673,7 @@
       <value>howdoIimportcontentfromanarchivefile</value>
     </property>
     <property name="name">
-      <value>How do I import content from an archive file?</value>
+      <value>How do I import content from an archive file? </value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_siteInfoUserGuide/howdoIimportcontentfromanarchivefile.html</value>
@@ -5863,6 +4737,7 @@
         <ref bean="howdoIdeleteareport"/>
         <ref bean="howdoIprintareport"/>
         <ref bean="howdoIexportareport"/>
+        <ref bean="howdoIviewdetaileduseractivityreports"/>
         <ref bean="howdoImodifypreferencesintheStatisticstool"/>
       </list>
     </property>
@@ -5958,6 +4833,17 @@
       <value>/sakai_screensteps_statisticsUserGuide/howdoIexportareport.html</value>
     </property>
   </bean>
+  <bean id="howdoIviewdetaileduseractivityreports" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewdetaileduseractivityreports</value>
+    </property>
+    <property name="name">
+      <value>How do I view detailed user activity reports?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_statisticsUserGuide/howdoIviewdetaileduseractivityreports.html</value>
+    </property>
+  </bean>
   <bean id="howdoImodifypreferencesintheStatisticstool" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
       <value>howdoImodifypreferencesintheStatisticstool</value>
@@ -5984,7 +4870,7 @@
         <ref bean="howdoIprintthesyllabus"/>
         <ref bean="howdoIpointmysyllabustoawebpage"/>
         <ref bean="howdoIrearrangesyllabusitems"/>
-        <ref bean="howdoIpubishunpublishasyllabusitem"/>
+        <ref bean="howdoIpublishunpublishasyllabusitem"/>
         <ref bean="howdoIaddasyllabusitemtothecalendar"/>
         <ref bean="howdoIchangesyllabusitemaccess"/>
         <ref bean="howdoIdeleteasyllabusitem"/>
@@ -6093,15 +4979,15 @@
       <value>/sakai_screensteps_syllabusUserGuide/howdoIrearrangesyllabusitems.html</value>
     </property>
   </bean>
-  <bean id="howdoIpubishunpublishasyllabusitem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="howdoIpublishunpublishasyllabusitem" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>howdoIpubishunpublishasyllabusitem</value>
+      <value>howdoIpublishunpublishasyllabusitem</value>
     </property>
     <property name="name">
-      <value>How do I pubish/unpublish a syllabus item?</value>
+      <value>How do I publish/unpublish a syllabus item?</value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_syllabusUserGuide/howdoIpubishunpublishasyllabusitem.html</value>
+      <value>/sakai_screensteps_syllabusUserGuide/howdoIpublishunpublishasyllabusitem.html</value>
     </property>
   </bean>
   <bean id="howdoIaddasyllabusitemtothecalendar" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -6158,7 +5044,7 @@
         <ref bean="howdoIcreateasurvey"/>
         <ref bean="howdoIcreateastudentaudioresponsequestion"/>
         <ref bean="howdoIcreateafileuploadquestion"/>
-        <ref bean="howtoIaddmultiplepartstoanassessment"/>
+        <ref bean="howdoIaddmultiplepartstoanassessment"/>
         <ref bean="howdoIuseassessmentparts"/>
         <ref bean="whatisaquestionpool"/>
         <ref bean="howdoIaddcopymoveordeleteaquestionpool"/>
@@ -6193,6 +5079,7 @@
         <ref bean="whatinformationisinaTestsQuizzesemailnotification"/>
         <ref bean="howdostudentsviewassessmentietestorquizfeedback"/>
         <ref bean="howcananinstructorretrieveassessmentsthatweresavedbutnotsubmitted"/>
+        <ref bean="howdoIrestoreadeletedassessment"/>
       </list>
     </property>
   </bean>
@@ -6364,15 +5251,15 @@
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howdoIcreateafileuploadquestion.html</value>
     </property>
   </bean>
-  <bean id="howtoIaddmultiplepartstoanassessment" class="org.sakaiproject.component.app.help.model.ResourceBean">
+  <bean id="howdoIaddmultiplepartstoanassessment" class="org.sakaiproject.component.app.help.model.ResourceBean">
     <property name="docId">
-      <value>howtoIaddmultiplepartstoanassessment</value>
+      <value>howdoIaddmultiplepartstoanassessment</value>
     </property>
     <property name="name">
-      <value>How to I add multiple parts to an assessment? </value>
+      <value>How do I add multiple parts to an assessment? </value>
     </property>
     <property name="location">
-      <value>/sakai_screensteps_testsandQuizzesUserGuide/howtoIaddmultiplepartstoanassessment.html</value>
+      <value>/sakai_screensteps_testsandQuizzesUserGuide/howdoIaddmultiplepartstoanassessment.html</value>
     </property>
   </bean>
   <bean id="howdoIuseassessmentparts" class="org.sakaiproject.component.app.help.model.ResourceBean">
@@ -6567,7 +5454,7 @@
       <value>howdoIpublishanassessmentietestorquiz</value>
     </property>
     <property name="name">
-      <value>How do I publish an assessment (i.e. test or quiz)? </value>
+      <value>How do I publish an assessment (i.e., test or quiz)? </value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howdoIpublishanassessmentietestorquiz.html</value>
@@ -6578,7 +5465,7 @@
       <value>howdoIduplicateanassessmentietestorquiz</value>
     </property>
     <property name="name">
-      <value>How do I duplicate an assessment (i.e. test or quiz)?</value>
+      <value>How do I duplicate an assessment (i.e., test or quiz)?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howdoIduplicateanassessmentietestorquiz.html</value>
@@ -6589,7 +5476,7 @@
       <value>howdoIpreviewanassessmentietestorquiz</value>
     </property>
     <property name="name">
-      <value>How do I preview an assessment (i.e. test or quiz)?</value>
+      <value>How do I preview an assessment (i.e., test or quiz)?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howdoIpreviewanassessmentietestorquiz.html</value>
@@ -6600,7 +5487,7 @@
       <value>howdoIprintanassessmentietestorquiz</value>
     </property>
     <property name="name">
-      <value>How do I print an assessment (i.e. test or quiz)?</value>
+      <value>How do I print an assessment (i.e., test or quiz)?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howdoIprintanassessmentietestorquiz.html</value>
@@ -6655,7 +5542,7 @@
       <value>howdoIgivethesamescoreeg0toallstudentswithnosubmissionforanassessment</value>
     </property>
     <property name="name">
-      <value>How do I give the same score (e.g. 0) to all students with no submission for an assessment?</value>
+      <value>How do I give the same score (e.g., 0) to all students with no submission for an assessment?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howdoIgivethesamescoreeg0toallstudentswithnosubmissionforanassessment.html</value>
@@ -6710,7 +5597,7 @@
       <value>howdostudentssubmitanassessmentietestorquiz</value>
     </property>
     <property name="name">
-      <value>How do students submit an assessment (i.e. test or quiz)? </value>
+      <value>How do students submit an assessment (i.e., test or quiz)? </value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howdostudentssubmitanassessmentietestorquiz.html</value>
@@ -6732,7 +5619,7 @@
       <value>howdostudentsviewassessmentietestorquizfeedback</value>
     </property>
     <property name="name">
-      <value>How do students view assessment (i.e. test or quiz) feedback?</value>
+      <value>How do students view assessment (i.e., test or quiz) feedback?</value>
     </property>
     <property name="location">
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howdostudentsviewassessmentietestorquizfeedback.html</value>
@@ -6747,6 +5634,17 @@
     </property>
     <property name="location">
       <value>/sakai_screensteps_testsandQuizzesUserGuide/howcananinstructorretrieveassessmentsthatweresavedbutnotsubmitted.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIrestoreadeletedassessment" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIrestoreadeletedassessment</value>
+    </property>
+    <property name="name">
+      <value>How do I restore a deleted assessment?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_testsandQuizzesUserGuide/howdoIrestoreadeletedassessment.html</value>
     </property>
   </bean>
   <bean id="webContentUserGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
@@ -6963,6 +5861,1641 @@
     </property>
     <property name="location">
       <value>/sakai_screensteps_wikiUserGuide/howdoIsetwikipermissions.html</value>
+    </property>
+  </bean>
+  <bean id="administratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Administrator Guide</value>
+    </property>
+    <property name="categories">
+      <list>
+        <ref bean="academicTermManagerAdministratorGuide"/>
+        <ref bean="adminSitePermsAdministratorGuide"/>
+        <ref bean="aliasesAdministratorGuide"/>
+        <ref bean="announcementsorMessageoftheDayAdministratorGuide"/>
+        <ref bean="becomeUserAdministratorGuide"/>
+        <ref bean="delegatedAccessAdministratorGuide"/>
+        <ref bean="emailTemplatesAdministratorGuide"/>
+        <ref bean="eventsAdministratorGuide"/>
+        <ref bean="externalToolsAdministratorGuide"/>
+        <ref bean="jobSchedulerAdministratorGuide"/>
+        <ref bean="memoryAdministratorGuide"/>
+        <ref bean="messageBundleManagerAdministratorGuide"/>
+        <ref bean="onlineAdministratorGuide"/>
+        <ref bean="pASystemAdministratorGuide"/>
+        <ref bean="permissionsandRolesAdministratorGuide"/>
+        <ref bean="realmsAdministratorGuide"/>
+        <ref bean="resourcesAdministratorGuide"/>
+        <ref bean="searchAdministratorGuide"/>
+        <ref bean="siteArchiveAdministratorGuide"/>
+        <ref bean="sitesAdministratorGuide"/>
+        <ref bean="sitestatsAdminAdministratorGuide"/>
+        <ref bean="usersAdministratorGuide"/>
+        <ref bean="userMembershipAdministratorGuide"/>
+        <ref bean="worksiteSetupAdministratorGuide"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="academicTermManagerAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Academic Term Manager</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheAcademicTermManager"/>
+        <ref bean="howdoIaddanewterm"/>
+        <ref bean="howdoIeditanacademicterm"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheAcademicTermManager" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheAcademicTermManager</value>
+    </property>
+    <property name="name">
+      <value>What is the Academic Term Manager?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_academicTermManagerAdministratorGuide/whatistheAcademicTermManager.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.academicTermManager</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddanewterm" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddanewterm</value>
+    </property>
+    <property name="name">
+      <value>How do I add a new term?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_academicTermManagerAdministratorGuide/howdoIaddanewterm.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIeditanacademicterm" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIeditanacademicterm</value>
+    </property>
+    <property name="name">
+      <value>How do I edit an academic term?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_academicTermManagerAdministratorGuide/howdoIeditanacademicterm.html</value>
+    </property>
+  </bean>
+  <bean id="adminSitePermsAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Admin Site Perms</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheAdminSitePermstool"/>
+        <ref bean="howdoIaddsiterolepermissionsforallsites"/>
+        <ref bean="howdoIremovesiterolepermissionsforallsites"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheAdminSitePermstool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheAdminSitePermstool</value>
+    </property>
+    <property name="name">
+      <value>What is the Admin Site Perms tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_adminSitePermsAdministratorGuide/whatistheAdminSitePermstool.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.adminSitePerms</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddsiterolepermissionsforallsites" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddsiterolepermissionsforallsites</value>
+    </property>
+    <property name="name">
+      <value>How do I add site role permissions for all sites?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_adminSitePermsAdministratorGuide/howdoIaddsiterolepermissionsforallsites.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIremovesiterolepermissionsforallsites" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIremovesiterolepermissionsforallsites</value>
+    </property>
+    <property name="name">
+      <value>How do I remove site role permissions for all sites?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_adminSitePermsAdministratorGuide/howdoIremovesiterolepermissionsforallsites.html</value>
+    </property>
+  </bean>
+  <bean id="aliasesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Aliases</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatareAliases"/>
+        <ref bean="howdoIaddanalias"/>
+        <ref bean="howdoIdeleteanalias"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatareAliases" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatareAliases</value>
+    </property>
+    <property name="name">
+      <value>What are Aliases?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_aliasesAdministratorGuide/whatareAliases.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.aliases</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddanalias" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddanalias</value>
+    </property>
+    <property name="name">
+      <value>How do I add an alias?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_aliasesAdministratorGuide/howdoIaddanalias.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdeleteanalias" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdeleteanalias</value>
+    </property>
+    <property name="name">
+      <value>How do I delete an alias?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_aliasesAdministratorGuide/howdoIdeleteanalias.html</value>
+    </property>
+  </bean>
+  <bean id="announcementsorMessageoftheDayAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Announcements (or Message of the Day)</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheadminAnnouncementstoolorMessageoftheDayMOTD"/>
+        <ref bean="howdoIaddanMOTDannouncement"/>
+        <ref bean="howdoIeditanMOTDannouncement"/>
+        <ref bean="howdoIdeleteanMOTDannouncement"/>
+        <ref bean="howdoIreorderMOTDannouncements"/>
+        <ref bean="howdoIconfigureMOTDannouncementoptions"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheadminAnnouncementstoolorMessageoftheDayMOTD" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheadminAnnouncementstoolorMessageoftheDayMOTD</value>
+    </property>
+    <property name="name">
+      <value>What is the admin Announcements tool or Message of the Day (MOTD)?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/whatistheadminAnnouncementstoolorMessageoftheDayMOTD.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.announcementsorMessageoftheDay</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddanMOTDannouncement" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddanMOTDannouncement</value>
+    </property>
+    <property name="name">
+      <value>How do I add an MOTD announcement?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIaddanMOTDannouncement.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIeditanMOTDannouncement" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIeditanMOTDannouncement</value>
+    </property>
+    <property name="name">
+      <value>How do I edit an MOTD announcement?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIeditanMOTDannouncement.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdeleteanMOTDannouncement" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdeleteanMOTDannouncement</value>
+    </property>
+    <property name="name">
+      <value>How do I delete an MOTD announcement?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIdeleteanMOTDannouncement.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIreorderMOTDannouncements" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIreorderMOTDannouncements</value>
+    </property>
+    <property name="name">
+      <value>How do I reorder MOTD announcements?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIreorderMOTDannouncements.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIconfigureMOTDannouncementoptions" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIconfigureMOTDannouncementoptions</value>
+    </property>
+    <property name="name">
+      <value>How do I configure MOTD announcement options?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_announcementsorMessageoftheDayAdministratorGuide/howdoIconfigureMOTDannouncementoptions.html</value>
+    </property>
+  </bean>
+  <bean id="becomeUserAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Become User</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatisBecomeUser"/>
+        <ref bean="howdoIloginasanotheruser"/>
+        <ref bean="howdoIviewuserinfo"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatisBecomeUser" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatisBecomeUser</value>
+    </property>
+    <property name="name">
+      <value>What is Become User?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_becomeUserAdministratorGuide/whatisBecomeUser.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.becomeUser</value>
+    </property>
+  </bean>
+  <bean id="howdoIloginasanotheruser" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIloginasanotheruser</value>
+    </property>
+    <property name="name">
+      <value>How do I log in as another user?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_becomeUserAdministratorGuide/howdoIloginasanotheruser.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewuserinfo" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewuserinfo</value>
+    </property>
+    <property name="name">
+      <value>How do I view user info?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_becomeUserAdministratorGuide/howdoIviewuserinfo.html</value>
+    </property>
+  </bean>
+  <bean id="delegatedAccessAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Delegated Access</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatisDelegatedAccess"/>
+        <ref bean="howdoIletanonadminmanagedelegatedaccess"/>
+        <ref bean="howdoIletanonadminmanageshoppingperiodaccess"/>
+        <ref bean="howdoIdelegatesiteaccesstoauser"/>
+        <ref bean="howdoIedituserpermissionsinDelegatedAccess"/>
+        <ref bean="howdoIremoveuserpermissionsinDelegatedAccess"/>
+        <ref bean="howdoIsearchusersinDelegatedAccess"/>
+        <ref bean="howdoIaccessasiteviadelegatedaccess"/>
+        <ref bean="howdoIsetashoppingperiod"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatisDelegatedAccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatisDelegatedAccess</value>
+    </property>
+    <property name="name">
+      <value>What is Delegated Access?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/whatisDelegatedAccess.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.delegatedAccess</value>
+    </property>
+  </bean>
+  <bean id="howdoIletanonadminmanagedelegatedaccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIletanonadminmanagedelegatedaccess</value>
+    </property>
+    <property name="name">
+      <value>How do I let a non-admin manage delegated access?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIletanonadminmanagedelegatedaccess.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIletanonadminmanageshoppingperiodaccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIletanonadminmanageshoppingperiodaccess</value>
+    </property>
+    <property name="name">
+      <value>How do I let a non-admin manage shopping period access?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIletanonadminmanageshoppingperiodaccess.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdelegatesiteaccesstoauser" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdelegatesiteaccesstoauser</value>
+    </property>
+    <property name="name">
+      <value>How do I delegate site access to a user?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIdelegatesiteaccesstoauser.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIedituserpermissionsinDelegatedAccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIedituserpermissionsinDelegatedAccess</value>
+    </property>
+    <property name="name">
+      <value>How do I edit user permissions in Delegated Access?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIedituserpermissionsinDelegatedAccess.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIremoveuserpermissionsinDelegatedAccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIremoveuserpermissionsinDelegatedAccess</value>
+    </property>
+    <property name="name">
+      <value>How do I remove user permissions in Delegated Access?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIremoveuserpermissionsinDelegatedAccess.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIsearchusersinDelegatedAccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsearchusersinDelegatedAccess</value>
+    </property>
+    <property name="name">
+      <value>How do I search users in Delegated Access?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIsearchusersinDelegatedAccess.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaccessasiteviadelegatedaccess" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaccessasiteviadelegatedaccess</value>
+    </property>
+    <property name="name">
+      <value>How do I access a site via delegated access?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIaccessasiteviadelegatedaccess.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIsetashoppingperiod" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsetashoppingperiod</value>
+    </property>
+    <property name="name">
+      <value>How do I set a shopping period?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_delegatedAccessAdministratorGuide/howdoIsetashoppingperiod.html</value>
+    </property>
+  </bean>
+  <bean id="emailTemplatesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Email Templates</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheEmailTemplatestool"/>
+        <ref bean="howdoIeditanemailtemplate"/>
+        <ref bean="howdoIaddanewemailtemplate"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheEmailTemplatestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheEmailTemplatestool</value>
+    </property>
+    <property name="name">
+      <value>What is the Email Templates tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_emailTemplatesAdministratorGuide/whatistheEmailTemplatestool.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.emailTemplates</value>
+    </property>
+  </bean>
+  <bean id="howdoIeditanemailtemplate" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIeditanemailtemplate</value>
+    </property>
+    <property name="name">
+      <value>How do I edit an email template?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_emailTemplatesAdministratorGuide/howdoIeditanemailtemplate.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddanewemailtemplate" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddanewemailtemplate</value>
+    </property>
+    <property name="name">
+      <value>How do I add a new email template?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_emailTemplatesAdministratorGuide/howdoIaddanewemailtemplate.html</value>
+    </property>
+  </bean>
+  <bean id="eventsAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Events</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whataretheTestandQuizzesusereventsloggedbythesystem"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whataretheTestandQuizzesusereventsloggedbythesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whataretheTestandQuizzesusereventsloggedbythesystem</value>
+    </property>
+    <property name="name">
+      <value>What are the Test and Quizzes user events logged by the system?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_eventsAdministratorGuide/whataretheTestandQuizzesusereventsloggedbythesystem.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.events</value>
+    </property>
+  </bean>
+  <bean id="externalToolsAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>External Tools</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatareExternalTools"/>
+        <ref bean="howdoImakeanLTItoolavailabletositeowners"/>
+        <ref bean="howdoIviewcurrentlyinstalledLTI11toolsinthesystem"/>
+        <ref bean="howdoIaddanLTItooltoasiteasanadmin"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatareExternalTools" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatareExternalTools</value>
+    </property>
+    <property name="name">
+      <value>What are External Tools?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_externalToolsAdministratorGuide/whatareExternalTools.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.externalTools</value>
+    </property>
+  </bean>
+  <bean id="howdoImakeanLTItoolavailabletositeowners" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoImakeanLTItoolavailabletositeowners</value>
+    </property>
+    <property name="name">
+      <value>How do I make an LTI tool available to site owners?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_externalToolsAdministratorGuide/howdoImakeanLTItoolavailabletositeowners.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewcurrentlyinstalledLTI11toolsinthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewcurrentlyinstalledLTI11toolsinthesystem</value>
+    </property>
+    <property name="name">
+      <value>How do I view currently installed LTI 1.1 tools in the system?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_externalToolsAdministratorGuide/howdoIviewcurrentlyinstalledLTI11toolsinthesystem.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddanLTItooltoasiteasanadmin" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddanLTItooltoasiteasanadmin</value>
+    </property>
+    <property name="name">
+      <value>How do I add an LTI tool to a site as an admin?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_externalToolsAdministratorGuide/howdoIaddanLTItooltoasiteasanadmin.html</value>
+    </property>
+  </bean>
+  <bean id="jobSchedulerAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Job Scheduler</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheJobScheduler"/>
+        <ref bean="howdoIviewtheeventlog"/>
+        <ref bean="howdoIfilterevents"/>
+        <ref bean="howdoIviewjobs"/>
+        <ref bean="howdoIscheduleanewjob"/>
+        <ref bean="howdoIcreatecronexpressions"/>
+        <ref bean="howdoIdeleteajob"/>
+        <ref bean="howdoIviewrunningjobs"/>
+        <ref bean="howdoIpurgesoftlydeletedsites"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheJobScheduler" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheJobScheduler</value>
+    </property>
+    <property name="name">
+      <value>What is the Job Scheduler?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/whatistheJobScheduler.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.scheduler</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewtheeventlog" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewtheeventlog</value>
+    </property>
+    <property name="name">
+      <value>How do I view the event log?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIviewtheeventlog.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIfilterevents" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIfilterevents</value>
+    </property>
+    <property name="name">
+      <value>How do I filter events?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIfilterevents.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewjobs" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewjobs</value>
+    </property>
+    <property name="name">
+      <value>How do I view jobs?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIviewjobs.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIscheduleanewjob" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIscheduleanewjob</value>
+    </property>
+    <property name="name">
+      <value>How do I schedule a new job?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIscheduleanewjob.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIcreatecronexpressions" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcreatecronexpressions</value>
+    </property>
+    <property name="name">
+      <value>How do I create cron expressions?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIcreatecronexpressions.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdeleteajob" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdeleteajob</value>
+    </property>
+    <property name="name">
+      <value>How do I delete a job?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIdeleteajob.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewrunningjobs" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewrunningjobs</value>
+    </property>
+    <property name="name">
+      <value>How do I view running jobs?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIviewrunningjobs.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIpurgesoftlydeletedsites" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIpurgesoftlydeletedsites</value>
+    </property>
+    <property name="name">
+      <value>How do I purge softly deleted sites?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_jobSchedulerAdministratorGuide/howdoIpurgesoftlydeletedsites.html</value>
+    </property>
+  </bean>
+  <bean id="memoryAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Memory</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheadminMemorytool"/>
+        <ref bean="howdoIviewMemoryStatus"/>
+        <ref bean="howdoIlocatemaxedoutcaches"/>
+        <ref bean="howdoIresetallcaches"/>
+        <ref bean="howdoIevictexpiredmembers"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheadminMemorytool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheadminMemorytool</value>
+    </property>
+    <property name="name">
+      <value>What is the admin Memory tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_memoryAdministratorGuide/whatistheadminMemorytool.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.memory</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewMemoryStatus" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewMemoryStatus</value>
+    </property>
+    <property name="name">
+      <value>How do I view Memory Status?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_memoryAdministratorGuide/howdoIviewMemoryStatus.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIlocatemaxedoutcaches" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIlocatemaxedoutcaches</value>
+    </property>
+    <property name="name">
+      <value>How do I locate maxed out caches?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_memoryAdministratorGuide/howdoIlocatemaxedoutcaches.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIresetallcaches" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIresetallcaches</value>
+    </property>
+    <property name="name">
+      <value>How do I reset all caches?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_memoryAdministratorGuide/howdoIresetallcaches.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIevictexpiredmembers" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIevictexpiredmembers</value>
+    </property>
+    <property name="name">
+      <value>How do I evict expired members? </value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_memoryAdministratorGuide/howdoIevictexpiredmembers.html</value>
+    </property>
+  </bean>
+  <bean id="messageBundleManagerAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Message Bundle Manager</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheMessageBundleManagertool"/>
+        <ref bean="howdoIfindthenumberofmodifiedmessagesinthesystem"/>
+        <ref bean="howdoIsearchsystemmessages"/>
+        <ref bean="howdoIviewsystemmessagesbymodule"/>
+        <ref bean="howdoIcustomizeadefaultsystemmessage"/>
+        <ref bean="howdoIviewandeditmodifiedmessagesinthesystem"/>
+        <ref bean="howdoIdeleteamodifiedmessageandrevertbacktothedefaultvalue"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheMessageBundleManagertool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheMessageBundleManagertool</value>
+    </property>
+    <property name="name">
+      <value>What is the Message Bundle Manager tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/whatistheMessageBundleManagertool.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.messageBundleManager</value>
+    </property>
+  </bean>
+  <bean id="howdoIfindthenumberofmodifiedmessagesinthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIfindthenumberofmodifiedmessagesinthesystem</value>
+    </property>
+    <property name="name">
+      <value>How do I find the number of modified messages in the system?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIfindthenumberofmodifiedmessagesinthesystem.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIsearchsystemmessages" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsearchsystemmessages</value>
+    </property>
+    <property name="name">
+      <value>How do I search system messages?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIsearchsystemmessages.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewsystemmessagesbymodule" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewsystemmessagesbymodule</value>
+    </property>
+    <property name="name">
+      <value>How do I view system messages by module?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIviewsystemmessagesbymodule.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIcustomizeadefaultsystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcustomizeadefaultsystemmessage</value>
+    </property>
+    <property name="name">
+      <value>How do I customize a default system message?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIcustomizeadefaultsystemmessage.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewandeditmodifiedmessagesinthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewandeditmodifiedmessagesinthesystem</value>
+    </property>
+    <property name="name">
+      <value>How do I view and edit modified messages in the system?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIviewandeditmodifiedmessagesinthesystem.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdeleteamodifiedmessageandrevertbacktothedefaultvalue" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdeleteamodifiedmessageandrevertbacktothedefaultvalue</value>
+    </property>
+    <property name="name">
+      <value>How do I delete a modified message and revert back to the default value?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_messageBundleManagerAdministratorGuide/howdoIdeleteamodifiedmessageandrevertbacktothedefaultvalue.html</value>
+    </property>
+  </bean>
+  <bean id="onlineAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Online</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheOnlinetool"/>
+        <ref bean="howdoIviewactiveservers"/>
+        <ref bean="howdoIviewuserlocations"/>
+        <ref bean="howdoIviewactivesessions"/>
+        <ref bean="howdoIrefreshlocationsessionandserverdata"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheOnlinetool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheOnlinetool</value>
+    </property>
+    <property name="name">
+      <value>What is the Online tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_onlineAdministratorGuide/whatistheOnlinetool.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.online</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewactiveservers" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewactiveservers</value>
+    </property>
+    <property name="name">
+      <value>How do I view active servers?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_onlineAdministratorGuide/howdoIviewactiveservers.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewuserlocations" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewuserlocations</value>
+    </property>
+    <property name="name">
+      <value>How do I view user locations?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_onlineAdministratorGuide/howdoIviewuserlocations.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewactivesessions" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewactivesessions</value>
+    </property>
+    <property name="name">
+      <value>How do I view active sessions?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_onlineAdministratorGuide/howdoIviewactivesessions.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIrefreshlocationsessionandserverdata" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIrefreshlocationsessionandserverdata</value>
+    </property>
+    <property name="name">
+      <value>How do I refresh location, session, and server data?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_onlineAdministratorGuide/howdoIrefreshlocationsessionandserverdata.html</value>
+    </property>
+  </bean>
+  <bean id="pASystemAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>PA System</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatisthePASystem"/>
+        <ref bean="howdoIcreateabannersystemmessage"/>
+        <ref bean="howdoIeditabannersystemmessage"/>
+        <ref bean="howdoIdeleteabannersystemmessage"/>
+        <ref bean="howdoIcreateapopupsystemmessage"/>
+        <ref bean="howdoIeditanexistingpopupsystemmessage"/>
+        <ref bean="howdoIdeleteapopupsystemmessage"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatisthePASystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatisthePASystem</value>
+    </property>
+    <property name="name">
+      <value>What is the PA System?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_pASystemAdministratorGuide/whatisthePASystem.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.pASystem</value>
+    </property>
+  </bean>
+  <bean id="howdoIcreateabannersystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcreateabannersystemmessage</value>
+    </property>
+    <property name="name">
+      <value>How do I create a banner system message?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIcreateabannersystemmessage.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIeditabannersystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIeditabannersystemmessage</value>
+    </property>
+    <property name="name">
+      <value>How do I edit a banner system message?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIeditabannersystemmessage.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdeleteabannersystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdeleteabannersystemmessage</value>
+    </property>
+    <property name="name">
+      <value>How do I delete a banner system message?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIdeleteabannersystemmessage.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIcreateapopupsystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcreateapopupsystemmessage</value>
+    </property>
+    <property name="name">
+      <value>How do I create a popup system message?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIcreateapopupsystemmessage.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIeditanexistingpopupsystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIeditanexistingpopupsystemmessage</value>
+    </property>
+    <property name="name">
+      <value>How do I edit an existing popup system message?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIeditanexistingpopupsystemmessage.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdeleteapopupsystemmessage" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdeleteapopupsystemmessage</value>
+    </property>
+    <property name="name">
+      <value>How do I delete a popup system message?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_pASystemAdministratorGuide/howdoIdeleteapopupsystemmessage.html</value>
+    </property>
+  </bean>
+  <bean id="permissionsandRolesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Permissions and Roles</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatarePermissionsandRoles"/>
+        <ref bean="howdoIchangeparticipantroleswithinasite"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="realmsAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Realms</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatareRealms"/>
+        <ref bean="howdoIsearchRealms"/>
+        <ref bean="howdoImodifyanexistingrolewithinaRealm"/>
+        <ref bean="howdoIcreateaneworcustomrolewithinaRealm"/>
+        <ref bean="whatdothevariousrealmsinSakaido"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatareRealms" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatareRealms</value>
+    </property>
+    <property name="name">
+      <value>What are Realms?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_realmsAdministratorGuide/whatareRealms.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.realms</value>
+    </property>
+  </bean>
+  <bean id="howdoIsearchRealms" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsearchRealms</value>
+    </property>
+    <property name="name">
+      <value>How do I search Realms?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_realmsAdministratorGuide/howdoIsearchRealms.html</value>
+    </property>
+  </bean>
+  <bean id="howdoImodifyanexistingrolewithinaRealm" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoImodifyanexistingrolewithinaRealm</value>
+    </property>
+    <property name="name">
+      <value>How do I modify an existing role within a Realm?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_realmsAdministratorGuide/howdoImodifyanexistingrolewithinaRealm.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIcreateaneworcustomrolewithinaRealm" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcreateaneworcustomrolewithinaRealm</value>
+    </property>
+    <property name="name">
+      <value>How do I create a new, or custom role within a Realm?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_realmsAdministratorGuide/howdoIcreateaneworcustomrolewithinaRealm.html</value>
+    </property>
+  </bean>
+  <bean id="whatdothevariousrealmsinSakaido" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatdothevariousrealmsinSakaido</value>
+    </property>
+    <property name="name">
+      <value>What do the various realms in Sakai do?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_realmsAdministratorGuide/whatdothevariousrealmsinSakaido.html</value>
+    </property>
+  </bean>
+  <bean id="resourcesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Resources</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatResourcesarespecifictoadminusers"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatResourcesarespecifictoadminusers" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatResourcesarespecifictoadminusers</value>
+    </property>
+    <property name="name">
+      <value>What Resources are specific to admin users?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_resourcesAdministratorGuide/whatResourcesarespecifictoadminusers.html</value>
+    </property>
+  </bean>
+  <bean id="searchAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Search</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="searchAdministration"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="searchAdministration" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>searchAdministration</value>
+    </property>
+    <property name="name">
+      <value>Search Administration</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_searchAdministratorGuide/searchAdministration.html</value>
+    </property>
+  </bean>
+  <bean id="siteArchiveAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Site Archive</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheSiteArchivetool"/>
+        <ref bean="howdoIexportarchiveanindividualsite"/>
+        <ref bean="howdoIbatchexportorarchivemultiplesites"/>
+        <ref bean="howdoIdownloadarchivefiles"/>
+        <ref bean="howdoIimportanindividualsitearchive"/>
+        <ref bean="howdoIbatchimportmultiplesitearchives"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheSiteArchivetool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheSiteArchivetool</value>
+    </property>
+    <property name="name">
+      <value>What is the Site Archive tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_siteArchiveAdministratorGuide/whatistheSiteArchivetool.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.archive</value>
+    </property>
+  </bean>
+  <bean id="howdoIexportarchiveanindividualsite" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIexportarchiveanindividualsite</value>
+    </property>
+    <property name="name">
+      <value>How do I export/archive an individual site?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIexportarchiveanindividualsite.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIbatchexportorarchivemultiplesites" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIbatchexportorarchivemultiplesites</value>
+    </property>
+    <property name="name">
+      <value>How do I batch export or archive multiple sites?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIbatchexportorarchivemultiplesites.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdownloadarchivefiles" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdownloadarchivefiles</value>
+    </property>
+    <property name="name">
+      <value>How do I download archive files?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIdownloadarchivefiles.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIimportanindividualsitearchive" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIimportanindividualsitearchive</value>
+    </property>
+    <property name="name">
+      <value>How do I import an individual site archive?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIimportanindividualsitearchive.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIbatchimportmultiplesitearchives" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIbatchimportmultiplesitearchives</value>
+    </property>
+    <property name="name">
+      <value>How do I batch import multiple site archives?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_siteArchiveAdministratorGuide/howdoIbatchimportmultiplesitearchives.html</value>
+    </property>
+  </bean>
+  <bean id="sitesAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Sites</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheSitestool"/>
+        <ref bean="howdoIsearchforasiteusingtheSitestool"/>
+        <ref bean="howdoIaddasiteusingtheSitestool"/>
+        <ref bean="howdoIeditasiteusingtheSitestool"/>
+        <ref bean="howdoISoftDeleteasitefromtheSitestool"/>
+        <ref bean="howdoIaddastealthedtooltoasite"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheSitestool</value>
+    </property>
+    <property name="name">
+      <value>What is the Sites tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitesAdministratorGuide/whatistheSitestool.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.sites</value>
+    </property>
+  </bean>
+  <bean id="howdoIsearchforasiteusingtheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsearchforasiteusingtheSitestool</value>
+    </property>
+    <property name="name">
+      <value>How do I search for a site using the Sites tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitesAdministratorGuide/howdoIsearchforasiteusingtheSitestool.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddasiteusingtheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddasiteusingtheSitestool</value>
+    </property>
+    <property name="name">
+      <value>How do I add a site using the Sites tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitesAdministratorGuide/howdoIaddasiteusingtheSitestool.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIeditasiteusingtheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIeditasiteusingtheSitestool</value>
+    </property>
+    <property name="name">
+      <value>How do I edit a site using the Sites tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitesAdministratorGuide/howdoIeditasiteusingtheSitestool.html</value>
+    </property>
+  </bean>
+  <bean id="howdoISoftDeleteasitefromtheSitestool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoISoftDeleteasitefromtheSitestool</value>
+    </property>
+    <property name="name">
+      <value>How do I Soft Delete a site from the Sites tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitesAdministratorGuide/howdoISoftDeleteasitefromtheSitestool.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddastealthedtooltoasite" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddastealthedtooltoasite</value>
+    </property>
+    <property name="name">
+      <value>How do I add a stealthed tool to a site?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitesAdministratorGuide/howdoIaddastealthedtooltoasite.html</value>
+    </property>
+  </bean>
+  <bean id="sitestatsAdminAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Sitestats Admin</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatisSitestatsAdmin"/>
+        <ref bean="howdoIviewreportsforaspecificsite"/>
+        <ref bean="howdoIcreatepredefinedreportsavailablethroughoutthesystem"/>
+        <ref bean="howdoIviewserverwidereports"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatisSitestatsAdmin" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatisSitestatsAdmin</value>
+    </property>
+    <property name="name">
+      <value>What is Sitestats Admin?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitestatsAdminAdministratorGuide/whatisSitestatsAdmin.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.sitestats.admin</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewreportsforaspecificsite" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewreportsforaspecificsite</value>
+    </property>
+    <property name="name">
+      <value>How do I view reports for a specific site?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitestatsAdminAdministratorGuide/howdoIviewreportsforaspecificsite.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIcreatepredefinedreportsavailablethroughoutthesystem" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcreatepredefinedreportsavailablethroughoutthesystem</value>
+    </property>
+    <property name="name">
+      <value>How do I create predefined reports available throughout the system?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitestatsAdminAdministratorGuide/howdoIcreatepredefinedreportsavailablethroughoutthesystem.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIviewserverwidereports" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIviewserverwidereports</value>
+    </property>
+    <property name="name">
+      <value>How do I view server-wide reports?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_sitestatsAdminAdministratorGuide/howdoIviewserverwidereports.html</value>
+    </property>
+  </bean>
+  <bean id="usersAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Users</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatistheUserstool"/>
+        <ref bean="howdoIaddanewaccount"/>
+        <ref bean="howdoIcreatemultiplenewuseraccountsbyimportingafile"/>
+        <ref bean="howdoIsearchforauseraccount"/>
+        <ref bean="howdoIeditauseraccount"/>
+        <ref bean="howdoIdisableauseraccount"/>
+        <ref bean="howdoIremoveauseraccount"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatistheUserstool" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatistheUserstool</value>
+    </property>
+    <property name="name">
+      <value>What is the Users tool?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_usersAdministratorGuide/whatistheUserstool.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.users</value>
+    </property>
+  </bean>
+  <bean id="howdoIaddanewaccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIaddanewaccount</value>
+    </property>
+    <property name="name">
+      <value>How do I add a new account?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_usersAdministratorGuide/howdoIaddanewaccount.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIcreatemultiplenewuseraccountsbyimportingafile" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIcreatemultiplenewuseraccountsbyimportingafile</value>
+    </property>
+    <property name="name">
+      <value>How do I create multiple new user accounts by importing a file?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_usersAdministratorGuide/howdoIcreatemultiplenewuseraccountsbyimportingafile.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIsearchforauseraccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsearchforauseraccount</value>
+    </property>
+    <property name="name">
+      <value>How do I search for a user account?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_usersAdministratorGuide/howdoIsearchforauseraccount.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIeditauseraccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIeditauseraccount</value>
+    </property>
+    <property name="name">
+      <value>How do I edit a user account?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_usersAdministratorGuide/howdoIeditauseraccount.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIdisableauseraccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdisableauseraccount</value>
+    </property>
+    <property name="name">
+      <value>How do I disable a user account?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_usersAdministratorGuide/howdoIdisableauseraccount.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIremoveauseraccount" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIremoveauseraccount</value>
+    </property>
+    <property name="name">
+      <value>How do I remove a user account?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_usersAdministratorGuide/howdoIremoveauseraccount.html</value>
+    </property>
+  </bean>
+  <bean id="userMembershipAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>User Membership</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatisUserMembership"/>
+        <ref bean="howdoIsearchforanaccountinUserMembership"/>
+        <ref bean="howdoIfiltersearchresultsinUserMembership"/>
+        <ref bean="howdoIexportsearchresultsfromUserMembership"/>
+        <ref bean="howdoImakeauserinactiveinmultiplesites"/>
+        <ref bean="howdoImakeauseractiveinmultiplesites"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="whatisUserMembership" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>whatisUserMembership</value>
+    </property>
+    <property name="name">
+      <value>What is User Membership?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_userMembershipAdministratorGuide/whatisUserMembership.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.membership</value>
+    </property>
+  </bean>
+  <bean id="howdoIsearchforanaccountinUserMembership" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIsearchforanaccountinUserMembership</value>
+    </property>
+    <property name="name">
+      <value>How do I search for an account in User Membership?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoIsearchforanaccountinUserMembership.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIfiltersearchresultsinUserMembership" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIfiltersearchresultsinUserMembership</value>
+    </property>
+    <property name="name">
+      <value>How do I filter search results in User Membership?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoIfiltersearchresultsinUserMembership.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIexportsearchresultsfromUserMembership" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIexportsearchresultsfromUserMembership</value>
+    </property>
+    <property name="name">
+      <value>How do I export search results from User Membership?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoIexportsearchresultsfromUserMembership.html</value>
+    </property>
+  </bean>
+  <bean id="howdoImakeauserinactiveinmultiplesites" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoImakeauserinactiveinmultiplesites</value>
+    </property>
+    <property name="name">
+      <value>How do I make a user inactive in multiple sites?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoImakeauserinactiveinmultiplesites.html</value>
+    </property>
+  </bean>
+  <bean id="howdoImakeauseractiveinmultiplesites" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoImakeauseractiveinmultiplesites</value>
+    </property>
+    <property name="name">
+      <value>How do I make a user active in multiple sites?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_userMembershipAdministratorGuide/howdoImakeauseractiveinmultiplesites.html</value>
+    </property>
+  </bean>
+  <bean id="worksiteSetupAdministratorGuide" class="org.sakaiproject.component.app.help.model.CategoryBean">
+    <property name="name">
+      <value>Worksite Setup</value>
+    </property>
+    <property name="resources">
+      <list>
+        <ref bean="whatisWorksiteSetup"/>
+        <ref bean="howdoesWorksiteSetupdifferforadminusers"/>
+        <ref bean="howdoIdefinethedefaultsetoftoolsaddedtositeonsitecreation"/>
+        <ref bean="howaresitesdeleted"/>
+        <ref bean="howdoISoftDeleteasitefromWorksiteSetup"/>
+        <ref bean="howdoIrestoreasoftlydeletedsite"/>
+        <ref bean="howdoIHardDeleteasite"/>
+      </list>
+    </property>
+  </bean>
+  <bean id="howdoesWorksiteSetupdifferforadminusers" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoesWorksiteSetupdifferforadminusers</value>
+    </property>
+    <property name="name">
+      <value>How does Worksite Setup differ for admin users?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoesWorksiteSetupdifferforadminusers.html</value>
+    </property>
+    <property name="defaultForTool">
+      <value>sakai.sitesetup</value>
+    </property>
+  </bean>
+  <bean id="howdoIdefinethedefaultsetoftoolsaddedtositeonsitecreation" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIdefinethedefaultsetoftoolsaddedtositeonsitecreation</value>
+    </property>
+    <property name="name">
+      <value>How do I define the default set of tools added to site on site creation?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoIdefinethedefaultsetoftoolsaddedtositeonsitecreation.html</value>
+    </property>
+  </bean>
+  <bean id="howaresitesdeleted" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howaresitesdeleted</value>
+    </property>
+    <property name="name">
+      <value>How are sites deleted?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howaresitesdeleted.html</value>
+    </property>
+  </bean>
+  <bean id="howdoISoftDeleteasitefromWorksiteSetup" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoISoftDeleteasitefromWorksiteSetup</value>
+    </property>
+    <property name="name">
+      <value>How do I Soft Delete a site from Worksite Setup?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoISoftDeleteasitefromWorksiteSetup.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIrestoreasoftlydeletedsite" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIrestoreasoftlydeletedsite</value>
+    </property>
+    <property name="name">
+      <value>How do I restore a softly deleted site?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoIrestoreasoftlydeletedsite.html</value>
+    </property>
+  </bean>
+  <bean id="howdoIHardDeleteasite" class="org.sakaiproject.component.app.help.model.ResourceBean">
+    <property name="docId">
+      <value>howdoIHardDeleteasite</value>
+    </property>
+    <property name="name">
+      <value>How do I Hard Delete a site?</value>
+    </property>
+    <property name="location">
+      <value>/sakai_screensteps_worksiteSetupAdministratorGuide/howdoIHardDeleteasite.html</value>
     </property>
   </bean>
 </beans>

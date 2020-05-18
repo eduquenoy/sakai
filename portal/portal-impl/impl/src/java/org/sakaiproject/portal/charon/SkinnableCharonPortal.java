@@ -41,9 +41,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.sakaiproject.authz.api.Role;
 import org.sakaiproject.authz.api.SecurityService;
 import org.sakaiproject.component.cover.ComponentManager;
@@ -133,6 +132,8 @@ import org.sakaiproject.util.Resource;
 import org.sakaiproject.util.ResourceLoader;
 import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.Web;
+import org.sakaiproject.util.RequestFilter;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -156,7 +157,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	 * messages.
 	 */
 	private static ResourceLoader rloader = new ResourceLoader("sitenav");
-	private static ResourceLoader cmLoader = new Resource().getLoader("org.sakaiproject.portal.api.PortalService", "connection-manager");
+	private static ResourceLoader cmLoader = Resource.getResourceLoader("org.sakaiproject.portal.api.PortalService", "connection-manager");
 
 	/**
 	 * Parameter value to indicate to look up a tool ID within a site
@@ -194,7 +195,6 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 	private static final String INCLUDE_TITLE = "include-title";
 
     // SAK-22384
-    private static final String MATHJAX_ENABLED = "mathJaxAllowed";
     private static final String MATHJAX_SRC_PATH_SAKAI_PROP = "portal.mathjax.src.path";
     private static final String MATHJAX_ENABLED_SAKAI_PROP = "portal.mathjax.enabled";
     private static final boolean ENABLED_SAKAI_PROP_DEFAULT = true;
@@ -532,7 +532,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		PortalRenderContext rcontext = startPageContext(siteType, title, siteSkin, req, site);
 
 		// Make the top Url where the "top" url is
-		String portalTopUrl = Web.serverUrl(req)
+		String portalTopUrl = RequestFilter.serverUrl(req)
 		+ ServerConfigurationService.getString("portalPath") + "/";
 		if (prefix != null) portalTopUrl = portalTopUrl + prefix + "/";
 
@@ -574,7 +574,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		rcontext.put("allSites", siteView.getRenderContextObject());
 
 		includeLogin(rcontext, req, session);
-		includeBottom(rcontext);
+		includeBottom(rcontext, site);
 
 		return rcontext;
 	}
@@ -674,7 +674,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		// Reset is different for Portlets
 		if (isPortletPlacement(placement))
 		{
-			resetActionUrl = Web.serverUrl(req)
+			resetActionUrl = RequestFilter.serverUrl(req)
 			+ ServerConfigurationService.getString("portalPath")
 			+ URLUtils.getSafePathInfo(req) + "?sakai.state.reset=true";
 		}
@@ -725,7 +725,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				
 		if (renderResult.getJSR168HelpUrl() != null)
 		{
-			toolMap.put("toolJSR168Help", Web.serverUrl(req) + renderResult.getJSR168HelpUrl());
+			toolMap.put("toolJSR168Help", RequestFilter.serverUrl(req) + renderResult.getJSR168HelpUrl());
 		}
 
 		// Must have site.upd to see the Edit button
@@ -734,7 +734,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			if (securityService.unlock(SiteService.SECURE_UPDATE_SITE, site
 					.getReference()))
 			{
-				String editUrl = Web.serverUrl(req) + renderResult.getJSR168EditUrl();
+				String editUrl = RequestFilter.serverUrl(req) + renderResult.getJSR168EditUrl();
 				toolMap.put("toolJSR168Edit", editUrl);
 				toolMap.put("toolJSR168EditEncode", URLUtils.encodeUrl(editUrl));
 			}
@@ -1035,6 +1035,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		String universalAnalyticsId =  ServerConfigurationService.getString("portal.google.universal_analytics_id", null);
 		if ( universalAnalyticsId != null ) {
 			rcontext.put("googleUniversalAnalyticsId", universalAnalyticsId);
+			rcontext.put("googleAnonymizeIp", ServerConfigurationService.getBoolean("portal.google.anonymize.ip", false));
 		}
 
 		String analyticsId =  ServerConfigurationService.getString("portal.google.analytics_id", null);
@@ -1315,14 +1316,14 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
         {
                 if (site != null)
                 {                           
-                    String strMathJaxEnabledForSite = site.getProperties().getProperty(MATHJAX_ENABLED);
+                    String strMathJaxEnabledForSite = site.getProperties().getProperty(Site.PROP_SITE_MATHJAX_ALLOWED);
                     if (StringUtils.isNotBlank(strMathJaxEnabledForSite))
                     {
                         if (Boolean.valueOf(strMathJaxEnabledForSite))
                         {
                             // this call to MathJax.Hub.Config seems to be needed for MathJax to work in IE
-                            headJs.append("<script type=\"text/x-mathjax-config\">\nMathJax.Hub.Config({\ntex2jax: { inlineMath: [['\\\\(','\\\\)']] }\n});\n</script>\n");
-                            headJs.append("<script src=\"").append(MATHJAX_SRC_PATH).append("\"  language=\"JavaScript\" type=\"text/javascript\"></script>\n");
+                            headJs.append("<script type=\"text/x-mathjax-config\">\nMathJax.Hub.Config({\nmessageStyle: \"none\",\ntex2jax: { inlineMath: [['\\\\(','\\\\)']] }\n});\n</script>\n");
+                            headJs.append("<script src=\"").append(MATHJAX_SRC_PATH).append("\" type=\"text/javascript\"></script>\n");
                         }                     
                     }
                 }
@@ -1334,6 +1335,12 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		headJs.append("/library/js/headscripts.js");
 		headJs.append(PortalUtils.getCDNQuery());
 		headJs.append("\"></script>\n");
+
+		String [] parts = getParts(req);
+		if ((parts.length > 2) && (parts[1].equals("tool"))) {
+			headJs.append("<script src=\""+PortalUtils.getWebjarsPath()+"momentjs/"+PortalUtils.MOMENTJS_VERSION+"/min/moment-with-locales.min.js"+PortalUtils.getCDNQuery()+"\"></script>\n");
+		}
+
 		headJs.append("<script type=\"text/javascript\">var sakai = sakai || {}; sakai.editor = sakai.editor || {}; " +
 				"sakai.editor.editors = sakai.editor.editors || {}; " +
 				"sakai.editor.editors.ckeditor = sakai.editor.editors.ckeditor || {}; " +
@@ -1400,13 +1407,16 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		}
 
 		StringBuilder bodyonload = new StringBuilder();
+		String bodyclass = "Mrphs-container";
 		if (p != null)
 		{
 			String element = Web.escapeJavascript("Main" + p.getId());
 			bodyonload.append("setMainFrameHeight('" + element + "');");
+			bodyclass += " Mrphs-" + p.getToolId().replace(".","-");
 		}
 		bodyonload.append("setFocus(focus_path);");
 		req.setAttribute("sakai.html.body.onload", bodyonload.toString());
+		req.setAttribute("sakai.html.body.class", bodyclass.toString());
 
 		portalService.getRenderEngine(portalContext, req).setupForward(req, res, p, skin);
 	}
@@ -1461,6 +1471,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				} else {
 					toolContextPath = toolContextPath.replace("/~","/%7E");
 				}
+			} else if ( toolContextPath.indexOf(" ") > 0 && reqUrl.indexOf(" ") < 1 ) {
+				toolContextPath = toolContextPath.replace(" ","%20");
 			}
 		}
 		log.debug("forwardtool call {} toolPathInfo {} ctx {}", req.getRequestURL(), toolPathInfo, toolContextPath);
@@ -1575,7 +1587,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		return "Sakai Charon Portal";
 	}
 
-	public void includeBottom(PortalRenderContext rcontext)
+	public void includeBottom(PortalRenderContext rcontext, Site site)
 	{
 		if (rcontext.uses(INCLUDE_BOTTOM))
 		{
@@ -1679,9 +1691,26 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				rcontext.put("bottomNav", l);
 			}
 
-                        boolean neoChatAvailable
-                            = ServerConfigurationService.getBoolean("portal.neochat", true)
-                                && chatHelper.checkChatPermitted(thisUser);
+                        String neoChatProperty = ServerConfigurationService.getString(Site.PROP_SITE_PORTAL_NEOCHAT, "never");
+                        boolean neoChatAvailable = false;
+ 
+                        if ("true".equals(neoChatProperty) || "false".equals(neoChatProperty)) {
+                            neoChatAvailable = Boolean.valueOf(neoChatProperty);
+                            if (site != null) {
+                                String siteNeoChatStr = site.getProperties().getProperty(Site.PROP_SITE_PORTAL_NEOCHAT);
+                                if (siteNeoChatStr != null) {
+                                    neoChatAvailable = Boolean.valueOf(siteNeoChatStr);
+                                }
+                            }
+                        }
+
+                        if ("always".equals(neoChatProperty)) {
+                            neoChatAvailable = true;
+                        }
+
+                        if (!chatHelper.checkChatPermitted(thisUser)) {
+                            neoChatAvailable = false;
+                        }
 
                         rcontext.put("neoChat", neoChatAvailable);
                         rcontext.put("portalChatPollInterval", 
@@ -1734,8 +1763,8 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			{
 				List<Object> l = new ArrayList<Object>();
 				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("poweredByUrl", "http://sakaiproject.org");
-				m.put("poweredByImage", "/library/image/sakai_powered.gif");
+				m.put("poweredByUrl", "https://www.sakailms.org/");
+				m.put("poweredByImage", "/library/image/poweredBySakai.png");
 				m.put("poweredByAltText", "Powered by Sakai");
 				l.add(m);
 				rcontext.put("bottomNavPoweredBy", l);
@@ -1750,7 +1779,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 			boolean useBullhornAlerts = ServerConfigurationService.getBoolean("portal.bullhorns.enabled", true);
 			rcontext.put("useBullhornAlerts", useBullhornAlerts);
 			if (useBullhornAlerts) {
-				int bullhornAlertInterval = ServerConfigurationService.getInt("portal.bullhorns.poll.interval", 10000);
+				int bullhornAlertInterval = ServerConfigurationService.getInt("portal.bullhorns.poll.interval", 240000);
 				rcontext.put("bullhornsPollInterval", bullhornAlertInterval);
 			}
 
@@ -1774,7 +1803,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 		{
 
 			// for the main login/out link
-			String logInOutUrl = Web.serverUrl(req);
+			String logInOutUrl = RequestFilter.serverUrl(req);
 			String message = null;
 			String image1 = null;
 
@@ -1860,6 +1889,7 @@ public class SkinnableCharonPortal extends HttpServlet implements Portal
 				if (!impersonatorDisplayId.isEmpty())
 				{
 					message = rloader.getFormattedMessage("sit_return", impersonatorDisplayId);
+					rcontext.put("impersonatorDisplayId", impersonatorDisplayId);
 				}
 
 				// check for a logout text override

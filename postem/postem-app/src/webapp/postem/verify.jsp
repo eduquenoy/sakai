@@ -15,9 +15,19 @@
 </jsp:useBean>
 <f:view>
 	<sakai:view title="#{msgs.title_verify}">
+		<script src="/library/js/spinner.js"></script>
+		<script>includeLatestJQuery("postemVerify");</script>
+		<script>
+			$(document).ready(function() {
+				var menuLink = $('#postemAddMenuLink');
+				var menuLinkSpan = menuLink.closest('span');
+				menuLinkSpan.addClass('current');
+				menuLinkSpan.html(menuLink.text());
+			});
+		</script>
 		<sakai:view_content>
 			<h:form>
-			
+			<%@ include file="/postem/postemMenu.jsp" %>
 		 <sakai:tool_bar_message value="#{msgs.title_verify}" />
 			
 			<h:messages globalOnly="true" />
@@ -38,10 +48,13 @@
 				<sakai:button_bar>					
 					<sakai:button_bar_item
 						action="#{PostemTool.processCreateOk}"
-						value="#{msgs.bar_save}" />
+						value="#{msgs.bar_save}"
+						onclick="SPNR.disableControlsAndSpin(this, null);"
+						styleClass="active" />
 					<sakai:button_bar_item
 						action="#{PostemTool.processCreateBack}"
-						value="#{msgs.back}" />
+						value="#{msgs.back}"
+						onclick="SPNR.disableControlsAndSpin(this, null);" />
 				</sakai:button_bar>		  	
 
 			</h:form>

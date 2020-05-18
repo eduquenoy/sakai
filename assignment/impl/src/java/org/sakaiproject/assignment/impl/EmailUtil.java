@@ -1,9 +1,25 @@
+/**
+ * Copyright (c) 2003-2020 The Apereo Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *             http://opensource.org/licenses/ecl2
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.sakaiproject.assignment.impl;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import lombok.Setter;
@@ -25,7 +41,6 @@ import org.sakaiproject.user.api.User;
 import org.sakaiproject.user.api.UserDirectoryService;
 import org.sakaiproject.user.api.UserNotDefinedException;
 import org.sakaiproject.util.ResourceLoader;
-import org.sakaiproject.util.Validator;
 import org.sakaiproject.util.api.FormattedText;
 
 @Slf4j
@@ -35,6 +50,7 @@ public class EmailUtil {
     private static final String BOUNDARY_LINE = "\n\n--" + MULTIPART_BOUNDARY + "\n";
     private static final String TERMINATION_LINE = "\n\n--" + MULTIPART_BOUNDARY + "--\n\n";
     private static final String NEW_LINE = "<br />\n";
+    private static final String INDENT = "    ";
 
     @Setter private AssignmentService assignmentService;
     @Setter private DeveloperHelperService developerHelperService;
@@ -158,7 +174,10 @@ public class EmailUtil {
         buffer.append(resourceLoader.getString("noti.site.url")).append(" <a href=\"").append(siteUrl).append("\">").append(siteUrl).append("</a>").append(NEW_LINE);
         // assignment title and due date
         buffer.append(resourceLoader.getString("assignment.title")).append(" ").append(assignment.getTitle()).append(NEW_LINE);
-        buffer.append(resourceLoader.getString("noti.assignment.duedate")).append(" ").append(assignment.getDueDate().toString()).append(NEW_LINE).append(NEW_LINE);
+        if(!assignment.getHideDueDate()) {
+            String formattedDueDate = assignmentService.getUsersLocalDateTimeString(assignment.getDueDate());
+            buffer.append(resourceLoader.getString("noti.assignment.duedate")).append(" ").append(formattedDueDate).append(NEW_LINE).append(NEW_LINE);
+        }
         // submitter name and id
         String submitterNames = "";
         String submitterIds = "";
@@ -177,7 +196,7 @@ public class EmailUtil {
         }
         buffer.append(resourceLoader.getString("noti.student")).append(" ").append(submitterNames);
         if (submitterIds.length() != 0 && !isAnon) {
-            buffer.append("( ").append(submitterIds).append(" )");
+            buffer.append(" ( ").append(submitterIds).append(" )");
         }
         buffer.append(NEW_LINE).append(NEW_LINE);
 
@@ -185,12 +204,13 @@ public class EmailUtil {
         buffer.append(resourceLoader.getString("submission.id")).append(" ").append(submission.getId()).append(NEW_LINE);
 
         // submit time
-        buffer.append(resourceLoader.getString("noti.submit.time")).append(" ").append(submission.getDateSubmitted().toString()).append(NEW_LINE).append(NEW_LINE);
+	String formattedSubDate = assignmentService.getUsersLocalDateTimeString(submission.getDateSubmitted());
+        buffer.append(resourceLoader.getString("noti.submit.time")).append(" ").append(formattedSubDate).append(NEW_LINE).append(NEW_LINE);
 
         // submit text
         String text = StringUtils.trimToNull(submission.getSubmittedText());
         if (text != null) {
-            buffer.append(resourceLoader.getString("gen.submittedtext")).append(NEW_LINE).append(NEW_LINE).append(Validator.escapeHtmlFormattedText(text)).append(NEW_LINE).append(NEW_LINE);
+            buffer.append(resourceLoader.getString("gen.submittedtext")).append(NEW_LINE).append(NEW_LINE).append(formattedText.escapeHtmlFormattedText(text)).append(NEW_LINE).append(NEW_LINE);
         }
 
         // attachment if any
@@ -206,9 +226,16 @@ public class EmailUtil {
             //if this is a archive (zip etc) append the list of files in it
             attachments.stream().map(attachment -> entityManager.newReference(attachment)).forEach(reference -> {
                 ResourceProperties properties = reference.getProperties();
-                buffer.append(properties.getProperty(ResourceProperties.PROP_DISPLAY_NAME)).append(" (").append(reference.getProperties().getPropertyFormatted(ResourceProperties.PROP_CONTENT_LENGTH)).append(")\n");
+                boolean isArchiveFile = isArchiveFile(reference);
+                buffer.append(properties.getProperty(ResourceProperties.PROP_DISPLAY_NAME))
+                        .append(" (")
+                        .append(reference.getProperties().getPropertyFormatted(ResourceProperties.PROP_CONTENT_LENGTH))
+                        .append(isArchiveFile ? "):" : ")")
+                        .append(NEW_LINE);
                 if (isArchiveFile(reference)) {
-                    buffer.append(getArchiveManifest(reference));
+                    buffer.append("<blockquote>\n");
+                    buffer.append(getArchiveManifest(reference, true));
+                    buffer.append("</blockquote>\n");
                 }
             });
         }
@@ -235,7 +262,7 @@ public class EmailUtil {
         StringBuilder buffer = new StringBuilder();
         // site title and id
         buffer.append(resourceLoader.getString("noti.site.title")).append(" ").append(siteTitle).append(NEW_LINE);
-        buffer.append(resourceLoader.getString("noti.site.url")).append(" <a href=\"").append(siteUrl).append("\">").append(siteUrl).append("</a>").append(NEW_LINE);
+        buffer.append(resourceLoader.getString("noti.site.url")).append(" <a href=\"").append(siteUrl).append("\">").append(siteUrl).append("</a>").append(NEW_LINE).append(NEW_LINE);
         // notification text
         String linkToToolInSite = "<a href=\"" + developerHelperService.getToolViewURL("sakai.assignment.grades", null, null, null) + "\">" + siteTitle + "</a>";
         buffer.append(resourceLoader.getFormattedMessage("noti.releasegrade.text", assignment.getTitle(), linkToToolInSite));
@@ -262,7 +289,7 @@ public class EmailUtil {
         StringBuilder buffer = new StringBuilder();
         // site title and id
         buffer.append(resourceLoader.getString("noti.site.title")).append(" ").append(siteTitle).append(NEW_LINE);
-        buffer.append(resourceLoader.getString("noti.site.url")).append(" <a href=\"").append(siteUrl).append("\">").append(siteUrl).append("</a>").append(NEW_LINE);
+        buffer.append(resourceLoader.getString("noti.site.url")).append(" <a href=\"").append(siteUrl).append("\">").append(siteUrl).append("</a>").append(NEW_LINE).append(NEW_LINE);
         // notification text
         //Get the actual person that submitted, for a group submission just get the first person from that group (This is why the array is used)
         String userId = null;
@@ -273,7 +300,7 @@ public class EmailUtil {
         }
 
         String linkToToolInSite = "<a href=\"" + developerHelperService.getToolViewURL("sakai.assignment.grades", null, null, null) + "\">" + siteTitle + "</a>";
-        if (assignmentService.canSubmit(context, assignment, userId)) {
+        if (assignmentService.canSubmit(assignment, userId)) {
             buffer.append(resourceLoader.getFormattedMessage("noti.releaseresubmission.text", assignment.getTitle(), linkToToolInSite));
         } else {
             buffer.append(resourceLoader.getFormattedMessage("noti.releaseresubmission.noresubmit.text", assignment.getTitle(), linkToToolInSite));
@@ -294,13 +321,18 @@ public class EmailUtil {
             }
             body.append(NEW_LINE);
 
-            feedbackAttachments.stream().map(feedbackAttachment -> entityManager.newReference(feedbackAttachment)).forEach(reference -> {
-                ResourceProperties properties = reference.getProperties();
-                String attachmentName = properties.getProperty(ResourceProperties.PROP_DISPLAY_NAME);
-                String attachmentSize = properties.getPropertyFormatted(ResourceProperties.PROP_CONTENT_LENGTH);
-                body.append("<a href=\"").append(reference.getUrl()).append("\">").append(attachmentName).append(" (").append(attachmentSize).append(")").append("</a>");
-                body.append(NEW_LINE);
-            });
+            feedbackAttachments.stream()
+                    .filter(Objects::nonNull)
+                    .map(feedbackAttachment -> entityManager.newReference(feedbackAttachment))
+                    .forEach(reference -> {
+                        ResourceProperties properties = reference.getProperties();
+                        if (properties != null) {
+                            String attachmentName = StringUtils.defaultIfBlank(properties.getProperty(ResourceProperties.PROP_DISPLAY_NAME), reference.getId());
+                            String attachmentSize = StringUtils.defaultString(properties.getPropertyFormatted(ResourceProperties.PROP_CONTENT_LENGTH));
+                            body.append("<a href=\"").append(reference.getUrl()).append("\">").append(attachmentName).append(" (").append(attachmentSize).append(")").append("</a>");
+                            body.append(NEW_LINE);
+                        }
+                    });
         }
         return body.toString();
     }
@@ -317,23 +349,35 @@ public class EmailUtil {
     }
 
     private boolean isArchiveFile(Reference reference) {
-        String extension = getFileExtension(reference);
-        if (".zip".equals(extension)) {
-            return true;
-        }
-        return false;
+        return ".zip".equals(getFileExtension(reference));
     }
 
-    private Object getArchiveManifest(Reference r) {
+    /**
+     * get a list of the files in the archive
+     * @param r the entity reference for the archive file
+     * @param indent specifies whether each line should be prefixed with 4 spaces
+     * @return a formatted listing of the files in the archive
+     */
+    private String getArchiveManifest(Reference r, boolean indent) {
         String extension = getFileExtension(r);
         StringBuilder builder = new StringBuilder();
+        // assume archive is empty until at least one entry is found
+        boolean archiveIsEmpty = true;
         if (".zip".equals(extension)) {
             ZipContentUtil zipUtil = new ZipContentUtil();
             Map<String, Long> manifest = zipUtil.getZipManifest(r);
             Set<Map.Entry<String, Long>> set = manifest.entrySet();
+            archiveIsEmpty = set.isEmpty();
             for (Map.Entry<String, Long> entry : set) {
+                if (indent) {
+                    builder.append(INDENT);
+                }
                 builder.append(entry.getKey()).append(" (").append(formatFileSize(entry.getValue())).append(")").append(NEW_LINE);
             }
+        }
+
+        if (archiveIsEmpty) {
+            return INDENT + resourceLoader.getString("noti.archive.empty") + NEW_LINE;
         }
         return builder.toString();
     }

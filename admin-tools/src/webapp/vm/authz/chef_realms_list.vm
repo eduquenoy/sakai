@@ -7,7 +7,7 @@
 #if($menu)
 	#toolbar($menu)
 #end
-			#if ($alertMessage)<div class="alertMessage">$tlang.getString("realm.list.alert") $validator.escapeHtml($alertMessage)</div>#end
+			#if ($alertMessage)<div class="sak-banner-error">$tlang.getString("realm.list.alert") $formattedText.escapeHtml($alertMessage)</div>#end
 		<div class="instruction clear">
 			$tlang.getString("realm.list.these")
 		</div>
@@ -60,7 +60,7 @@
 				
 #if ($realms.size() > 0)
 	#set ($realmCount = 0)
-		<table class="listHier lines" cellspacing="0" summary ="$tlang.getString("realm.list.summary")">
+		<table class="table table-hover table-striped table-bordered" summary ="$tlang.getString("realm.list.summary")">
 			<tr>
 				<th id="Id">$tlang.getString("realm.list.realmid")</th>
 ##				<th id="Description">$tlang.getString("realm.list.used")</th>
@@ -70,19 +70,17 @@
 	#foreach ($realm in $realms)
 			<tr>
 				<td headers="Id">
-					<h4>
 						#if ($service.allowUpdate($realm.Id))
-							<a href="#toolLinkParam("$action" "doEdit" "id=$validator.escapeUrl($realm.Id)")" title="$tlang.getString("realm.edit.edit") $validator.escapeHtml($realm.Id)">
-								$validator.escapeHtml($realm.Id)
+							<a href="#toolLinkParam("$action" "doEdit" "id=$formattedText.escapeUrl($realm.Id)")" title="$tlang.getString("realm.edit.edit") $formattedText.escapeHtml($realm.Id)">
+								$formattedText.escapeHtml($realm.Id)
 							</a>
 						#elseif ($viewAllowed)
-							<a href="#toolLinkParam("$action" "doView" "id=$validator.escapeUrl($realm.Id)")" title="$tlang.getString("realm.view.view") $validator.escapeHtml($realm.Id)">
-								$validator.escapeHtml($realm.Id)
+							<a href="#toolLinkParam("$action" "doView" "id=$formattedText.escapeUrl($realm.Id)")" title="$tlang.getString("realm.view.view") $formattedText.escapeHtml($realm.Id)">
+								$formattedText.escapeHtml($realm.Id)
 							</a>
 						#else
-							$validator.escapeHtml($realm.Id)
+							$formattedText.escapeHtml($realm.Id)
 						#end
-					</h4>	
 				</td>
 ##				<td headers="Description">$!validator.escapeHtml($!realm.Description)</td>
 				<td headers="Provider">$!validator.escapeHtml($!realm.ProviderGroupId)</td>

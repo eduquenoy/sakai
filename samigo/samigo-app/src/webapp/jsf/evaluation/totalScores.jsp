@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f" %>
 <%@ taglib uri="http://www.sakaiproject.org/samigo" prefix="samigo" %>
-<%@ taglib uri="http://sakaiproject.org/jsf/sakai" prefix="sakai" %>
+<%@ taglib uri="http://sakaiproject.org/jsf2/sakai" prefix="sakai" %>
 <!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -38,10 +38,13 @@
 				background-color: #f1f1f1;
 			}
 		</style>
-        <samigo:script path="/../library/js/spinner.js"/>
+      <script src="/library/js/spinner.js"></script>
 <%@ include file="/js/delivery.js" %>
 
-<script type="text/javascript">
+      <script>includeWebjarLibrary('awesomplete')</script>
+      <script src="/library/js/sakai-reminder.js"></script>
+
+<script>
 function toPoint(id)
 {
   var x=document.getElementById(id).value
@@ -81,6 +84,13 @@ function disableIt()
 }
 
 $(document).ready(function(){
+
+  // The current class is assigned using Javascript because we don't use facelets and the include directive does not support parameters.
+  var currentLink = $('#editTotalResults\\:totalScoresMenuLink');
+  currentLink.addClass('current');
+  // Remove the link of the current option
+  currentLink.html(currentLink.find('a').text());
+
   $("a.sam-scoretable-deleteattempt").each(function(){
     this.existingOnclick = this.onclick;
     this.onclick = null;
@@ -92,6 +102,19 @@ $(document).ready(function(){
       }
     });
   });
+
+  var sakaiReminder = new SakaiReminder();
+  $('.awesomplete').each(function() {
+    new Awesomplete(this, {
+      list: sakaiReminder.getAll()
+    });
+  });
+  $('#editTotalResults').submit(function(e) {
+    $('textarea.awesomplete').each(function() {
+      sakaiReminder.new($(this).val());
+    });
+  });
+
 });
 </script>
 </head>
@@ -106,106 +129,46 @@ $(document).ready(function(){
   <!-- HEADINGS -->
   <%@ include file="/jsf/evaluation/evaluationHeadings.jsp" %>
 
-  <div class="page-header">
+  <h:panelGroup layout="block" styleClass="page-header">
     <h1>
-  	  <h:outputText value="#{commonMessages.total_scores}#{evaluationMessages.column} " escape="false"/>
-  	  <h:outputText value="#{totalScores.assessmentName} " escape="false"/>
+      <h:outputText value="#{commonMessages.total_scores}#{evaluationMessages.column} " escape="false"/>
+      <small><h:outputText value="#{totalScores.assessmentName} " escape="false"/></small>
     </h1>
-  </div>
+  </h:panelGroup>
+
+  <!-- EVALUATION SUBMENU -->
+  <%@ include file="/jsf/evaluation/evaluationSubmenu.jsp" %>
 
   <div class="hide">
     <h:outputText value="#{evaluationMessages.auto_scored_tip}" rendered="#{totalScores.isAutoScored}" />
   </div>
 
-  <h:outputText value="<ul class='navIntraTool actionToolbar' role='menu'>" escape="false"/>
-    <h:outputText value="<li role='menuitem' class='firstToolBarItem'><span>" escape="false"/>
-    <h:commandLink title="#{evaluationMessages.t_submissionStatus}" action="submissionStatus" immediate="true">
-      <h:outputText value="#{evaluationMessages.sub_status}" />
-      <f:param name="allSubmissions" value="true"/>
-      <f:actionListener
-        type="org.sakaiproject.tool.assessment.ui.listener.evaluation.SubmissionStatusListener" />
-    </h:commandLink>
-
-    <h:outputText value="</span><li role='menuitem'><span class='current'>" escape="false"/>
-
-    <h:outputText value="#{commonMessages.total_scores}" />
-
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" />
-
-    <h:commandLink title="#{evaluationMessages.t_questionScores}" action="questionScores" immediate="true"
-      rendered="#{totalScores.firstItem ne ''}" >
-      <h:outputText value="#{evaluationMessages.q_view}" />
-      <f:param name="allSubmissions" value="3"/>
-      <f:actionListener
-        type="org.sakaiproject.tool.assessment.ui.listener.evaluation.ResetQuestionScoreListener" />
-      <f:actionListener
-        type="org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScorePagerListener" />
-      <f:actionListener
-        type="org.sakaiproject.tool.assessment.ui.listener.evaluation.QuestionScoreListener" />
-    </h:commandLink>
-
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" />
-    
-    <h:commandLink title="#{evaluationMessages.t_histogram}" action="histogramScores" immediate="true"
-      rendered="#{totalScores.firstItem ne ''}" >
-      <h:outputText value="#{evaluationMessages.stat_view}" />
-      <f:param name="hasNav" value="true"/>
-      <f:actionListener
-        type="org.sakaiproject.tool.assessment.ui.listener.evaluation.HistogramListener" />
-    </h:commandLink>
-
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.firstItem ne ''}" />
-
-    <h:commandLink title="#{evaluationMessages.t_itemAnalysis}" action="detailedStatistics" immediate="true"
-      rendered="#{totalScores.firstItem ne ''}" >
-      <h:outputText value="#{evaluationMessages.item_analysis}" />
-      <f:param name="hasNav" value="true"/>
-      <f:actionListener
-        type="org.sakaiproject.tool.assessment.ui.listener.evaluation.HistogramListener" />
-    </h:commandLink>
-
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" />
-    
-    <h:commandLink title="#{commonMessages.export_action}" action="exportResponses" immediate="true">
-      <h:outputText value="#{commonMessages.export_action}" />
-  	  <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.ExportResponsesListener" />
-    </h:commandLink>
-    
-    <h:outputText value="</span><li role='menuitem'><span>" escape="false" rendered="#{totalScores.hasFileUpload}"/>
-   
-    <h:commandLink title="#{evaluationMessages.t_title_download_file_submissions}" action="downloadFileSubmissions" immediate="true" rendered="#{totalScores.hasFileUpload}">
-      <h:outputText value="#{evaluationMessages.title_download_file_submissions}" />
-        <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.ResetQuestionScoreListener" />
-        <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.DownloadFileSubmissionsListener" />
-    </h:commandLink>
-    
-  <h:outputText value="</span></li></ul>" escape="false"/>
-
 <div class="tier1">
-  <h:messages styleClass="messageSamigo" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
+  <h:messages styleClass="sak-banner-error" rendered="#{! empty facesContext.maximumSeverity}" layout="table"/>
   <!-- only shows Max Score Possible if this assessment does not contain random dawn parts -->
 
-<sakai:flowState bean="#{totalScores}" />
+  <sakai:flowState bean="#{totalScores}" />
+
   <h:panelGroup styleClass="max-score-possible" layout="block" rendered="#{!totalScores.hasRandomDrawPart}">
     <h:outputText value="<h2>#{evaluationMessages.max_score_poss}<small>: #{totalScores.maxScore}</small></h2>" escape="false"/>
   </h:panelGroup>
 
 <h:panelGroup styleClass="row total-score-box" layout="block" rendered="#{totalScores.anonymous eq 'false'}">
   <h:panelGroup styleClass="col-md-6" layout="block">
-    <h:panelGroup styleClass="apply-grades" layout="block" rendered="#{totalScores.allSubmissions!='4'}">
+    <h:panelGroup styleClass="apply-grades" layout="block">
 	  <h:commandButton value="#{evaluationMessages.applyGrades} " id="applyScoreButton" styleClass="active" type="submit" onclick="SPNR.disableControlsAndSpin( this, null );">
           <f:actionListener type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreUpdateListener" />
       </h:commandButton>
       <h:outputText value="&#160;" escape="false" />
       <h:inputText id="applyScoreUnsubmitted" value="#{totalScores.applyToUngraded}"  onkeydown="inIt()" onchange="toPoint(this.id);" size="5"/>
-      <h:outputText value=" #{evaluationMessages.applyGradesDesc}"/>
+      <h:outputText value=" #{totalScores.allSubmissions ne '4' ? evaluationMessages.applyGradesDesc : evaluationMessages.applyGradesDescAvg}"/>
     </h:panelGroup>
 
 
     <h:panelGroup styleClass="all-submissions form-group row" layout="block">
       <h:outputLabel styleClass="col-md-2" value="#{evaluationMessages.view}"/>
       <h:selectOneMenu value="#{totalScores.allSubmissions}" id="allSubmissionsA1"
-        required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '4' && totalScores.multipleSubmissionsAllowed eq 'true' }">
+        required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '4'}">
       <f:selectItem itemValue="3" itemLabel="#{evaluationMessages.all_sub}" />
       <f:selectItem itemValue="4" itemLabel="#{evaluationMessages.average_sub}" />
       <f:valueChangeListener
@@ -213,7 +176,7 @@ $(document).ready(function(){
      </h:selectOneMenu>
 
      <h:selectOneMenu value="#{totalScores.allSubmissions}" id="allSubmissionsL1"
-        required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '2' && totalScores.multipleSubmissionsAllowed eq 'true' }">
+        required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '2'}">
       <f:selectItem itemValue="3" itemLabel="#{evaluationMessages.all_sub}" />
       <f:selectItem itemValue="2" itemLabel="#{evaluationMessages.last_sub}" />
       <f:valueChangeListener
@@ -221,7 +184,7 @@ $(document).ready(function(){
      </h:selectOneMenu>
 
      <h:selectOneMenu value="#{totalScores.allSubmissions}" id="allSubmissionsH1"
-        required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '1' && totalScores.multipleSubmissionsAllowed eq 'true' }">
+        required="true" onchange="document.forms[0].submit();" rendered="#{totalScores.scoringOption eq '1'}">
       <f:selectItem itemValue="3" itemLabel="#{evaluationMessages.all_sub}" />
       <f:selectItem itemValue="1" itemLabel="#{evaluationMessages.highest_sub}" />
       <f:valueChangeListener
@@ -365,7 +328,7 @@ $(document).ready(function(){
 	 <span class="itemAction">
 	   <h:panelGroup rendered="#{description.email != null && description.email != '' && email.fromEmailAddress != null && email.fromEmailAddress != ''}">
 		 <h:outputText value="<a href=\"mailto:" escape="false" />
-	     <h:outputText value="#{description.email}" escape="false" />
+	     <h:outputText value="#{description.email}" />
 	     <h:outputText value="?subject=" escape="false" />
 		 <h:outputText value="#{totalScores.assessmentName} #{commonMessages.feedback}\">" escape="false" />
          <h:outputText value="  #{evaluationMessages.email}" escape="false"/>
@@ -414,7 +377,7 @@ $(document).ready(function(){
 	 <span class="itemAction">
 	   <h:panelGroup rendered="#{description.email != null && description.email != '' && email.fromEmailAddress != null && email.fromEmailAddress != ''}">
 		 <h:outputText value="<a href=\"mailto:" escape="false" />
-	     <h:outputText value="#{description.email}" escape="false" />
+	     <h:outputText value="#{description.email}" />
 	     <h:outputText value="?subject=" escape="false" />
 		 <h:outputText value="#{totalScores.assessmentName} #{commonMessages.feedback}\">" escape="false" />
          <h:outputText value="  #{evaluationMessages.email}" escape="false"/>
@@ -465,7 +428,7 @@ $(document).ready(function(){
 	 <span class="itemAction">
 	  <h:panelGroup rendered="#{description.email != null && description.email != '' && email.fromEmailAddress != null && email.fromEmailAddress != ''}">
 		 <h:outputText value="<a href=\"mailto:" escape="false" />
-	     <h:outputText value="#{description.email}" escape="false" />
+	     <h:outputText value="#{description.email}" />
 	     <h:outputText value="?subject=" escape="false" />
 		 <h:outputText value="#{totalScores.assessmentName} #{commonMessages.feedback}\">" escape="false" />
          <h:outputText value="  #{evaluationMessages.email}" escape="false"/>
@@ -653,7 +616,7 @@ $(document).ready(function(){
         </h:commandLink>
      </f:facet>
         <h:outputText value="#{description.submittedDate}" rendered="#{description.attemptDate != null && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')}" >
-          <f:convertDateTime pattern="#{generalMessages.output_data_picker_w_sec}"/>
+          <f:convertDateTime dateStyle="medium" timeStyle="short" timeZone="#{author.userTimeZone}" />
         </h:outputText>
         <h:panelGroup rendered="#{description.attemptDate != null && (totalScores.anonymous eq 'false' || description.assessmentGradingId ne '-1')}">
           <h:panelGroup rendered="#{description.isLate == 'true' && ((description.isAutoSubmitted == 'false' && !(totalScores.isTimedAssessment eq 'true' && totalScores.acceptLateSubmission eq 'false'))
@@ -682,7 +645,7 @@ $(document).ready(function(){
           </h:commandLink>    
       </f:facet>
         <h:outputText value="#{description.submittedDate}" rendered="#{description.attemptDate != null && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')}" >
-          <f:convertDateTime pattern="#{generalMessages.output_data_picker_w_sec}"/>
+          <f:convertDateTime dateStyle="medium" timeStyle="short" timeZone="#{author.userTimeZone}" />
         </h:outputText>
         <h:panelGroup rendered="#{description.attemptDate != null && (totalScores.anonymous eq 'false' || description.assessmentGradingId ne '-1')}">
           <h:panelGroup rendered="#{description.isLate == 'true' && ((description.isAutoSubmitted == 'false' && !(totalScores.isTimedAssessment eq 'true' && totalScores.acceptLateSubmission eq 'false'))
@@ -712,7 +675,7 @@ $(document).ready(function(){
       </h:commandLink> 
       </f:facet>
         <h:outputText value="#{description.submittedDate}" rendered="#{description.attemptDate != null && (totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1')}" >
-          <f:convertDateTime pattern="#{generalMessages.output_data_picker_w_sec}"/>
+          <f:convertDateTime dateStyle="medium" timeStyle="short" timeZone="#{author.userTimeZone}" />
         </h:outputText>
         <h:panelGroup rendered="#{description.attemptDate != null && (totalScores.anonymous eq 'false' || description.assessmentGradingId ne '-1')}">
           <h:panelGroup rendered="#{description.isLate == 'true' && ((description.isAutoSubmitted == 'false' && !(totalScores.isTimedAssessment eq 'true' && totalScores.acceptLateSubmission eq 'false'))
@@ -853,7 +816,46 @@ $(document).ready(function(){
       <h:inputText value="#{description.totalOverrideScore}" size="5" id="adjustTotal3" required="false" rendered="#{totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1'}"  onchange="toPoint(this.id);" >
       </h:inputText>
     </h:column>
-  
+
+    <!-- SUBMISSION COUNT (AVERAGE SCORE VIEW) -->
+    <h:column rendered="#{totalScores.allSubmissions eq '4' && totalScores.sortType!='submissionCount'}">
+     <f:facet name="header">
+      <h:commandLink title="#{evaluationMessages.t_sortSubmissionCount}" id="submissionCount" action="totalScores" >
+        <h:outputText value="#{evaluationMessages.sub_count}" />
+         <f:actionListener
+            type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
+        <f:param name="sortBy" value="submissionCount" />
+        <f:param name="sortAscending" value="true"/>
+      </h:commandLink>
+     </f:facet>
+        <h:outputText value="#{description.submissionCount}" rendered="#{totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1'}"/>
+    </h:column>
+
+    <h:column rendered="#{totalScores.allSubmissions eq '4' && totalScores.sortType=='submissionCount' && totalScores.sortAscending}">
+      <f:facet name="header">
+        <h:commandLink title="#{evaluationMessages.t_sortSubmissionCount}" action="totalScores">
+          <h:outputText value="#{evaluationMessages.sub_count}" />
+          <f:param name="sortAscending" value="false" />
+          <h:graphicImage alt="#{evaluationMessages.alt_sortSubmissionCountDescending}" rendered="#{totalScores.sortAscending}" url="/images/sortascending.gif"/>
+          <f:actionListener
+             type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
+          </h:commandLink>
+      </f:facet>
+      <h:outputText value="#{description.submissionCount}" rendered="#{totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1'}"/>
+    </h:column>
+
+    <h:column rendered="#{totalScores.allSubmissions eq '4' && totalScores.sortType=='submissionCount'  && !totalScores.sortAscending}">
+      <f:facet name="header">
+      <h:commandLink title="#{evaluationMessages.t_sortSubmissionCount}" action="totalScores">
+        <h:outputText value="#{evaluationMessages.sub_count}" />
+        <f:param name="sortAscending" value="true"/>
+        <h:graphicImage alt="#{evaluationMessages.alt_sortSubmissionCountAscending}" rendered="#{!totalScores.sortAscending}" url="/images/sortdescending.gif"/>
+        <f:actionListener
+             type="org.sakaiproject.tool.assessment.ui.listener.evaluation.TotalScoreListener" />
+      </h:commandLink>
+      </f:facet>
+      <h:outputText value="#{description.submissionCount}" rendered="#{totalScores.anonymous eq 'false'  || description.assessmentGradingId ne '-1'}"/>
+    </h:column>
 
     <!-- FINAL SCORE -->
     <h:column rendered="#{totalScores.sortType!='finalScore'}">
@@ -916,8 +918,8 @@ $(document).ready(function(){
 	  </h:panelGroup>
      </f:facet>
 
-   <h:inputTextarea value="#{description.comments}" rows="3" cols="30" rendered="#{(totalScores.anonymous eq 'false' || description.assessmentGradingId ne '-1') && description.attemptDate != null}"/>
-   <h:inputTextarea value="#{evaluationMessages.requires_student_submission}" rows="3" styleClass="disabled" disabled="true" cols="30" rendered="#{(totalScores.anonymous eq 'false' || description.assessmentGradingId ne '-1') && description.attemptDate == null}"/>
+   <h:inputTextarea value="#{description.comments}" rows="3" cols="30" rendered="#{(totalScores.anonymous eq 'false' || description.assessmentGradingId ne '-1') && description.attemptDate != null}" styleClass="awesomplete" />
+   <h:inputTextarea value="#{evaluationMessages.requires_student_submission}" rows="3" styleClass="disabled awesomplete" disabled="true" cols="30" rendered="#{(totalScores.anonymous eq 'false' || description.assessmentGradingId ne '-1') && description.attemptDate == null}"/>
    <h:panelGroup rendered="#{(totalScores.anonymous eq 'false' || description.assessmentGradingId ne '-1') && description.attemptDate != null}">
    		<%@ include file="/jsf/evaluation/totalScoresAttachment.jsp" %>
    </h:panelGroup>

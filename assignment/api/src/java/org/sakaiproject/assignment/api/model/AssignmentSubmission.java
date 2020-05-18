@@ -35,6 +35,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -46,10 +47,19 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
  * AssignmentSubmission represents a student submission for an assignment.
@@ -62,6 +72,7 @@ import org.hibernate.annotations.Type;
 @NoArgsConstructor
 @ToString(exclude = {"assignment", "submitters", "attachments", "feedbackAttachments", "properties"})
 @EqualsAndHashCode(of = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class AssignmentSubmission {
 
     @Id
@@ -70,12 +81,15 @@ public class AssignmentSubmission {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ASSIGNMENT_ID")
+    @JsonBackReference
     private Assignment assignment;
 
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "submission", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 100)
+    @JsonManagedReference
     private Set<AssignmentSubmissionSubmitter> submitters = new HashSet<>();
 
     //private List submissionLog;
@@ -99,13 +113,15 @@ public class AssignmentSubmission {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @ElementCollection
     @Column(name = "ATTACHMENT", length = 1024)
-    @CollectionTable(name = "ASN_SUBMISSION_ATTACHMENTS", joinColumns = @JoinColumn(name = "SUBMISSION_ID"))
+    @CollectionTable(name = "ASN_SUBMISSION_ATTACHMENTS", joinColumns = @JoinColumn(name = "SUBMISSION_ID"), indexes = @Index(columnList = "SUBMISSION_ID"))
+    @Fetch(FetchMode.SUBSELECT)
     private Set<String> attachments = new HashSet<>();
 
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @ElementCollection
     @Column(name = "FEEDBACK_ATTACHMENT", length = 1024)
-    @CollectionTable(name = "ASN_SUBMISSION_FEEDBACK_ATTACH", joinColumns = @JoinColumn(name = "SUBMISSION_ID"))
+    @CollectionTable(name = "ASN_SUBMISSION_FEEDBACK_ATTACH", joinColumns = @JoinColumn(name = "SUBMISSION_ID"), indexes = @Index(columnList = "SUBMISSION_ID"))
+    @Fetch(FetchMode.SUBSELECT)
     private Set<String> feedbackAttachments = new HashSet<>();
 
     @Lob
@@ -153,11 +169,16 @@ public class AssignmentSubmission {
     @Column(name = "GROUP_ID", length = 36)
     private String groupId;
 
+    @Lob
+    @Column(name = "PRIVATE_NOTES", length = 65535)
+    private String privateNotes;
+
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @ElementCollection
     @MapKeyColumn(name = "NAME")
     @Lob
     @Column(name = "VALUE", length = 65535)
     @CollectionTable(name = "ASN_SUBMISSION_PROPERTIES", joinColumns = @JoinColumn(name = "SUBMISSION_ID"))
+    @Fetch(FetchMode.SUBSELECT)
     private Map<String, String> properties = new HashMap<>();
 }

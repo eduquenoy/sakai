@@ -38,6 +38,8 @@ import javax.faces.event.ActionListener;
 import lombok.extern.slf4j.Slf4j;
 
 import org.sakaiproject.component.cover.ComponentManager;
+import org.sakaiproject.rubrics.logic.RubricsConstants;
+import org.sakaiproject.rubrics.logic.RubricsService;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerFeedbackIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AnswerIfc;
 import org.sakaiproject.tool.assessment.data.ifc.assessment.AssessmentIfc;
@@ -71,8 +73,8 @@ import org.sakaiproject.tool.assessment.ui.bean.author.CalculatedQuestionBean;
 import org.sakaiproject.tool.assessment.ui.bean.authz.AuthorizationBean;
 import org.sakaiproject.tool.assessment.ui.listener.util.ContextUtil;
 import org.sakaiproject.user.api.UserDirectoryService;
+import org.sakaiproject.util.api.FormattedText;
 
-import org.sakaiproject.util.FormattedText;
 
 /**
  * <p>Title: Samigo</p>
@@ -83,6 +85,8 @@ import org.sakaiproject.util.FormattedText;
 public class ItemModifyListener implements ActionListener
 {
   //private String scalename;  // used for multiple choice Survey
+
+  private RubricsService rubricsService = ComponentManager.get(RubricsService.class);
 
   /**
    * Standard process action method.
@@ -128,8 +132,8 @@ public class ItemModifyListener implements ActionListener
       String nextpage= null;
       ItemBean bean = new ItemBean();
       AuthorBean author = (AuthorBean) ContextUtil.lookupBean("author");
-      boolean isEditPendingAssessmentFlow = author.getIsEditPendingAssessmentFlow();
-      log.debug("**** isEditPendingAssessmentFlow : " + isEditPendingAssessmentFlow);
+      final boolean isEditPendingAssessmentFlow = author.getIsEditPendingAssessmentFlow();
+      log.debug("**** isEditPendingAssessmentFlow : {}", isEditPendingAssessmentFlow);
       ItemService delegate = null;
       AssessmentService assessdelegate= null;
       if (isEditPendingAssessmentFlow) {
@@ -207,6 +211,8 @@ public class ItemModifyListener implements ActionListener
       if (itemfacade.getSequence()!=null) {
         itemauthorbean.setItemNo(String.valueOf(itemfacade.getSequence().intValue() ));
       }
+
+      bean.setExtraCredit(itemfacade.getIsExtraCredit()==null?false:itemfacade.getIsExtraCredit());
 
       Double score = itemfacade.getScore();
       if (score == null)
@@ -358,6 +364,8 @@ public class ItemModifyListener implements ActionListener
                     nextpage = "imageMapItem";
                     break;
         }
+        itemauthorbean.setRbcsToken(rubricsService.generateJsonWebToken(RubricsConstants.RBCS_TOOL_SAMIGO));
+        itemauthorbean.setRubricStateDetails("");
     }
     catch(RuntimeException e)
     {
@@ -548,45 +556,6 @@ public class ItemModifyListener implements ActionListener
 		}
 		answerbeanlist.add(answerbean);
          }
-
-         
-/*         
-		  if ((Long.valueOf(itemauthorbean.getItemType()).equals(TypeFacade.MULTIPLE_CHOICE)) ||(Long.valueOf(itemauthorbean.getItemType()).equals(TypeFacade.MULTIPLE_CORRECT)) || (Long.valueOf(itemauthorbean.getItemType()).equals(TypeFacade.MULTIPLE_CORRECT_SINGLE_SELECTION)) ) {
-			  Set answerobjlist = itemText.getAnswerSet();
-			  String afeedback =  "" ;
-			  Iterator iter1 = answerobjlist.iterator();
-			  ArrayList answerbeanlist = new ArrayList();
-			  ArrayList correctlist = new ArrayList();
-			  //need to check sequence no, since this answerSet returns answers in random order
-			  int count = answerobjlist.size();
-			  AnswerIfc[] answerArray = new AnswerIfc[count];
-			  while(iter1.hasNext())
-			  {
-				  AnswerIfc answerobj = (AnswerIfc) iter1.next();
-				  Long seq = answerobj.getSequence();
-				  answerArray[seq.intValue()-1] = answerobj;
-			  }
-			  for (int i=0; i<answerArray.length; i++) {
-				  Set feedbackSet = answerArray[i].getAnswerFeedbackSet();
-				  // contains only one element in the Set
-				  if (feedbackSet.size() == 1) {
-					  AnswerFeedbackIfc afbobj=(AnswerFeedbackIfc) feedbackSet.iterator().next();
-					  afeedback = afbobj.getText();
-				  }
-				  AnswerBean answerbean = new AnswerBean();
-				  answerbean.setText(answerArray[i].getText());
-				  answerbean.setSequence(answerArray[i].getSequence());
-				  answerbean.setLabel(answerArray[i].getLabel());
-				  answerbean.setFeedback(afeedback);
-				  answerbean.setIsCorrect(answerArray[i].getIsCorrect());
-				  if (answerbean.getIsCorrect() != null &&
-						  answerbean.getIsCorrect().booleanValue()) {
-					  correctlist.add(answerbean);
-				  }
-				  answerbeanlist.add(answerbean);
-			  }
-*/
-
 			  // set correct choice for single correct
 			  if (Long.valueOf(itemauthorbean.getItemType()).equals(TypeFacade.MULTIPLE_CHOICE)) {
 				  Iterator iter2 = correctlist.iterator();
@@ -951,13 +920,13 @@ public class ItemModifyListener implements ActionListener
     while (iter.hasNext()){
     	ItemMetaDataIfc meta= (ItemMetaDataIfc) iter.next();
        if (meta.getLabel().equals(ItemMetaDataIfc.OBJECTIVE)){
-	 bean.setObjective(FormattedText.convertFormattedTextToPlaintext(meta.getEntry()));
+	 bean.setObjective(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(meta.getEntry()));
        }
        if (meta.getLabel().equals(ItemMetaDataIfc.KEYWORD)){
-	 bean.setKeyword(FormattedText.convertFormattedTextToPlaintext(meta.getEntry()));
+	 bean.setKeyword(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(meta.getEntry()));
        }
        if (meta.getLabel().equals(ItemMetaDataIfc.RUBRIC)){
-	 bean.setRubric(FormattedText.convertFormattedTextToPlaintext(meta.getEntry()));
+	 bean.setRubric(ComponentManager.get(FormattedText.class).convertFormattedTextToPlaintext(meta.getEntry()));
        }
        if (meta.getLabel().equals(ItemMetaDataIfc.RANDOMIZE)){
 	 bean.setRandomized(meta.getEntry());
@@ -968,6 +937,9 @@ public class ItemModifyListener implements ActionListener
     	       if (meta.getLabel().equals(ItemMetaDataIfc.IMAGE_MAP_SRC)){
     	    		 bean.setImageMapSrc(meta.getEntry());
     	       }
+       if (ItemMetaDataIfc.IMAGE_MAP_ALT_TEXT.equals(meta.getLabel())){
+           bean.setImageMapAltText(meta.getEntry());
+       }
        if (meta.getLabel().equals(ItemMetaDataIfc.MCMS_PARTIAL_CREDIT)){
     	   bean.setMcmsPartialCredit(meta.getEntry());
        }

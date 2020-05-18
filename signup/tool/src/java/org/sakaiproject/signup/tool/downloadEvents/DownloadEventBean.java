@@ -45,13 +45,14 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import au.com.bytecode.opencsv.CSVWriter;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Workbook;
-
 import org.sakaiproject.signup.tool.jsf.SignupMeetingWrapper;
 import org.sakaiproject.signup.tool.jsf.SignupMeetingsBean;
 import org.sakaiproject.signup.tool.util.Utilities;
+
+import com.opencsv.CSVWriter;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <p>
@@ -214,7 +215,7 @@ public class DownloadEventBean extends SignupMeetingsBean {
 			excelSpreadsheet(out, smWrappers, downloadType);
 
 			out.flush();
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			log.warn("Error generating XLS spreadsheet for download event:" + ex.getMessage());
 		} finally {
 			if (out != null)
@@ -288,6 +289,7 @@ public class DownloadEventBean extends SignupMeetingsBean {
 	private void excelSpreadsheet(OutputStream os, List<SignupMeetingWrapper> meetingWrappers,
 			String downloadType) throws IOException {
 		EventWorksheet worksheet = new EventWorksheet(getSakaiFacade());
+		worksheet.setSignupMeetingService(getSignupMeetingService());
 
 		Workbook wb = worksheet.getEventWorkbook(meetingWrappers, downloadType);
 		wb.write(os);
@@ -296,9 +298,9 @@ public class DownloadEventBean extends SignupMeetingsBean {
 	private void csvSpreadsheet(OutputStream os, List<SignupMeetingWrapper> meetingWrappers) throws IOException {
 		
 		CSVExport export = new CSVExport(meetingWrappers, getSakaiFacade());
+
 		
-		CSVWriter writer = new CSVWriter(new OutputStreamWriter(os), ',');
-	    
+		CSVWriter writer = new CSVWriter(new OutputStreamWriter(os), ',', CSVWriter.DEFAULT_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, downloadVersion);
 		//header
 		List<String> header = export.getHeaderRow();
 		
